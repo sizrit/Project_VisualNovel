@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class StroyBoard
 {
-    private string stroyBoradId;
+    private string stroyBoardId;
     
-    private string textId;
+    private TextID textId;
 
     private string bgId;
 
     private string eventId;
 
-    public string GetTextId()
+    public StroyBoard(string stroyBoardId, TextID textId, string bgId, string eventId)
+    {
+        this.stroyBoardId = stroyBoardId;
+        this.textId = textId;
+        this.bgId = bgId;
+        this.eventId = eventId;
+    }
+
+    public TextID GetTextId()
     {
         return textId;
     }
