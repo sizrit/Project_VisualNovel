@@ -13,6 +13,7 @@ public struct Dialogue
 {
     public string speaker;
     public string dialogueText;
+    public string color;
     public string effect;
 }
 
