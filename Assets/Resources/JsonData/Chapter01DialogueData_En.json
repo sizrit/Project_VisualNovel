@@ -1,0 +1,31 @@
+{
+  "dialogueList" :[ 
+    {
+      "speaker" : "a1", "dialogueText" : "ttt01", "effect" : "a3"
+    },
+    {
+      "speaker" : "b1", "dialogueText" : "ttt02", "effect" : "b3"
+    },
+    {
+      "speaker" : "b1", "dialogueText" : "b2", "effect" : "b3"
+    },
+    {
+      "speaker" : "b1", "dialogueText" : "b2", "effect" : "b3"
+    },
+    {
+      "speaker" : "b1", "dialogueText" : "b2", "effect" : "b3"
+    },
+    {
+      "speaker" : "b1", "dialogueText" : "b2", "effect" : "b3"
+    },
+    {
+      "speaker" : "b1", "dialogueText" : "b2", "effect" : "b3"
+    },
+    {
+      "speaker" : "b1", "dialogueText" : "b2", "effect" : "b3"
+    },
+    {
+      "speaker" : "b1", "text" : "b2", "effect" : "b3"
+    }
+  ]
+}
