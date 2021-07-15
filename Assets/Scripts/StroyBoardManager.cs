@@ -6,24 +6,24 @@ using UnityEngine;
 public class StroyBoardManager : MonoBehaviour
 {
     private StroyBoard _stroyBoard;
+    private int _dialogueNum = 0;
 
     private void OnEnable()
     {
-        _stroyBoard= new StroyBoard("s",TextID.Text01,"s","s");
+        
     }
 
     private void SetNextStoryBoardId()
     {
-        JsonTextDataLoadManager.GetInstance().GetTextData(_stroyBoard.GetTextId());
+        
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
-            string textData =  JsonTextDataLoadManager.GetInstance().GetTextData(_stroyBoard.GetTextId());
-            TextManager.GetInstance().SetText(textData);
-            Debug.Log(JsonTextDataLoadManager.GetInstance().GetTextData(TextID.Text01)+"sss");
+            Dialogue dialogue = JsonDialogueDataLoadManager.GetInstance().GetDialogue(Chapter.Chapter01, _dialogueNum++);
+            DialogueTextManager.GetInstance().SetDialogue(dialogue);
         }
     }
 }

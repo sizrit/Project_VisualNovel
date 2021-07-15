@@ -6,32 +6,18 @@ public class StroyBoard
 {
     private string stroyBoardId;
     
-    private TextID textId;
+    private Dialogue _dialogue;
 
-    private string bgId;
+    private string _bgId;
 
-    private string eventId;
+    private string _eventId;
 
-    public StroyBoard(string stroyBoardId, TextID textId, string bgId, string eventId)
+    public StroyBoard(string stroyBoardId, string bgId, string eventId, Dialogue dialogue)
     {
         this.stroyBoardId = stroyBoardId;
-        this.textId = textId;
-        this.bgId = bgId;
-        this.eventId = eventId;
+        _dialogue = dialogue;
+        _bgId = bgId;
+        _eventId = eventId;
     }
 
-    public TextID GetTextId()
-    {
-        return textId;
-    }
-
-    public string GetBgId()
-    {
-        return bgId;
-    }
-
-    public string GetEventId()
-    {
-        return eventId;
-    }
 }
