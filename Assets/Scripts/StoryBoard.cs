@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StroyBoard
+public class StoryBoard
 {
-    private string stroyBoardId;
+    private string storyBoardId;
     
     private Dialogue _dialogue;
 
@@ -12,9 +12,9 @@ public class StroyBoard
 
     private string _eventId;
 
-    public StroyBoard(string stroyBoardId, string bgId, string eventId, Dialogue dialogue)
+    public StoryBoard(string storyBoardId, string bgId, string eventId, Dialogue dialogue)
     {
-        this.stroyBoardId = stroyBoardId;
+        this.storyBoardId = storyBoardId;
         _dialogue = dialogue;
         _bgId = bgId;
         _eventId = eventId;
