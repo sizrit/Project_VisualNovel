@@ -1,56 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum DialogueTextColor
-{
-    White,
-    Red,
-    Black
-}
-
-public enum DialogueTextEffect
-{
-    
-}
-
 public class DialogueTextEffectManager : MonoBehaviour
 {
-    private Dialogue _currentDialogue;
-    private GameObject _dialogueText;
+    private readonly Dictionary<Chapter,List<int>> _dialogueTextEffectList = new Dictionary<Chapter, List<int>>();
 
-    private void OnEnable()
+    private void MakeDialogueTextEffectList()
     {
-        _dialogueText = this.transform.GetChild(1).gameObject;
-    }
-
-    public void SetDialogueTextEffect(Dialogue dialogueValue)
-    {
-        _currentDialogue = dialogueValue;
-        SetDialogueTextColor(_currentDialogue.color);
-    }
-
-    private void SetDialogueTextColor(string colorValue)
-    {
-        Color color = Color.white;
-        switch (colorValue)
+        List<Chapter> chapterList = Enum.GetValues(typeof(Chapter)).Cast<Chapter>().ToList();
+        foreach (var chapter in chapterList)
         {
-            case "White":
-                color=Color.white;
-                break;
-            
-            case "Red":
-                color =Color.red;
-                break;
-            
-            case "Black":
-                color = Color.black;
-                break;
+            _dialogueTextEffectList.Add(chapter,new List<int>());
         }
-
-        _dialogueText.GetComponent<Text>().color = color;
     }
     
+    public bool CheckDialogueTextEffect(Chapter chapterValue, int dialogueNumValue)
+    {
+        return _dialogueTextEffectList[chapterValue].Contains(dialogueNumValue);
+    }
 }

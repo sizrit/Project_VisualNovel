@@ -14,7 +14,6 @@ public struct Dialogue
     public string speaker;
     public string dialogueText;
     public string color;
-    public string effect;
 }
 
 public enum Chapter
@@ -26,6 +25,13 @@ public enum Chapter
     Chapter04,
     Chapter05
     */
+}
+
+public enum Div
+{
+    Ch0100,
+    Ch0101,
+    Ch0102,
 }
 
 [Serializable]
