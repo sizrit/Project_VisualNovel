@@ -1,0 +1,7 @@
+{
+  "divInfoData" :[ 
+    {
+      "divId" : "aa1", "startDialogueId" : "aa2", "exitDialogueId" : "aa3"
+    }
+  ]
+}
