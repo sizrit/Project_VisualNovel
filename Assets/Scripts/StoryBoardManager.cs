@@ -59,8 +59,6 @@ public class StoryBoardManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Dialogue dialogue = JsonDialogueDataLoadManager.GetInstance().GetDialogue(Chapter.Chapter01, _dialogueNum++);
-            DialogueTextManager.GetInstance().SetDialogue(dialogue);
         }
     }
 }
