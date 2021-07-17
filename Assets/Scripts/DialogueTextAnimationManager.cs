@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class DialogueTextAnimationManager : MonoBehaviour
 {
-    private GameObject _currnentDialogueText;
+    private GameObject _currentDialogueText;
     private GameObject _pastDialogueText;
     
     private Action _dialogueTextManagerAction;
@@ -23,7 +23,7 @@ public class DialogueTextAnimationManager : MonoBehaviour
     private void OnEnable()
     {
         _dialogueTextManagerAction= new Action(func0);
-        _currnentDialogueText = this.transform.GetChild(1).gameObject;
+        _currentDialogueText = this.transform.GetChild(1).gameObject;
         _pastDialogueText = this.transform.GetChild(2).gameObject;
     }
 
@@ -31,9 +31,9 @@ public class DialogueTextAnimationManager : MonoBehaviour
     {
         _dialogueTextData = dialogueTextDataValue;
 
-        Color color = _currnentDialogueText.GetComponent<Text>().color;
+        Color color = _currentDialogueText.GetComponent<Text>().color;
         color.a = 0;
-        _currnentDialogueText.GetComponent<Text>().color = color;
+        _currentDialogueText.GetComponent<Text>().color = color;
         _dialogueTextManagerAction = new Action(func0);
         _dialogueTextManagerAction += DialogueTextAnimation_Add;
     }
@@ -41,7 +41,7 @@ public class DialogueTextAnimationManager : MonoBehaviour
     
     private void DialogueTextAnimation_FadeIn()
     {
-        Color color = _currnentDialogueText.GetComponent<Text>().color;
+        Color color = _currentDialogueText.GetComponent<Text>().color;
         color.a += _fadeSpeed;
         if (color.a > 0.99)
         {
@@ -49,7 +49,7 @@ public class DialogueTextAnimationManager : MonoBehaviour
             _dialogueTextManagerAction = new Action(func0);
             _dialogueTextManagerAction += DialogueTextAnimation_Add;
         }
-        _currnentDialogueText.GetComponent<Text>().color = color;
+        _currentDialogueText.GetComponent<Text>().color = color;
     }
     
     private void DialogueTextAnimation_Add()
@@ -66,14 +66,14 @@ public class DialogueTextAnimationManager : MonoBehaviour
             return;
         }
         
-        Color color = _currnentDialogueText.GetComponent<Text>().color;
+        Color color = _currentDialogueText.GetComponent<Text>().color;
         color.a = 0;
-        _currnentDialogueText.GetComponent<Text>().color = color;
+        _currentDialogueText.GetComponent<Text>().color = color;
         
         if (_index < _dialogueTextData.Length + 1)
         {
             _currentString += _dialogueTextData[_index];
-            _currnentDialogueText.GetComponent<Text>().text = _currentString;
+            _currentDialogueText.GetComponent<Text>().text = _currentString;
         }
         
         _dialogueTextManagerAction = new Action(func0);
