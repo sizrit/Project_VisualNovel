@@ -11,6 +11,7 @@ using Object = System.Object;
 [Serializable]
 public struct Dialogue
 {
+    public string dialogueId;
     public string speaker;
     public string dialogueText;
     public string color;
@@ -25,13 +26,6 @@ public enum Chapter
     Chapter04,
     Chapter05
     */
-}
-
-public enum Div
-{
-    Ch0100,
-    Ch0101,
-    Ch0102,
 }
 
 [Serializable]
@@ -50,8 +44,16 @@ public class JsonDialogueDataLoadManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            GameObject newObj = new GameObject("JsonTextDataLoadManager");
-            _instance = newObj.AddComponent<JsonDialogueDataLoadManager>();
+            var obj = FindObjectOfType<JsonDialogueDataLoadManager>();
+            if (obj != null)
+            {
+                _instance = obj;
+            }
+            else
+            {
+                GameObject newObj = new GameObject("JsonTextDataLoadManager");
+                _instance = newObj.AddComponent<JsonDialogueDataLoadManager>();
+            }
         }
         return _instance;
     }
@@ -62,9 +64,7 @@ public class JsonDialogueDataLoadManager : MonoBehaviour
         if (objs.Length != 1)
         {
             Destroy(gameObject);
-            return;
         }
-        _instance = this;
     }
 
     #endregion
@@ -74,15 +74,15 @@ public class JsonDialogueDataLoadManager : MonoBehaviour
 
     private readonly Dictionary<Chapter, List<Dialogue>> _dialogueList = new Dictionary<Chapter, List<Dialogue>>();
 
-    public Dialogue GetDialogue(Chapter chapter, int dialogueNum)
+    public List<Dialogue> GetDialogue(Chapter chapter)
     {
         if (_isLoadDone)
         {
-            return _dialogueList[chapter][dialogueNum];
+            return _dialogueList[chapter];
         }
         
         Debug.Log("JsonTextDataLoadManager's Load is not Done!");
-        return new Dialogue();
+        return new List<Dialogue>();
     }
 
     private void OnEnable()
