@@ -9,26 +9,6 @@ using UnityEngine;
 using Object = System.Object;
 
 [Serializable]
-public struct Dialogue
-{
-    public string dialogueId;
-    public string speaker;
-    public string dialogueText;
-    public string color;
-}
-
-public enum Chapter
-{
-    Chapter01,
-    /*
-    Chapter02,
-    Chapter03,
-    Chapter04,
-    Chapter05
-    */
-}
-
-[Serializable]
 public class TextDataList
 {
     public List<Dialogue> dialogueList;
