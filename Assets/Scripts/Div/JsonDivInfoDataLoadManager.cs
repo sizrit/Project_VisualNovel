@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Schema;
 using UnityEngine;
 
 [Serializable]
@@ -57,12 +58,24 @@ public class JsonDivInfoDataLoadManager : MonoBehaviour
     #endregion
     
     private readonly Dictionary<Chapter,List<DivInfo>> _divInfoList = new Dictionary<Chapter, List<DivInfo>>();
+    private readonly Dictionary<Chapter,List<string>> _divIdList= new Dictionary<Chapter,List<string>>();
+    private bool isLoaded = false;
     
     public DivInfo GetDivInfo(Chapter chapterValue, string divIdValue)
     {
         return CheckDivInfo(divIdValue, _divInfoList[chapterValue]);
     }
-    
+
+    public List<string> GetDivIdList(Chapter chapterValue)
+    {
+        if (_divIdList.Count == 0)
+        {
+            LoadDivInfoList();
+            isLoaded = true;
+        }
+        return _divIdList[chapterValue];
+    }
+
     private DivInfo CheckDivInfo(string divIdValue, List<DivInfo> divInfoListValue)
     {
         foreach (var divInfo in divInfoListValue)
@@ -85,6 +98,13 @@ public class JsonDivInfoDataLoadManager : MonoBehaviour
             string loadPath = "JsonData/Div/"+chapter.ToString()+"DivInfoData";
             DivInfoData jsonData = LoadJsonFiles<DivInfoData>(loadPath);
             _divInfoList.Add(chapter,jsonData.divInfoData);
+            
+            List<string> newDivIdList= new List<string>();
+            foreach (var divInfo in _divInfoList[chapter])
+            {
+                newDivIdList.Add(divInfo.divId);
+            }
+            _divIdList.Add(chapter,newDivIdList);
         }
     }
     
@@ -96,14 +116,14 @@ public class JsonDivInfoDataLoadManager : MonoBehaviour
 
     private void OnEnable()
     {
-        LoadDivInfoList();
+        if (!isLoaded)
+        {
+            LoadDivInfoList();
+        }
     }
     
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Debug.Log(GetDivInfo(Chapter.Chapter01, "aa1").startDialogueId); ;
-        }
+
     }
 }
