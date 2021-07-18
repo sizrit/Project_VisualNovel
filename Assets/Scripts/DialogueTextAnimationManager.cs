@@ -27,6 +27,14 @@ public class DialogueTextAnimationManager : MonoBehaviour
         _pastDialogueText = this.transform.GetChild(2).gameObject;
     }
 
+    public void ResetDialogueTextAnimationManager()
+    {
+        _dialogueTextData = "".ToCharArray();
+        _currentString = "";
+        _pastString = "";
+        _index = 0;
+    }
+
     public void PlayDialogueTextAnimation(char[] dialogueTextDataValue)
     {
         _dialogueTextData = dialogueTextDataValue;
