@@ -1,0 +1,12 @@
+{
+  "divJsonDialogueData": [
+      {"divId" :"AA", "dialogueId" : "AA0011", "speaker" : "A", "dialogueText" : "AA0011", "color" : "White"},
+      {"divId" :"AA", "dialogueId" : "AA0012", "speaker" : "A", "dialogueText" : "AA0012", "color" : "White"},
+
+      {"divId" :"KK", "dialogueId" : "KK0021", "speaker" : "K", "dialogueText" : "KK0021", "color" : "White"},
+      {"divId" :"KK", "dialogueId" : "KK0022", "speaker" : "K", "dialogueText" : "KK0022", "color" : "White"},
+
+      {"divId" :"SS", "dialogueId" : "SS0031", "speaker" : "S", "dialogueText" : "SS0031", "color" : "White"},
+      {"divId" :"SS", "dialogueId" : "SS0032", "speaker" : "S", "dialogueText" : "SS0032", "color" : "White"}
+    ]
+}

@@ -1,7 +1,19 @@
 {
-  "divInfoData" :[ 
+  "divInfoData" :[
     {
-      "divId" : "aa1", "startDialogueId" : "aa2", "exitDialogueId" : "aa3"
+      "divId": "AA",
+      "startDialogueId": "aa2",
+      "exitDialogueId": "aa3"
+    },
+    {
+      "divId": "KK",
+      "startDialogueId": "aa2",
+      "exitDialogueId": "aa3"
+    },
+    {
+      "divId": "SS",
+      "startDialogueId": "aa2",
+      "exitDialogueId": "aa3"
     }
   ]
 }

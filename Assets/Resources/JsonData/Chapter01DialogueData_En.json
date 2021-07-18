@@ -1,14 +1,8 @@
 {
-  "divJsonTextData": {
-    "sss1": [
-      {"speaker" : "a1", "dialogueText" : "a2", "color" : "a3"},
-      {"speaker" : "a1", "dialogueText" : "a2", "color" : "a3"},
-      {"speaker" : "a1", "dialogueText" : "a2", "color" : "a3"}
-    ],
-    "sss2": [
-      {"speaker" : "a1", "dialogueText" : "a2", "color" : "a3"},
-      {"speaker" : "a1", "dialogueText" : "a2", "color" : "a3"},
-      {"speaker" : "a1", "dialogueText" : "a2", "color" : "a3"}
-    ]
-  }
+  "dialogueList" :[ 
+    { "dialogueId" : "Main0001", "speaker" : "M", "dialogueText" : "Main0001", "color" : "White" },
+    { "dialogueId" : "Main0002", "speaker" : "M", "dialogueText" : "Main0002", "color" : "White" },
+    { "dialogueId" : "Main0003", "speaker" : "M", "dialogueText" : "Main0003", "color" : "White" },
+    { "dialogueId" : "Main0004", "speaker" : "M", "dialogueText" : "Main0004", "color" : "White" }
+  ]
 }
