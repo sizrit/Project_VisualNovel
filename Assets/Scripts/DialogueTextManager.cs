@@ -47,12 +47,14 @@ public class DialogueTextManager : MonoBehaviour
     public void SetDialogue(Dialogue dialogueValue)
     {
         _currentDialogue = dialogueValue;
+        _dialogueText.GetComponent<Text>().text = "";
+        this.gameObject.GetComponent<DialogueTextAnimationManager>().ResetDialogueTextAnimationManager();
+        
         _speaker.GetComponent<Text>().text = _currentDialogue.speaker;
         
         this.gameObject.GetComponent<DialogueTextColorManager>().SetDialogueTextColor(dialogueValue.color);
 
         //this.gameObject.GetComponent<DialogueTextEffectManager>().CheckDialogueTextEffect(dia);
-        
         this.gameObject.GetComponent<DialogueTextAnimationManager>().PlayDialogueTextAnimation(_currentDialogue.dialogueText.ToCharArray());
        
     }
