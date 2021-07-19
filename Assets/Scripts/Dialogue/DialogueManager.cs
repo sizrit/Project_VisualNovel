@@ -66,24 +66,41 @@ public class DialogueManager : MonoBehaviour
     private GameObject _dialogueText;
     private Dialogue _currentDialogue;
 
+    private DialogueTextAnimationManager _animationManager;
+    private DialogueTextColorManager _colorManager;
+    private DialogueTextEffectManager _effectManager;
+
     private void OnEnable()
     {
         _speaker = this.transform.GetChild(0).gameObject;
         _dialogueText = this.transform.GetChild(1).gameObject;
+        _animationManager = this.gameObject.GetComponent<DialogueTextAnimationManager>();
+        _colorManager = this.gameObject.GetComponent<DialogueTextColorManager>();
+        _effectManager = this.gameObject.GetComponent<DialogueTextEffectManager>();
     }
 
+    public bool CheckIsAnimationEnd()
+    {
+        return _animationManager.GetIsAnimationEnd();
+    }
+
+    public void EndAnimationForced()
+    {
+        _animationManager.EndAnimationForced();
+        _effectManager.EndEffect();
+    }
+    
     public void SetDialogue(string dialogueIdValue)
     {
         _currentDialogue = JsonDialogueDataLoadManager.GetInstance().GetDialogue(dialogueIdValue);
-        _dialogueText.GetComponent<Text>().text = "";
-        this.gameObject.GetComponent<DialogueTextAnimationManager>().ResetDialogueTextAnimationManager();
-        
+
         _speaker.GetComponent<Text>().text = _currentDialogue.speaker;
         
-        this.gameObject.GetComponent<DialogueTextColorManager>().SetDialogueTextColor(_currentDialogue.color);
-
-        //this.gameObject.GetComponent<DialogueTextEffectManager>().CheckDialogueTextEffect(dia);
-        this.gameObject.GetComponent<DialogueTextAnimationManager>().PlayDialogueTextAnimation(_currentDialogue.dialogueText.ToCharArray());
-       
+        _animationManager.ResetDialogueTextAnimationManager();
+        _animationManager.PlayDialogueTextAnimation(_currentDialogue.dialogueText);
+        
+        _effectManager.SetDialogueTextEffect(_currentDialogue.dialogueId);
+         
+        _colorManager.SetDialogueTextColor(_currentDialogue.color);
     }
 }
