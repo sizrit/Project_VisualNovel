@@ -96,7 +96,6 @@ public class JsonDialogueDataLoadManager : MonoBehaviour
 
     private void MakeDictionary(List<Dialogue> dialogueListValue)
     {
-        List<string> dialogueIdList = new List<string>();
         foreach (var dialogue in dialogueListValue)
         {
             _dialogueList.Add(dialogue.dialogueId,dialogue);
