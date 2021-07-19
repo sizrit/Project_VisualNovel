@@ -2,75 +2,88 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+
+[Serializable]
+public struct Dialogue
+{
+    public string dialogueId;
+    public string speaker;
+    public string dialogueText;
+    public string color;
+}
+
+public enum Chapter
+{
+    Chapter01,
+    /*
+    Chapter02,
+    Chapter03,
+    Chapter04,
+    Chapter05
+    */
+}
 
 public class DialogueManager : MonoBehaviour
 {
-    private List<Dialogue> _mainDialogueList= new List<Dialogue>();
-    
-    private List<Dialogue> _currentDialogueList = new List<Dialogue>();
-    private readonly Dictionary<string, Dialogue> _currentDialogueDictionary = new Dictionary<string, Dialogue>();
-    
-    //private DivInfo _divInfo =new DivInfo();
+    #region Singleton
 
+    private static DialogueManager _instance;
+    
+    public static DialogueManager GetInstance()
+    {
+        if (_instance == null)
+        {
+            var obj = FindObjectOfType<DialogueManager>();
+            if (obj != null)
+            {
+                _instance = obj;
+            }
+            else
+            {
+                GameObject newObj = new GameObject("DialogueManager");
+                _instance = newObj.AddComponent<DialogueManager>();
+            }
+
+        }
+
+        return _instance;
+    }
+
+    private void Awake()
+    {
+        var objs = FindObjectsOfType<DialogueManager>();
+        if (objs.Length != 1)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    #endregion
+    
+    private GameObject _speaker;
+    private GameObject _dialogueText;
     private Dialogue _currentDialogue;
 
-    private void MakeCurrentDialogueDictionary(List<Dialogue> dialogueListValue)
+    private void OnEnable()
     {
-        foreach (var dialogue in dialogueListValue)
-        {
-            _currentDialogueDictionary.Add(dialogue.dialogueId,dialogue);
-        }
-    }
-    
-    public void SetMainDialogue(Chapter chapterValue)
-    {
-        _mainDialogueList = JsonDialogueDataLoadManager.GetInstance().GetDialogue(chapterValue);
-    }
-    
-    public void SetCurrentDialogueList(string divIdValue, Chapter chapterValue, string dialogueIdValue)
-    {
-        if (divIdValue == "Main")
-        {
-            _currentDialogueList = _mainDialogueList;
-        }
-        else
-        {
-            _currentDialogueList =
-                JsonDivDialogueDataLoadManager.GetInstance().GetDivDialogue(chapterValue, divIdValue);
-        }
-        
-        MakeCurrentDialogueDictionary(_currentDialogueList);
-        
-        if (dialogueIdValue == "")
-        {
-            _currentDialogue = _currentDialogueList[0];
-        }
-        else
-        {
-            _currentDialogue = _currentDialogueDictionary[dialogueIdValue];
-        }
+        _speaker = this.transform.GetChild(0).gameObject;
+        _dialogueText = this.transform.GetChild(1).gameObject;
     }
 
-    public void SetNextDialogue()
+    public void SetDialogue(string dialogueIdValue)
     {
-        int currentIndex = _currentDialogueList.IndexOf(_currentDialogue) + 1;
-        _currentDialogue = _currentDialogueList[currentIndex];
-    }
-
-    public void ShowDialogue()
-    {
+        _currentDialogue = JsonDialogueDataLoadManager.GetInstance().GetDialogue(dialogueIdValue);
+        _dialogueText.GetComponent<Text>().text = "";
+        this.gameObject.GetComponent<DialogueTextAnimationManager>().ResetDialogueTextAnimationManager();
         
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
+        _speaker.GetComponent<Text>().text = _currentDialogue.speaker;
         
-    }
+        this.gameObject.GetComponent<DialogueTextColorManager>().SetDialogueTextColor(_currentDialogue.color);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //this.gameObject.GetComponent<DialogueTextEffectManager>().CheckDialogueTextEffect(dia);
+        this.gameObject.GetComponent<DialogueTextAnimationManager>().PlayDialogueTextAnimation(_currentDialogue.dialogueText.ToCharArray());
+       
     }
 }

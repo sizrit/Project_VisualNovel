@@ -50,19 +50,18 @@ public class JsonDialogueDataLoadManager : MonoBehaviour
     #endregion
 
     private LanguageType _languageType;
+    
     private bool _isLoadDone = false;
 
-    private readonly Dictionary<Chapter, List<Dialogue>> _dialogueList = new Dictionary<Chapter, List<Dialogue>>();
+    private readonly Dictionary<string, Dialogue> _dialogueList = new Dictionary<string, Dialogue>();
 
-    public List<Dialogue> GetDialogue(Chapter chapter)
+    public Dialogue GetDialogue(string dialogueIdValue)
     {
-        if (_isLoadDone)
+        if (!_isLoadDone)
         {
-            return _dialogueList[chapter];
+            LoadJsonData();
         }
-        
-        Debug.Log("JsonTextDataLoadManager's Load is not Done!");
-        return new List<Dialogue>();
+        return _dialogueList[dialogueIdValue];
     }
 
     private void OnEnable()
@@ -90,26 +89,18 @@ public class JsonDialogueDataLoadManager : MonoBehaviour
             }
             
             TextDataList jsonData = LoadJsonFiles<TextDataList>(filePath);
-            _dialogueList.Add(chapterList[i-1],jsonData.dialogueList);
+            MakeDictionary(jsonData.dialogueList);
         }
-
         _isLoadDone = true;
+    }
 
-        /*
-        List<TextId> enumList = new List<TextId>();
-        enumList = Enum.GetValues(typeof(TextId)).Cast<TextId>().ToList();
-
-        FieldInfo[] f = typeof(TextDataList).GetFields(BindingFlags.Public | BindingFlags.Instance);
-
-        for (int i = 0; i < enumList.Count; i++)
+    private void MakeDictionary(List<Dialogue> dialogueListValue)
+    {
+        List<string> dialogueIdList = new List<string>();
+        foreach (var dialogue in dialogueListValue)
         {
-            textDataList.Add(enumList[i],(string)f[i].GetValue(jsonData));
+            _dialogueList.Add(dialogue.dialogueId,dialogue);
         }
-
-        isInitDone = true;
-        //Debug.Log(GetTextData(TextID.Text01));
-        //Debug.Log(GetTextData(TextID.Text02));
-        */
     }
     
     private T LoadJsonFiles<T>(string loadPath)
