@@ -1,0 +1,32 @@
+{
+  "storyBoardList": [
+    {
+      "storyBoardId": "S0001",
+      "dialogueId": "Main0001",
+      "bgId": "A",
+      "eventId": "AA0011",
+      "nextStoryBoardId": "S0002"
+    },
+    {
+      "storyBoardId": "S0002",
+      "dialogueId": "Main0002",
+      "bgId": "A",
+      "eventId": "AA0011",
+      "nextStoryBoardId": "S0003"
+    },
+    {
+      "storyBoardId": "S0003",
+      "dialogueId": "Main0003",
+      "bgId": "A",
+      "eventId": "AA0011",
+      "nextStoryBoardId": "S0004"
+    },
+    {
+      "storyBoardId": "S0004",
+      "dialogueId": "Main0004",
+      "bgId": "A",
+      "eventId": "AA0011",
+      "nextStoryBoardId": "S0005"
+    }
+  ]
+}
