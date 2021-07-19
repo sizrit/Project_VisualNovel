@@ -33,12 +33,12 @@ public class StoryBoardLoadManager
 
     private void LoadData()
     {
-        string loadPath = "JsonData/StoryBoard/JsonStroyBoardData";
+        string loadPath = "JsonData/StoryBoard/JsonStoryBoardData";
         List<StoryBoard> tempList = LoadJsonFiles<JsonStoryBoardData>(loadPath).storyBoardList;
         
         foreach (var storyBoard in tempList)
         {
-            _storyBoardList.Add(storyBoard.GetStroyBoardId(),storyBoard);
+            _storyBoardList.Add(storyBoard.storyBoardId,storyBoard);
         }
 
         _isLoad = true;
