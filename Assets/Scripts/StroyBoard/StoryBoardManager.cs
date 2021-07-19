@@ -48,17 +48,27 @@ public class StoryBoardManager : MonoBehaviour
 
     private void SetNextStoryBoard()
     {
-        string nextStroyBoardId = _currentStoryBoard.GetNextStoryBoardId();
-        _currentStoryBoard = StoryBoardLoadManager.GetInstance().GetStoryBoard(nextStroyBoardId);
+        string nextStoryBoardId = _currentStoryBoard.nextStoryBoardId;
+        if (nextStoryBoardId == "End")
+        {
+            
+        }
+        _currentStoryBoard = StoryBoardLoadManager.GetInstance().GetStoryBoard(nextStoryBoardId);
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            DialogueManager.GetInstance().SetDialogue(_currentStoryBoard.GetStroyBoardId());
-            SetNextStoryBoard();
+            if (DialogueManager.GetInstance().CheckIsAnimationEnd())
+            {
+                DialogueManager.GetInstance().SetDialogue(_currentStoryBoard.dialogueId);
+                SetNextStoryBoard();
+            }
+            else
+            {
+                DialogueManager.GetInstance().EndAnimationForced();
+            }
         }
     }
-
 }
