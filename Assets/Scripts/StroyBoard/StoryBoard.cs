@@ -4,18 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class StoryBoard
+public struct StoryBoard
 {
-    private string _storyBoardId;
-    
-    private string _dialogueId;
-
-    private string _bgId;
-
-    private string _eventId;
-
-    private string _nextStoryBoardId;
-
+    public string storyBoardId;
+    public string dialogueId;
+    public string bgId;
+    public string eventId;
+    public string nextStoryBoardId;
+/*
     public StoryBoard()
     {
         
@@ -49,5 +45,5 @@ public class StoryBoard
         return _nextStoryBoardId;
     }
     
-
+*/
 }
