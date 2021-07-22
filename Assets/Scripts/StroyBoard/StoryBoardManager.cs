@@ -62,6 +62,8 @@ public class StoryBoardManager : MonoBehaviour
         {
             if (DialogueManager.GetInstance().CheckIsAnimationEnd())
             {
+                BgLoadManager.GetInstance().SetBg(_currentStoryBoard.bgId);
+                ImageLoadManager.GetInstance().SetImage(_currentStoryBoard.imageId);
                 DialogueManager.GetInstance().SetDialogue(_currentStoryBoard.dialogueId);
                 SetNextStoryBoard();
             }
