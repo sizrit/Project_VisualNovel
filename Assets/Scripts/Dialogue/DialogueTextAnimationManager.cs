@@ -94,6 +94,7 @@ public class DialogueTextAnimationManager : MonoBehaviour
         {
             _dialogueTextManagerAction = new Action(func0);
             _isAnimationEnd = true;
+            DialogueManager.GetInstance().AnimationEnd();
             return;
         }
         

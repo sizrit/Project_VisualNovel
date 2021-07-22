@@ -89,6 +89,11 @@ public class DialogueManager : MonoBehaviour
         _animationManager.EndAnimationForced();
         _effectManager.EndEffect();
     }
+
+    public void AnimationEnd()
+    {
+        _effectManager.EndEffect();
+    }
     
     public void SetDialogue(string dialogueIdValue)
     {
