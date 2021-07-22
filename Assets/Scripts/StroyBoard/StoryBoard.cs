@@ -9,6 +9,7 @@ public struct StoryBoard
     public string storyBoardId;
     public string dialogueId;
     public string bgId;
+    public string imageId;
     public string eventId;
     public string nextStoryBoardId;
 /*
