@@ -3,43 +3,63 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
-public enum BgId
-{
-    bg01,
-    bg02
-}
+using UnityEngine.UI;
 
 public class BgLoadManager : MonoBehaviour
 {
-    private List<BgId> _bgIdList = new List<BgId>();
-    Dictionary<BgId,Sprite> _spriteList = new Dictionary<BgId, Sprite>();
-    private void OnEnable()
+    #region Singleton
+
+    private static BgLoadManager _instance;
+
+    public static BgLoadManager GetInstance()
     {
-        _bgIdList = Enum.GetValues(typeof(BgId)).Cast<BgId>().ToList();
-        string loadPath = "BG/";
-        for(int i=0; i< _bgIdList.Count; i++)
+        if (_instance == null)
         {
-            _spriteList.Add(_bgIdList[i],Resources.Load<Sprite>(loadPath+_bgIdList[i].ToString()));
+            var obj = FindObjectOfType<BgLoadManager>();
+            if (obj != null)
+            {
+                _instance = obj;
+            }
+            else
+            {
+                GameObject gameObject = new GameObject("ImageLoadManager");
+                _instance = gameObject.AddComponent<BgLoadManager>();
+            }
+        }
+
+        return _instance;
+    }
+
+    private void Awake()
+    {
+        var obj = FindObjectsOfType<BgLoadManager>();
+        if (obj.Length != 1)
+        {
+            Destroy(gameObject);
         }
     }
 
-    public void LoadBg(BgId bgIdValue)
-    {
-        this.GetComponent<SpriteRenderer>().sprite = _spriteList[bgIdValue];
-    }
+    #endregion
     
-    private void Update()
+    private readonly Dictionary<string,Sprite> _bgList = new Dictionary<string, Sprite>();
+    
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        LoadBg();
+    }
+
+    private void LoadBg()
+    {
+        string loadPath = "Bg";
+        Sprite[] spriteList = Resources.LoadAll<Sprite>(loadPath);
+        foreach (var sprite in spriteList)
         {
-            this.GetComponent<SpriteRenderer>().sprite = _spriteList[BgId.bg01];
+            _bgList.Add(sprite.name,sprite);
         }
-        
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            this.GetComponent<SpriteRenderer>().sprite = _spriteList[BgId.bg02];
-        }
-        
+    }
+
+    public void SetBg(string bgIdValue)
+    {
+        this.gameObject.GetComponent<Image>().sprite = _bgList[bgIdValue];
     }
 }
