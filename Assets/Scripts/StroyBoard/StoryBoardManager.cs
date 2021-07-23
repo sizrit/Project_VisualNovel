@@ -41,6 +41,18 @@ public class StoryBoardManager : MonoBehaviour
     
     private StoryBoard _currentStoryBoard;
 
+    private bool _isClickOn = true;
+
+    public void DisableClick()
+    {
+        _isClickOn = false;
+    }
+
+    public void EnableClick()
+    {
+        _isClickOn = true;
+    }
+
     private void OnEnable()
     {
         _currentStoryBoard = StoryBoardLoadManager.GetInstance().GetStoryBoard("S0001");
@@ -55,21 +67,35 @@ public class StoryBoardManager : MonoBehaviour
         }
         _currentStoryBoard = StoryBoardLoadManager.GetInstance().GetStoryBoard(nextStoryBoardId);
     }
+    
+    public void SetNextStoryBoard(string storyBoardIdValue)
+    {
+        _currentStoryBoard =StoryBoardLoadManager.GetInstance().GetStoryBoard(storyBoardIdValue);
+    }
+
+    public void SetStoryBoard()
+    {
+        if (DialogueManager.GetInstance().CheckIsAnimationEnd())
+        {
+            BgLoadManager.GetInstance().SetBg(_currentStoryBoard.bgId);
+            ImageLoadManager.GetInstance().SetImage(_currentStoryBoard.imageId);
+            StoryBoardEventManager.GetInstance().CheckEvent(_currentStoryBoard.storyBoardId);
+            DialogueManager.GetInstance().SetDialogue(_currentStoryBoard.dialogueId);
+            SetNextStoryBoard();
+        }
+        else
+        {
+            DialogueManager.GetInstance().EndAnimationForced();
+        }
+    }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (_isClickOn)
         {
-            if (DialogueManager.GetInstance().CheckIsAnimationEnd())
+            if (Input.GetKeyDown(KeyCode.A))
             {
-                BgLoadManager.GetInstance().SetBg(_currentStoryBoard.bgId);
-                ImageLoadManager.GetInstance().SetImage(_currentStoryBoard.imageId);
-                DialogueManager.GetInstance().SetDialogue(_currentStoryBoard.dialogueId);
-                SetNextStoryBoard();
-            }
-            else
-            {
-                DialogueManager.GetInstance().EndAnimationForced();
+                SetStoryBoard();
             }
         }
     }
