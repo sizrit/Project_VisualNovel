@@ -72,11 +72,7 @@ public class StoryBoardEventManager : MonoBehaviour
 
     private void SelectionEvent()
     {
-        SelectionInfo selectionInfo = _selectionEventDataLoadManager
-            .GetStoryBoardSelectionEventData(_currentStoryBoardId);
-        List<string> idList = selectionInfo.nextStoryIdList;
-        List<string> textList = selectionInfo.textList;
-        this.transform.GetChild(0).GetComponent<StoryBoardSelectionEventManager>().SetSelectionEvent(idList,textList);
+        StoryBoardSelectionEventManager.GetInstance().SetSelectionEvent(_currentStoryBoardId);
     }
 
     private void GettingClueEvent()
