@@ -40,6 +40,7 @@ public class StoryBoardEventManager : MonoBehaviour
     #endregion
 
     private StoryBoardSelectionEventDataLoadManager _selectionEventDataLoadManager;
+    private StoryBoardGettingClueEventManager _clueEventManager;
     
     private string _currentStoryBoardId = "";
     
@@ -58,6 +59,11 @@ public class StoryBoardEventManager : MonoBehaviour
         }
 
         EventDelegate gettingClue = GettingClueEvent;
+        List<string> gettingClueIdList = _clueEventManager.GetClueEventIdList();
+        foreach (var gettingClueId in gettingClueIdList)
+        {
+            _eventList.Add(gettingClueId,gettingClue);
+        }
     }
 
     public void CheckEvent(string storyBoardIdValue)
@@ -77,12 +83,14 @@ public class StoryBoardEventManager : MonoBehaviour
 
     private void GettingClueEvent()
     {
-        
+        _clueEventManager.SetGettingClueEvent(_currentStoryBoardId);
     }
 
     private void OnEnable()
     {
         _selectionEventDataLoadManager = StoryBoardSelectionEventDataLoadManager.GetInstance();
+        _clueEventManager = StoryBoardGettingClueEventManager.GetInstance();
+        ;
         MakeEventList();
     }
 }
