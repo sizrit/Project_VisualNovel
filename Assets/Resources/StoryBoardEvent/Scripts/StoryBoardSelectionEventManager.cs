@@ -9,7 +9,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
     #region Singleton
 
     private static StoryBoardSelectionEventManager _instance;
-    
+
     public static StoryBoardSelectionEventManager GetInstance()
     {
         if (_instance == null)
@@ -39,7 +39,8 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
     }
     
     #endregion
-    
+
+    private StoryBoardSelectionEventDataLoadManager _selectionEventDataLoadManager;
     private StoryBoardManager _storyBoardManager;
     private DialogueManager _dialogueManager;
 
@@ -56,6 +57,8 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
     
     private void OnEnable()
     {
+        _selectionEventDataLoadManager = StoryBoardSelectionEventDataLoadManager.GetInstance();
+        
         _eventDelegate = new EventDelegate(func0);
         _selectionGameObject = Resources.Load<GameObject>("StoryBoardEvent/Prefabs/SelectionObject");
     }
@@ -71,14 +74,15 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
         }
     }
 
-    public void SetSelectionEvent(List<string> storyBoardIdList, List<string> selectionTextList)
+    public void SetSelectionEvent(string storyBoardIdValue)
     {
         _storyBoardManager = StoryBoardManager.GetInstance();
         _storyBoardManager.DisableClick();
         _dialogueManager = DialogueManager.GetInstance();
-        
-        _storyBoardIdList = storyBoardIdList;
-        _textList = selectionTextList;
+
+        SelectionInfo info = _selectionEventDataLoadManager.GetStoryBoardSelectionEventData(storyBoardIdValue);
+        _storyBoardIdList = info.nextStoryIdList;
+        _textList = info.textList;
 
         _eventDelegate += ShowSelectionEvent;
     }
