@@ -62,8 +62,13 @@ public class StoryBoardSelectionEventDataLoadManager : MonoBehaviour
             .JsonStoryBoardSelectionEventDataList;
         foreach (var info in infoList)
         {
-            _storyBoardSelectionInfoList.Add(info.eventId,info);
+            _storyBoardSelectionInfoList.Add(info.storyBoardId,info);
         }
+    }
+    
+    public List<string> GetSelectionEventId()
+    {
+        return new List<string>(_storyBoardSelectionInfoList.Keys);
     }
     
     public SelectionInfo GetStoryBoardSelectionEventData(string eventId)
