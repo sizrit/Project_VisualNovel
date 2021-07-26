@@ -50,39 +50,43 @@ public class StoryBoardEventManager : MonoBehaviour
     
     private void MakeEventList()
     {
-        
+        EventDelegate selection = SelectionEvent;
+        List<string> selectionIdList = _selectionEventDataLoadManager.GetSelectionEventId();
+        foreach (var selectionId in selectionIdList)
+        {
+            _eventList.Add(selectionId,selection);
+        }
+
+        EventDelegate gettingClue = GettingClueEvent;
     }
 
     public void CheckEvent(string storyBoardIdValue)
     {
-        if (storyBoardIdValue == "S0001")
+        _currentStoryBoardId = storyBoardIdValue;
+        
+        if (_eventList.ContainsKey(_currentStoryBoardId))
         {
-            _eventId = storyBoardIdValue;
-            SelectionEvent();
+            _eventList[_currentStoryBoardId]();
         }
-    }
-
-    private void SetSelectionEvent()
-    {
-        
-    }
-
-    private void LoadData()
-    {
-        
     }
 
     private void SelectionEvent()
     {
-        SelectionInfo selectionInfo = StoryBoardSelectionEventDataLoadManager.GetInstance()
-            .GetStoryBoardSelectionEventData(_eventId);
+        SelectionInfo selectionInfo = _selectionEventDataLoadManager
+            .GetStoryBoardSelectionEventData(_currentStoryBoardId);
         List<string> idList = selectionInfo.nextStoryIdList;
         List<string> textList = selectionInfo.textList;
         this.transform.GetChild(0).GetComponent<StoryBoardSelectionEventManager>().SetSelectionEvent(idList,textList);
     }
 
+    private void GettingClueEvent()
+    {
+        
+    }
+
     private void OnEnable()
     {
+        _selectionEventDataLoadManager = StoryBoardSelectionEventDataLoadManager.GetInstance();
         MakeEventList();
     }
 }
