@@ -55,13 +55,13 @@ public class JsonDialogueDataLoadManager : MonoBehaviour
 
     private readonly Dictionary<string, Dialogue> _dialogueList = new Dictionary<string, Dialogue>();
 
-    public Dialogue GetDialogue(string dialogueIdValue)
+    public Dialogue GetDialogue(string storyBoardIdValue)
     {
         if (!_isLoadDone)
         {
             LoadJsonData();
         }
-        return _dialogueList[dialogueIdValue];
+        return _dialogueList[storyBoardIdValue];
     }
 
     private void OnEnable()
@@ -98,7 +98,7 @@ public class JsonDialogueDataLoadManager : MonoBehaviour
     {
         foreach (var dialogue in dialogueListValue)
         {
-            _dialogueList.Add(dialogue.dialogueId,dialogue);
+            _dialogueList.Add(dialogue.storyBoardId,dialogue);
         }
     }
     

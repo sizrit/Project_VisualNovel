@@ -8,7 +8,7 @@ using UnityEngine.UI;
 [Serializable]
 public struct Dialogue
 {
-    public string dialogueId;
+    public string storyBoardId;
     public string speaker;
     public string dialogueText;
     public string color;
@@ -95,16 +95,16 @@ public class DialogueManager : MonoBehaviour
         _effectManager.EndEffect();
     }
     
-    public void SetDialogue(string dialogueIdValue)
+    public void SetDialogue(string storyBoardIdValue)
     {
-        _currentDialogue = JsonDialogueDataLoadManager.GetInstance().GetDialogue(dialogueIdValue);
+        _currentDialogue = JsonDialogueDataLoadManager.GetInstance().GetDialogue(storyBoardIdValue);
 
         _speaker.GetComponent<Text>().text = _currentDialogue.speaker;
         
         _animationManager.ResetDialogueTextAnimationManager();
         _animationManager.PlayDialogueTextAnimation(_currentDialogue.dialogueText);
         
-        _effectManager.SetDialogueTextEffect(_currentDialogue.dialogueId);
+        _effectManager.SetDialogueTextEffect(_currentDialogue.storyBoardId);
          
         _colorManager.SetDialogueTextColor(_currentDialogue.color);
     }

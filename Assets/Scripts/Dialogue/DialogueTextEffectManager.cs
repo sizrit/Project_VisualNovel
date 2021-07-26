@@ -21,15 +21,15 @@ public class DialogueTextEffectManager : MonoBehaviour
     private void MakeEffectList()
     {
         EffectDelegate shake = Shake;
-        _effectList.Add("Main0001",shake);
-        _effectList.Add("Main0002",shake);
+        _effectList.Add("S0001",shake);
+        _effectList.Add("S0002",shake);
     }
     
-    public void SetDialogueTextEffect(string dialogueIdValue)
+    public void SetDialogueTextEffect(string storyBoardIdValue)
     {
-        if (_effectList.ContainsKey(dialogueIdValue))
+        if (_effectList.ContainsKey(storyBoardIdValue))
         {
-            _effectDelegate+=_effectList[dialogueIdValue];
+            _effectDelegate+=_effectList[storyBoardIdValue];
         }
     }
 

@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public struct SelectionInfo
 {
-    public string eventId;
+    public string storyBoardId;
     public List<string> nextStoryIdList;
     public List<string> textList;
 }

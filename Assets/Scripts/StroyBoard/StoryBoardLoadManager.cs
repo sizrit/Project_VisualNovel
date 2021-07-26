@@ -11,7 +11,7 @@ public class JsonStoryBoardData
 
 public class StoryBoardLoadManager
 {
-    private Dictionary<string,StoryBoard> _storyBoardList = new Dictionary<string, StoryBoard>();
+    private readonly Dictionary<string,StoryBoard> _storyBoardList = new Dictionary<string, StoryBoard>();
 
     private bool _isLoad = false;
     

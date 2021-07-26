@@ -112,7 +112,7 @@ public class JsonDivDialogueDataLoadManager : MonoBehaviour
                     Dialogue newDialogue = new Dialogue();
                     newDialogue.color = divDialogue.color;
                     newDialogue.speaker = divDialogue.speaker;
-                    newDialogue.dialogueId = divDialogue.dialogueId;
+                    newDialogue.storyBoardId = divDialogue.dialogueId;
                     newDialogue.dialogueText = divDialogue.dialogueText;
                     newDialogueList.Add(newDialogue);
                 }

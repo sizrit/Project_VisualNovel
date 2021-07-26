@@ -39,12 +39,15 @@ public class StoryBoardEventManager : MonoBehaviour
 
     #endregion
 
-    private string _eventId = "";
+    private StoryBoardSelectionEventDataLoadManager _selectionEventDataLoadManager;
+    
+    private string _currentStoryBoardId = "";
     
     private readonly Dictionary<string, EventDelegate> _eventList = new Dictionary<string, EventDelegate>();
 
     private delegate void EventDelegate();
 
+    
     private void MakeEventList()
     {
         
