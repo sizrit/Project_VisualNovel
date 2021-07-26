@@ -40,7 +40,12 @@ public class StoryBoardManager : MonoBehaviour
     #endregion
     
     private StoryBoard _currentStoryBoard;
-
+    
+    private DialogueManager _dialogueManager;
+    private BgLoadManager _bgLoadManager;
+    private ImageLoadManager _imageLoadManager;
+    private StoryBoardEventManager _storyBoardEventManager;
+    
     private bool _isClickOn = true;
 
     public void DisableClick()
@@ -55,6 +60,11 @@ public class StoryBoardManager : MonoBehaviour
 
     private void OnEnable()
     {
+        _dialogueManager = DialogueManager.GetInstance();
+        _bgLoadManager = BgLoadManager.GetInstance();
+        _imageLoadManager = ImageLoadManager.GetInstance();
+        _storyBoardEventManager = StoryBoardEventManager.GetInstance();
+        
         _currentStoryBoard = StoryBoardLoadManager.GetInstance().GetStoryBoard("S0001");
     }
 
@@ -73,30 +83,28 @@ public class StoryBoardManager : MonoBehaviour
         _currentStoryBoard =StoryBoardLoadManager.GetInstance().GetStoryBoard(storyBoardIdValue);
     }
 
+
+    public void StoryBoardClick()
+    {
+        if (_isClickOn)
+        {
+            SetStoryBoard();
+        }
+    }
+
     public void SetStoryBoard()
     {
-        if (DialogueManager.GetInstance().CheckIsAnimationEnd())
+        if (_dialogueManager.CheckIsAnimationEnd())
         {
-            BgLoadManager.GetInstance().SetBg(_currentStoryBoard.bgId);
-            ImageLoadManager.GetInstance().SetImage(_currentStoryBoard.imageId);
-            StoryBoardEventManager.GetInstance().CheckEvent(_currentStoryBoard.storyBoardId);
-            DialogueManager.GetInstance().SetDialogue(_currentStoryBoard.dialogueId);
+            _bgLoadManager.SetBg(_currentStoryBoard.bgId);
+            _imageLoadManager.SetImage(_currentStoryBoard.imageId);
+            _storyBoardEventManager.CheckEvent(_currentStoryBoard.storyBoardId);
+            _dialogueManager.SetDialogue(_currentStoryBoard.storyBoardId);
             SetNextStoryBoard();
         }
         else
         {
-            DialogueManager.GetInstance().EndAnimationForced();
-        }
-    }
-
-    private void Update()
-    {
-        if (_isClickOn)
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                SetStoryBoard();
-            }
+            _dialogueManager.EndAnimationForced();
         }
     }
 }
