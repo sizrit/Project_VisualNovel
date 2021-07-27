@@ -9,7 +9,7 @@
     {
       "storyBoardId": "S0002",
       "speaker": "라디오",
-      "dialogueText": "긴급 속보입니다.",
+      "dialogueText": "<color=#FF0000>긴급 속보입니다.</color>",
       "color": "White"
     },
     {
