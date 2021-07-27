@@ -57,5 +57,14 @@ public class ClickSystem : MonoBehaviour
     private void Update()
     {
         _clickDelegate();
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            GameObject.Find("Canvas").transform.GetChild(0).gameObject.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            GameObject.Find("Canvas").transform.GetChild(0).gameObject.SetActive(true);
+        }
     }
 }
