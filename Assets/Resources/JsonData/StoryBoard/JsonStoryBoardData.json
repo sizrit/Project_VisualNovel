@@ -9,19 +9,19 @@
     {
       "storyBoardId": "S0002",
       "bgId": "A",
-      "imageId": "FL",
+      "imageId": "",
       "nextStoryBoardId": "S0003"
     },
     {
       "storyBoardId": "S0003",
       "bgId": "A",
-      "imageId": "FL",
+      "imageId": "",
       "nextStoryBoardId": "S0004"
     },
     {
       "storyBoardId": "S0004",
       "bgId": "A",
-      "imageId": "FL",
+      "imageId": "",
       "nextStoryBoardId": "S0005"
     }
   ]
