@@ -80,9 +80,8 @@ public class ClickSystem : MonoBehaviour
                         _storyBoardManager.StoryBoardClick();
                         break;
                 
-                    case "Inventory":
-                        GameObject.Find("InventoryButton").transform.GetChild(0).gameObject.SetActive(true);
-                        GameSystem.GetInstance().PauseOn();
+                    case "UI_Inventory":
+                        hit.transform.GetComponent<InventoryButton>().Click();
                         break;
                 }
             }
