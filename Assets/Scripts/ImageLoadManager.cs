@@ -48,7 +48,6 @@ public class ImageLoadManager : MonoBehaviour
         foreach (var imagePrefab in imagePrefabs)
         {
             _imagePrefabsList.Add(imagePrefab.name,imagePrefab);
-            Debug.Log(imagePrefab.name);
         }
     }
 
@@ -59,6 +58,14 @@ public class ImageLoadManager : MonoBehaviour
 
     public void SetImage(string imageIdValue)
     {
-        Instantiate(_imagePrefabsList[imageIdValue], this.transform);
+        for (int i = 0; i < this.transform.childCount; i++)
+        {
+            Destroy(this.transform.GetChild(i).gameObject);
+        }
+
+        if (imageIdValue != "")
+        {
+            Instantiate(_imagePrefabsList[imageIdValue], this.transform);
+        }
     }
 }
