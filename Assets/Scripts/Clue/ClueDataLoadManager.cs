@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 [Serializable]
@@ -15,7 +16,7 @@ public struct Clue
 [Serializable]
 public class JsonClueData
 {
-    public List<List<string>> JsonClueDataList = new List<List<string>>();
+    public List<Clue> jsonClueDataList = new List<Clue>();
 }
 
 public class ClueDataLoadManager
@@ -36,16 +37,15 @@ public class ClueDataLoadManager
 
     #endregion
     
-    private readonly List<Clue> _allClueList = new List<Clue>();
+    private List<Clue> _allClueList = new List<Clue>();
 
-    private bool _isLoadDone = false;
+    public void OnEnable()
+    {
+        LoadData();
+    }
     
     public List<Clue> GetAllClueList()
     {
-        if (!_isLoadDone)
-        {
-            LoadData();
-        }
         return _allClueList;
     }
     
@@ -53,19 +53,7 @@ public class ClueDataLoadManager
     {
         string loadPath = "JsonData/ClueData";
         JsonClueData jsonData = LoadJsonFiles<JsonClueData>(loadPath);
-
-        for (int i = 0; i < jsonData.JsonClueDataList.Count; i++)
-        {
-            List<string> tempClue = jsonData.JsonClueDataList[i];
-            Clue newClue = new Clue
-            {
-                index = i, name = tempClue[0], info = tempClue[1],
-                etc = tempClue[2]
-            };
-            _allClueList.Add(newClue);
-        }
-
-        _isLoadDone = true;
+        _allClueList = jsonData.jsonClueDataList;
     }
 
     private T LoadJsonFiles<T>(string loadPath)
