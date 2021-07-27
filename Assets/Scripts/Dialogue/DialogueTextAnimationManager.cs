@@ -97,13 +97,21 @@ public class DialogueTextAnimationManager
         }
         _currentDialogueText.GetComponent<Text>().color = color;
     }
+
+    private bool _isRichText = false;
+    private bool _isRichTextOn = false;
+    private float timer = 0;
     
     private void DialogueTextAnimation_Add()
     {
-        if (_index > 0)
+        timer += Time.deltaTime;
+        if (timer > 0.005)
         {
-            _pastString += _dialogueTextDataChar[_index - 1];
-            _pastDialogueText.GetComponent<Text>().text = _pastString;
+            timer = 0;
+        }
+        else
+        {
+            return;
         }
         
         if (_index == _dialogueTextDataChar.Length)
@@ -114,6 +122,71 @@ public class DialogueTextAnimationManager
             return;
         }
         
+        if (_isRichText)
+        {
+            _pastString+=_dialogueTextDataChar[_index - 1];
+            _currentString += _dialogueTextDataChar[_index];
+            if (_dialogueTextDataChar[_index] == '>')
+            {
+                _index++;
+                _pastString+=_dialogueTextDataChar[_index - 1];
+                _currentString += _dialogueTextDataChar[_index];
+                
+                _isRichText = false;
+
+                if (!_isRichTextOn)
+                {
+                    _currentDialogueText.GetComponent<Text>().text = _currentString;
+                    _pastDialogueText.GetComponent<Text>().text = _pastString;
+                }
+                else
+                {
+                    _currentDialogueText.GetComponent<Text>().text = _currentString+"</color>";
+                    _pastDialogueText.GetComponent<Text>().text = _pastString+"</color>";
+                }
+
+                _dialogueTextManagerAction = new Action(func0);
+                _dialogueTextManagerAction += DialogueTextAnimation_FadeIn;
+                _index++;
+                return;
+            }
+            else
+            {
+                _index++;
+                return;
+            }
+        }
+
+        if (_dialogueTextDataChar.Length != 0)
+        {
+            if (_dialogueTextDataChar[_index]=='<')
+            {
+                if (_dialogueTextDataChar[_index + 1] == '/')
+                {
+                    _isRichTextOn = false;
+                }
+                else
+                {
+                    _isRichTextOn = true;
+                }
+                _isRichText = true;
+                return;
+            }
+        }
+
+        if (_index > 0)
+        {
+            _pastString += _dialogueTextDataChar[_index - 1];
+            if (!_isRichTextOn)
+            {
+                _pastDialogueText.GetComponent<Text>().text = _pastString;
+            }
+            else
+            {
+                _pastDialogueText.GetComponent<Text>().text = _pastString+"</color>";
+            }
+        }
+
         Color color = _currentDialogueText.GetComponent<Text>().color;
         color.a = 0;
         _currentDialogueText.GetComponent<Text>().color = color;
@@ -121,7 +194,15 @@ public class DialogueTextAnimationManager
         if (_index < _dialogueTextDataChar.Length + 1)
         {
             _currentString += _dialogueTextDataChar[_index];
-            _currentDialogueText.GetComponent<Text>().text = _currentString;
+            if (!_isRichTextOn)
+            {
+                _currentDialogueText.GetComponent<Text>().text = _currentString;
+            }
+            else
+            {
+                _currentDialogueText.GetComponent<Text>().text = _currentString+"</color>";
+            }
+            
         }
         
         _dialogueTextManagerAction = new Action(func0);
