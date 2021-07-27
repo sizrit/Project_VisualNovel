@@ -5,6 +5,40 @@ using UnityEngine;
 
 public class GameSystem : MonoBehaviour
 {
+    #region Singleton
+
+    private static GameSystem _instance;
+
+    public static GameSystem GetInstance()
+    {
+        if (_instance == null)
+        {
+            var obj = FindObjectOfType<GameSystem>();
+            if (obj != null)
+            {
+                _instance = obj;
+            }
+            else
+            {
+                GameObject gameObject = new GameObject("GameSystem");
+                _instance = gameObject.AddComponent<GameSystem>();
+            }
+        }
+
+        return _instance;
+    }
+
+    private void Awake()
+    {
+        var obj = FindObjectsOfType<GameSystem>();
+        if (obj.Length != 1)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    #endregion
+
     // Loader
     private StoryBoardDataLoadManager _storyBoardDataLoadManager;
     private DialogueDataLoadManager _dialogueDataLoadManager;
@@ -22,10 +56,12 @@ public class GameSystem : MonoBehaviour
     private DialogueTextColorManager _dialogueTextColorManager;
     private ClueManager _clueManager;
     private StoryBoardGettingClueEventManager _storyBoardGettingClueEventManager;
+
+    private bool _isPaused = false;
     
     private void OnEnable()
     {
-        GetInstance();
+        GetAllInstance();
 
         _storyBoardDataLoadManager.OnEnable();
         _dialogueDataLoadManager.OnEnable();
@@ -43,7 +79,7 @@ public class GameSystem : MonoBehaviour
         _storyBoardGettingClueEventManager.OnEnable();
     }
 
-    private void GetInstance()
+    private void GetAllInstance()
     {
         _storyBoardDataLoadManager =StoryBoardDataLoadManager.GetInstance();
         _dialogueDataLoadManager = DialogueDataLoadManager.GetInstance();
@@ -61,6 +97,18 @@ public class GameSystem : MonoBehaviour
         _storyBoardGettingClueEventManager = StoryBoardGettingClueEventManager.GetInstance();
     }
 
+    public void PauseOn()
+    {
+        ClickSystem.GetInstance().DisableClick();
+        _isPaused = true;
+    }
+    
+    public void PauseOff()
+    {
+        ClickSystem.GetInstance().EnableClick();
+        _isPaused = false;
+    }
+    
     private void StoryBoardUpdate()
     {
         _dialogueTextAnimationManager.Update();
@@ -69,6 +117,9 @@ public class GameSystem : MonoBehaviour
     
     void Update()
     {
-        StoryBoardUpdate();
+        if (!_isPaused)
+        {
+            StoryBoardUpdate();
+        }
     }
 }
