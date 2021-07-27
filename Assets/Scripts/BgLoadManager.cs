@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BgLoadManager : MonoBehaviour
+public class BgLoadManager
 {
     #region Singleton
 
@@ -15,36 +15,20 @@ public class BgLoadManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            var obj = FindObjectOfType<BgLoadManager>();
-            if (obj != null)
-            {
-                _instance = obj;
-            }
-            else
-            {
-                GameObject gameObject = new GameObject("ImageLoadManager");
-                _instance = gameObject.AddComponent<BgLoadManager>();
-            }
+            _instance = new BgLoadManager();
         }
 
         return _instance;
     }
 
-    private void Awake()
-    {
-        var obj = FindObjectsOfType<BgLoadManager>();
-        if (obj.Length != 1)
-        {
-            Destroy(gameObject);
-        }
-    }
-
     #endregion
     
     private readonly Dictionary<string,Sprite> _bgList = new Dictionary<string, Sprite>();
+    private GameObject _bg;
     
-    private void OnEnable()
+    public void OnEnable()
     {
+        _bg = GameObject.Find("Bg");
         LoadBg();
     }
 
@@ -60,6 +44,6 @@ public class BgLoadManager : MonoBehaviour
 
     public void SetBg(string bgIdValue)
     {
-        this.gameObject.GetComponent<Image>().sprite = _bgList[bgIdValue];
+        _bg.GetComponent<Image>().sprite = _bgList[bgIdValue];
     }
 }

@@ -24,7 +24,7 @@ public class DialogueTextColorManager
     private GameObject _currentDialogueText;
     private GameObject _pastDialogueText;
 
-    private void OnEnable()
+    public void OnEnable()
     {
         _currentDialogueText = GameObject.Find("Dialogue_CurrentText");
         _pastDialogueText = GameObject.Find("Dialogue_PastText");

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StoryBoardGettingClueEventManager : MonoBehaviour
+public class StoryBoardGettingClueEventManager
 {
     #region SingleTon
 
@@ -13,28 +13,10 @@ public class StoryBoardGettingClueEventManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            var obj = FindObjectOfType<StoryBoardGettingClueEventManager>();
-            if (obj != null)
-            {
-                _instance = obj;
-            }
-            else
-            {
-                GameObject gameObject = new GameObject("StoryBoardGettingClueEventManager");
-                _instance = gameObject.AddComponent<StoryBoardGettingClueEventManager>();
-            }
+            _instance = new StoryBoardGettingClueEventManager();
         }
 
         return _instance;
-    }
-
-    private void Awake()
-    {
-        var obj = FindObjectsOfType<StoryBoardGettingClueEventManager>();
-        if (obj.Length != 1)
-        {
-            Destroy(gameObject);
-        }
     }
 
     #endregion
@@ -56,7 +38,7 @@ public class StoryBoardGettingClueEventManager : MonoBehaviour
         Debug.Log("Get "+_clueEventList[storyBoardIdValue] );
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         MakeClueEvent();
     }
