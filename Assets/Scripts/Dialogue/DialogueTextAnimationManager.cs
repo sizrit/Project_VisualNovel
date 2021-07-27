@@ -4,8 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogueTextAnimationManager : MonoBehaviour
+public class DialogueTextAnimationManager
 {
+    #region Singleton
+
+    private static DialogueTextAnimationManager _instance;
+    
+    public static DialogueTextAnimationManager GetInstance()
+    {
+        if (_instance == null)
+        {
+            _instance = new DialogueTextAnimationManager();
+        }
+
+        return _instance;
+    }
+
+    #endregion
+    
     private GameObject _currentDialogueText;
     private GameObject _pastDialogueText;
     
@@ -24,11 +40,11 @@ public class DialogueTextAnimationManager : MonoBehaviour
     
     private void func0(){}
 
-    private void OnEnable()
+    public void OnEnable()
     {
         _dialogueTextManagerAction= new Action(func0);
-        _currentDialogueText = this.transform.GetChild(1).gameObject;
-        _pastDialogueText = this.transform.GetChild(2).gameObject;
+        _currentDialogueText = GameObject.Find("Dialogue_CurrentText");
+        _pastDialogueText = GameObject.Find("Dialogue_PastText");
     }
 
     public bool GetIsAnimationEnd()
@@ -114,7 +130,7 @@ public class DialogueTextAnimationManager : MonoBehaviour
         _index++;
     }
 
-    private void Update()
+    public void Update()
     {
         _dialogueTextManagerAction();
     }

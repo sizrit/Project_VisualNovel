@@ -14,30 +14,12 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            var obj = FindObjectOfType<StoryBoardSelectionEventManager>();
-            if (obj != null)
-            {
-                _instance = obj;
-            }
-            else
-            {
-                GameObject gameObject = new GameObject("StoryBoardSelectionEventManager");
-                _instance = gameObject.AddComponent<StoryBoardSelectionEventManager>();
-            }
+            _instance = new StoryBoardSelectionEventManager();
         }
 
         return _instance;
     }
 
-    private void Awake()
-    {
-        var obj = FindObjectsOfType<StoryBoardSelectionEventManager>();
-        if (obj.Length != 1)
-        {
-            Destroy(gameObject);
-        }
-    }
-    
     #endregion
 
     private StoryBoardSelectionEventDataLoadManager _selectionEventDataLoadManager;
@@ -55,7 +37,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
     
     private void func0(){}
     
-    private void OnEnable()
+    public void OnEnable()
     {
         _selectionEventDataLoadManager = StoryBoardSelectionEventDataLoadManager.GetInstance();
         
@@ -70,6 +52,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
         _textList =new List<string>();
         for (int i = 0; i < this.transform.childCount; i++)
         {
+            
             Destroy(this.transform.GetChild(i).gameObject);
         }
     }

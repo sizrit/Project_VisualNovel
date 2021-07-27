@@ -9,28 +9,31 @@ public class JsonStoryBoardData
     public List<StoryBoard> storyBoardList =new List<StoryBoard>();
 }
 
-public class StoryBoardLoadManager
+public class StoryBoardDataLoadManager
 {
-    private readonly Dictionary<string,StoryBoard> _storyBoardList = new Dictionary<string, StoryBoard>();
-
-    private bool _isLoad = false;
-    
     #region Singleton
 
-    private static StoryBoardLoadManager _instance;
+    private static StoryBoardDataLoadManager _instance;
 
-    public static StoryBoardLoadManager GetInstance()
+    public static StoryBoardDataLoadManager GetInstance()
     {
         if (_instance == null)
         {
-            _instance= new StoryBoardLoadManager();
+            _instance= new StoryBoardDataLoadManager();
         }
 
         return _instance;
     }
 
     #endregion
+    
+    private readonly Dictionary<string,StoryBoard> _storyBoardList = new Dictionary<string, StoryBoard>();
 
+    public void OnEnable()
+    {
+        LoadData();
+    }
+    
     private void LoadData()
     {
         string loadPath = "JsonData/StoryBoard/JsonStoryBoardData";
@@ -40,18 +43,11 @@ public class StoryBoardLoadManager
         {
             _storyBoardList.Add(storyBoard.storyBoardId,storyBoard);
         }
-
-        _isLoad = true;
     }
 
 
     public StoryBoard GetStoryBoard(string storyBoardId)
     {
-        if (!_isLoad)
-        {
-            LoadData();
-        }
-
         return _storyBoardList[storyBoardId];
     }
 

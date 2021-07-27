@@ -25,7 +25,7 @@ public enum Chapter
     */
 }
 
-public class DialogueManager : MonoBehaviour
+public class DialogueManager
 {
     #region Singleton
 
@@ -35,48 +35,27 @@ public class DialogueManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            var obj = FindObjectOfType<DialogueManager>();
-            if (obj != null)
-            {
-                _instance = obj;
-            }
-            else
-            {
-                GameObject newObj = new GameObject("DialogueManager");
-                _instance = newObj.AddComponent<DialogueManager>();
-            }
-
+            _instance = new DialogueManager();
         }
 
         return _instance;
     }
 
-    private void Awake()
-    {
-        var objs = FindObjectsOfType<DialogueManager>();
-        if (objs.Length != 1)
-        {
-            Destroy(gameObject);
-        }
-    }
-
     #endregion
     
     private GameObject _speaker;
-    private GameObject _dialogueText;
     private Dialogue _currentDialogue;
 
     private DialogueTextAnimationManager _animationManager;
     private DialogueTextColorManager _colorManager;
     private DialogueTextEffectManager _effectManager;
 
-    private void OnEnable()
+    public void OnEnable()
     {
-        _speaker = this.transform.GetChild(0).gameObject;
-        _dialogueText = this.transform.GetChild(1).gameObject;
-        _animationManager = this.gameObject.GetComponent<DialogueTextAnimationManager>();
-        _colorManager = this.gameObject.GetComponent<DialogueTextColorManager>();
-        _effectManager = this.gameObject.GetComponent<DialogueTextEffectManager>();
+        _speaker = GameObject.Find("Dialogue_Speaker");
+        _animationManager = DialogueTextAnimationManager.GetInstance();
+        _colorManager = DialogueTextColorManager.GetInstance();
+        _effectManager = DialogueTextEffectManager.GetInstance();
     }
 
     public bool CheckIsAnimationEnd()
@@ -97,7 +76,7 @@ public class DialogueManager : MonoBehaviour
     
     public void SetDialogue(string storyBoardIdValue)
     {
-        _currentDialogue = JsonDialogueDataLoadManager.GetInstance().GetDialogue(storyBoardIdValue);
+        _currentDialogue = DialogueDataLoadManager.GetInstance().GetDialogue(storyBoardIdValue);
 
         _speaker.GetComponent<Text>().text = _currentDialogue.speaker;
         

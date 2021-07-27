@@ -17,7 +17,7 @@ public class JsonStoryBoardSelectionEventData
     public List<SelectionInfo> JsonStoryBoardSelectionEventDataList =new List<SelectionInfo>();
 }
 
-public class StoryBoardSelectionEventDataLoadManager : MonoBehaviour
+public class StoryBoardSelectionEventDataLoadManager
 {
     #region SingleTon
 
@@ -27,34 +27,20 @@ public class StoryBoardSelectionEventDataLoadManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            var obj = FindObjectOfType<StoryBoardSelectionEventDataLoadManager>();
-            if (obj != null)
-            {
-                _instance = obj;
-            }
-            else
-            {
-                GameObject gameObject = new GameObject("StoryBoardSelectionEventDataLoadManager");
-                _instance = gameObject.AddComponent<StoryBoardSelectionEventDataLoadManager>();
-            }
+            _instance=new StoryBoardSelectionEventDataLoadManager();
         }
-
         return _instance;
-    }
-
-    private void Awake()
-    {
-        var obj = FindObjectsOfType<StoryBoardSelectionEventDataLoadManager>();
-        if (obj.Length != 1)
-        {
-            Destroy(gameObject);
-        }
     }
 
     #endregion
 
     private readonly Dictionary<string,SelectionInfo> _storyBoardSelectionInfoList = new Dictionary<string, SelectionInfo>();
-
+    
+    public void OnEnable()
+    {
+        LoadData();
+    }
+    
     private void LoadData()
     {
         string loadPath = "JsonData/StoryBoardEvent/JsonStoryBoardSelectionEventInfoData";
@@ -80,10 +66,5 @@ public class StoryBoardSelectionEventDataLoadManager : MonoBehaviour
     {
         TextAsset jsonData = Resources.Load<TextAsset>(loadPath);
         return JsonUtility.FromJson<T>(jsonData.ToString());
-    }
-
-    private void OnEnable()
-    {
-        LoadData();
     }
 }

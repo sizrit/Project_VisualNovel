@@ -9,62 +9,38 @@ using UnityEngine;
 using Object = System.Object;
 
 [Serializable]
-public class TextDataList
+public class JsonTextDataList
 {
     public List<Dialogue> dialogueList;
 }
 
-public class JsonDialogueDataLoadManager : MonoBehaviour
+public class DialogueDataLoadManager
 {
     #region Singleton
 
-    private static JsonDialogueDataLoadManager _instance;
+    private static DialogueDataLoadManager _instance;
 
-    public static JsonDialogueDataLoadManager GetInstance()
+    public static DialogueDataLoadManager GetInstance()
     {
         if (_instance == null)
         {
-            var obj = FindObjectOfType<JsonDialogueDataLoadManager>();
-            if (obj != null)
-            {
-                _instance = obj;
-            }
-            else
-            {
-                GameObject newObj = new GameObject("JsonTextDataLoadManager");
-                _instance = newObj.AddComponent<JsonDialogueDataLoadManager>();
-            }
+            _instance=new DialogueDataLoadManager();
         }
         return _instance;
-    }
-    
-    private void Awake()
-    {
-        var objs = FindObjectsOfType<JsonDialogueDataLoadManager>();
-        if (objs.Length != 1)
-        {
-            Destroy(gameObject);
-        }
     }
 
     #endregion
 
     private LanguageType _languageType;
-    
-    private bool _isLoadDone = false;
 
     private readonly Dictionary<string, Dialogue> _dialogueList = new Dictionary<string, Dialogue>();
 
     public Dialogue GetDialogue(string storyBoardIdValue)
     {
-        if (!_isLoadDone)
-        {
-            LoadJsonData();
-        }
         return _dialogueList[storyBoardIdValue];
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         _languageType = LanguageManager.GetInstance().GetLanguageType();
         LoadJsonData();
@@ -88,10 +64,9 @@ public class JsonDialogueDataLoadManager : MonoBehaviour
                     break;
             }
             
-            TextDataList jsonData = LoadJsonFiles<TextDataList>(filePath);
+            JsonTextDataList jsonData = LoadJsonFiles<JsonTextDataList>(filePath);
             MakeDictionary(jsonData.dialogueList);
         }
-        _isLoadDone = true;
     }
 
     private void MakeDictionary(List<Dialogue> dialogueListValue)

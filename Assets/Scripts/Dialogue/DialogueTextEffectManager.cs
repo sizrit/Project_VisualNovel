@@ -6,8 +6,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class DialogueTextEffectManager : MonoBehaviour
+public class DialogueTextEffectManager
 {
+    #region Singleton
+
+    private static DialogueTextEffectManager _instance;
+    
+    public static DialogueTextEffectManager GetInstance()
+    {
+        if (_instance == null)
+        {
+            _instance = new DialogueTextEffectManager();
+        }
+
+        return _instance;
+    }
+
+    #endregion
+    
     readonly Dictionary<string,EffectDelegate> _effectList =new Dictionary<string,EffectDelegate>();
     delegate void EffectDelegate();
 
@@ -48,15 +64,15 @@ public class DialogueTextEffectManager : MonoBehaviour
         _pastTextGameObject.transform.localPosition = new Vector3(randX,randY,0);
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         MakeEffectList();
         _effectDelegate=new EffectDelegate(Func0);
-        _currentTextGameObject = this.transform.GetChild(1).gameObject;
-        _pastTextGameObject = this.transform.GetChild(2).gameObject;
+        _currentTextGameObject = GameObject.Find("Dialogue_CurrentText");
+        _pastTextGameObject = GameObject.Find("Dialogue_PastText");
     }
 
-    private void Update()
+    public void Update()
     {
         _effectDelegate();
     }

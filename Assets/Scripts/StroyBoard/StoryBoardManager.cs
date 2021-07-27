@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StoryBoardManager : MonoBehaviour
+public class StoryBoardManager
 {
     #region Singleton
 
@@ -13,28 +13,9 @@ public class StoryBoardManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            var obj = FindObjectOfType<StoryBoardManager>();
-            if (obj != null)
-            {
-                _instance = obj;
-            }
-            else
-            {
-                GameObject gameObject = new GameObject("StoryBoardManager");
-                _instance = gameObject.AddComponent<StoryBoardManager>();
-            }
+            _instance=new StoryBoardManager();
         }
         return _instance;
-    }
-
-    private void Awake()
-    {
-        var obj = GameObject.FindObjectsOfType(typeof(StoryBoardManager));
-        if (obj.Length != 1)
-        {
-            Destroy(gameObject);
-        }
-        _instance = this;
     }
 
     #endregion
@@ -58,14 +39,14 @@ public class StoryBoardManager : MonoBehaviour
         _isClickOn = true;
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         _dialogueManager = DialogueManager.GetInstance();
         _bgLoadManager = BgLoadManager.GetInstance();
         _imageLoadManager = ImageLoadManager.GetInstance();
         _storyBoardEventManager = StoryBoardEventManager.GetInstance();
         
-        _currentStoryBoard = StoryBoardLoadManager.GetInstance().GetStoryBoard("S0001");
+        _currentStoryBoard = StoryBoardDataLoadManager.GetInstance().GetStoryBoard("S0001");
     }
 
     private void SetNextStoryBoard()
@@ -75,12 +56,12 @@ public class StoryBoardManager : MonoBehaviour
         {
             
         }
-        _currentStoryBoard = StoryBoardLoadManager.GetInstance().GetStoryBoard(nextStoryBoardId);
+        _currentStoryBoard = StoryBoardDataLoadManager.GetInstance().GetStoryBoard(nextStoryBoardId);
     }
     
     public void SetNextStoryBoard(string storyBoardIdValue)
     {
-        _currentStoryBoard =StoryBoardLoadManager.GetInstance().GetStoryBoard(storyBoardIdValue);
+        _currentStoryBoard =StoryBoardDataLoadManager.GetInstance().GetStoryBoard(storyBoardIdValue);
     }
 
 
