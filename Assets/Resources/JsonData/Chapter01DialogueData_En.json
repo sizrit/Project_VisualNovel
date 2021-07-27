@@ -1,8 +1,58 @@
 {
-  "dialogueList" :[ 
-    { "storyBoardId" : "S0001", "speaker" : "M", "dialogueText" : "Main0001", "color" : "White" },
-    { "storyBoardId" : "S0002", "speaker" : "M", "dialogueText" : "Main0002", "color" : "White" },
-    { "storyBoardId" : "S0003", "speaker" : "M", "dialogueText" : "Main0003", "color" : "White" },
-    { "storyBoardId" : "S0004", "speaker" : "M", "dialogueText" : "Main0004", "color" : "White" }
+  "dialogueList": [
+    {
+      "storyBoardId": "S0001",
+      "speaker": "",
+      "dialogueText": "",
+      "color": "White"
+    },
+    {
+      "storyBoardId": "S0002",
+      "speaker": "라디오",
+      "dialogueText": "긴급 속보입니다.",
+      "color": "White"
+    },
+    {
+      "storyBoardId": "S0003",
+      "speaker": "라디오",
+      "dialogueText": "수도권 인근 지역에서 12차례에 걸쳐 살인 사건을 일으킨 연쇄살인범,\n일명 송곳 살인마가 오늘 저녁 6시, 또다시 예고장을 보내왔습니다.",
+      "color": "White"
+    },
+    {
+      "storyBoardId": "S0004",
+      "speaker": "라디오",
+      "dialogueText": "이번 예고장 역시 송곳 살인마의 상징인 <color=#FF0000>송곳 그림</color>과 함께\n<color=#FF0000>빨간 글씨로 ‘7월 21일 서울파크에서 두 명의 희생자가 나올 것.’</color>\n이라는 간단한 메ㅔ세지를 보내왔습니다.",
+      "color": "White"
+    },
+    {
+      "storyBoardId": "S0005",
+      "speaker": "라디오",
+      "dialogueText": "하지만 최근 송곳살인마의 모방범이 많아지는 와중에...",
+      "color": "White"
+    },
+    {
+      "storyBoardId": "S0006",
+      "speaker": "",
+      "dialogueText": "",
+      "color": "White"
+    },
+    {
+      "storyBoardId": "S0007",
+      "speaker": "",
+      "dialogueText": "'치직... 치이이이이이이...'",
+      "color": "White"
+    },
+    {
+      "storyBoardId": "S0008",
+      "speaker": "",
+      "dialogueText": "'와장창!'",
+      "color": "White"
+    },
+    {
+      "storyBoardId": "S0009",
+      "speaker": "",
+      "dialogueText": "끝endddddddddddd",
+      "color": "White"
+    }
   ]
 }

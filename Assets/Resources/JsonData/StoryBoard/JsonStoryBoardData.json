@@ -2,27 +2,57 @@
   "storyBoardList": [
     {
       "storyBoardId": "S0001",
-      "bgId": "A",
-      "imageId": "FL",
+      "bgId": "Bg001",
+      "imageId": "ImageSet001",
       "nextStoryBoardId": "S0002"
     },
     {
       "storyBoardId": "S0002",
-      "bgId": "A",
-      "imageId": "",
+      "bgId": "Bg001",
+      "imageId": "ImageSet002",
       "nextStoryBoardId": "S0003"
     },
     {
       "storyBoardId": "S0003",
-      "bgId": "A",
-      "imageId": "",
+      "bgId": "Bg001",
+      "imageId": "ImageSet002",
       "nextStoryBoardId": "S0004"
     },
     {
       "storyBoardId": "S0004",
-      "bgId": "A",
-      "imageId": "",
+      "bgId": "Bg001",
+      "imageId": "ImageSet002",
       "nextStoryBoardId": "S0005"
+    },
+    {
+      "storyBoardId": "S0005",
+      "bgId": "Bg001",
+      "imageId": "ImageSet002",
+      "nextStoryBoardId": "S0006"
+    },
+    {
+      "storyBoardId": "S0006",
+      "bgId": "Bg001",
+      "imageId": "ImageSet002",
+      "nextStoryBoardId": "S0007"
+    },
+    {
+      "storyBoardId": "S0007",
+      "bgId": "Bg001",
+      "imageId": "ImageSet002",
+      "nextStoryBoardId": "S0009"
+    },
+    {
+      "storyBoardId": "S0008",
+      "bgId": "Bg001",
+      "imageId": "ImageSet002",
+      "nextStoryBoardId": "S0009"
+    },
+    {
+      "storyBoardId": "S0009",
+      "bgId": "Bg001",
+      "imageId": "ImageSet002",
+      "nextStoryBoardId": "S0009"
     }
   ]
 }
