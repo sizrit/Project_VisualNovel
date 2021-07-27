@@ -1,5 +1,6 @@
 {
-  "JsonClueDataList" :[ 
-    ["1","aa","ss","bb"]
+  "jsonClueDataList" :[ 
+    {"index": "1","name" : "a1","info": "","etc" : ""},
+    {"index": "2","name" : "a2","info": "","etc" : ""}
   ]
 }
