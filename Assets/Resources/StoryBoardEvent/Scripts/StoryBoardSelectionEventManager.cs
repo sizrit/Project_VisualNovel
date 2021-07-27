@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,27 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            _instance = new StoryBoardSelectionEventManager();
+            var obj = FindObjectOfType<StoryBoardSelectionEventManager>();
+            if (obj != null)
+            {
+                _instance = obj;
+            }
+            else
+            {
+                GameObject gameObject = new GameObject("");
+                _instance = gameObject.AddComponent<StoryBoardSelectionEventManager>();
+            }
         }
-
         return _instance;
+    }
+
+    private void Awake()
+    {
+        var obj = FindObjectsOfType<StoryBoardSelectionEventManager>();
+        if (obj.Length != 1)
+        {
+            Destroy(gameObject);
+        }
     }
 
     #endregion
@@ -37,7 +55,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
     
     private void func0(){}
     
-    public void OnEnable()
+    public void Start()
     {
         _selectionEventDataLoadManager = StoryBoardSelectionEventDataLoadManager.GetInstance();
         
