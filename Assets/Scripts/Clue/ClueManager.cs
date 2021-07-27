@@ -20,8 +20,8 @@ public class ClueManager
 
     #endregion
     
-    private List<Clue> _currentClueList = new List<Clue>();
-    private readonly List<Clue> _allClueList = new List<Clue>();
+    private readonly List<Clue> _currentClueList = new List<Clue>();
+    private List<Clue> _allClueList = new List<Clue>();
 
     public void GetClue(int indexValue)
     {
@@ -43,6 +43,6 @@ public class ClueManager
 
     public void OnEnable()
     {
-        _currentClueList = ClueDataLoadManager.GetInstance().GetAllClueList();
+        _allClueList = ClueDataLoadManager.GetInstance().GetAllClueList();
     }
 }
