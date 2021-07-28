@@ -22,7 +22,7 @@ public class StoryBoardEventManager
     #endregion
 
     private StoryBoardSelectionEventDataLoadManager _selectionEventDataLoadManager;
-    private StoryBoardGettingClueEventManager _clueEventManager;
+    private StoryBoardGainClueEventManager _clueEventManager;
     
     private string _currentStoryBoardId = "";
     
@@ -70,7 +70,7 @@ public class StoryBoardEventManager
     public void OnEnable()
     {
         _selectionEventDataLoadManager = StoryBoardSelectionEventDataLoadManager.GetInstance();
-        _clueEventManager = StoryBoardGettingClueEventManager.GetInstance();
+        _clueEventManager = StoryBoardGainClueEventManager.GetInstance();
         ;
         MakeEventList();
     }
