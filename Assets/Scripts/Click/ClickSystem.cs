@@ -39,32 +39,37 @@ public class ClickSystem : MonoBehaviour
     
     #endregion
     
-    delegate void ClickDelegate();
-
-    private ClickDelegate _clickDelegate;
     private StoryBoardManager _storyBoardManager;
 
-    private void Func0(){}
-    
-    private void OnEnable()
+    List<Action> _checkCliskList = new List<Action>();
+   private event Action checkClick = delegate {  };
+
+   private void OnEnable()
     {
         _storyBoardManager = StoryBoardManager.GetInstance();
-        
-        _clickDelegate = new ClickDelegate(Func0);
-        _clickDelegate += Click;
-        
+    }
+
+    public void SubscribeClick(Action func)
+    {
+        _checkCliskList.Add(func);
+    }
+
+    public void RequestUnIgnore()
+    {
         
     }
 
-    public void DisableClick()
+    private void MakeCheckList()
     {
-        _clickDelegate =new ClickDelegate(Func0);
+        
+    }
+
+    private void StroyBoardCheck(RaycastHit2D[] hitList)
+    {
+        
     }
     
-    public void EnableClick()
-    {
-        _clickDelegate += Click;
-    }
+    
     
     private void Click()
     {
@@ -90,7 +95,7 @@ public class ClickSystem : MonoBehaviour
 
     private void Update()
     {
-        _clickDelegate();
+        Click();
 
         if (Input.GetKeyDown(KeyCode.Q))
         {

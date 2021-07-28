@@ -56,7 +56,7 @@ public class GameSystem : MonoBehaviour
     private DialogueTextEffectManager _dialogueTextEffectManager;
     private DialogueTextColorManager _dialogueTextColorManager;
     private ClueManager _clueManager;
-    private StoryBoardGettingClueEventManager _storyBoardGettingClueEventManager;
+    private StoryBoardGainClueEventManager _storyBoardGainClueEventManager;
 
     private bool _isPaused = false;
     
@@ -78,7 +78,7 @@ public class GameSystem : MonoBehaviour
         _dialogueTextEffectManager.OnEnable();
         _dialogueTextColorManager.OnEnable();
         _clueManager.OnEnable();
-        _storyBoardGettingClueEventManager.OnEnable();
+        //_storyBoardGainClueEventManager.OnEnable();
     }
 
     private void GetAllInstance()
@@ -97,18 +97,18 @@ public class GameSystem : MonoBehaviour
         _dialogueTextEffectManager = DialogueTextEffectManager.GetInstance();
         _dialogueTextColorManager = DialogueTextColorManager.GetInstance();
         _clueManager = ClueManager.GetInstance();
-        _storyBoardGettingClueEventManager = StoryBoardGettingClueEventManager.GetInstance();
+        _storyBoardGainClueEventManager = StoryBoardGainClueEventManager.GetInstance();
     }
 
     public void PauseOn()
     {
-        ClickSystem.GetInstance().DisableClick();
+        //ClickSystem.GetInstance().DisableClick();
         _isPaused = true;
     }
     
     public void PauseOff()
     {
-        ClickSystem.GetInstance().EnableClick();
+        //ClickSystem.GetInstance().EnableClick();
         _isPaused = false;
     }
     
