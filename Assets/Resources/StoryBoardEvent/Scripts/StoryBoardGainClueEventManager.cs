@@ -46,6 +46,8 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
     private DialogueManager _dialogueManager;
     private string _currentStoryBoardId;
 
+    private ClickSystem _clickSystem;
+
     delegate void EventDelegate();
     
     EventDelegate _eventDelegate;
@@ -73,7 +75,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
     {
         if (_dialogueManager.CheckIsAnimationEnd())
         {
-            StoryBoardManager.GetInstance().DisableClick();
+            _clickSystem.UnsubscribeStoryBoardCheckClick();
             
             string clueName = _clueEventList[_currentStoryBoardId];
         
@@ -97,46 +99,36 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
 
             obj.transform.GetChild(2).GetComponent<Text>().text = showText;
             
-            _eventDelegate=new EventDelegate(Func0);
-            _eventDelegate += CheckClick;
+            _clickSystem.SubscribeCheckClick(CheckClick);
+            
+            _eventDelegate = new EventDelegate(Func0);
         }
     }
 
     public void SetGettingClueEvent(string storyBoardIdValue)
     {
+        _clickSystem = ClickSystem.GetInstance();
+
         _currentStoryBoardId = storyBoardIdValue;
         _dialogueManager = DialogueManager.GetInstance();
         _eventDelegate += SetPrefabs;
     }
 
-    private void CheckClick2(RaycastHit2D[] f)
+    private void CheckClick( RaycastHit2D hit)
     {
-        
-    }
-    
-    private void CheckClick()
-    {
-        if (Input.GetMouseButtonDown(0))
+        if (hit.transform == this.transform.GetChild(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D[] hitList = Physics2D.GetRayIntersectionAll(ray);
-
-            foreach (var hit in hitList)
-            {
-                if (hit.transform == this.transform.GetChild(0))
-                {
-                    EndEvent();
-                }
-            }
+            EndEvent();
         }
     }
 
     private void EndEvent()
     {
+        _clickSystem.UnsubscribeCheckClick(CheckClick);
+        _clickSystem.SubscribeStoryBoardCheckClick();
+        
         Destroy(this.transform.GetChild(0).gameObject);
         _eventDelegate = new EventDelegate(Func0);
-        StoryBoardManager storyBoardManager = StoryBoardManager.GetInstance();
-        storyBoardManager.EnableClick();
     }
     
     public void OnEnable()

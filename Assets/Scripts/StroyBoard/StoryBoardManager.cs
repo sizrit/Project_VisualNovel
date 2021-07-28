@@ -26,18 +26,6 @@ public class StoryBoardManager
     private BgLoadManager _bgLoadManager;
     private ImageLoadManager _imageLoadManager;
     private StoryBoardEventManager _storyBoardEventManager;
-    
-    private bool _isClickOn = true;
-
-    public void DisableClick()
-    {
-        _isClickOn = false;
-    }
-
-    public void EnableClick()
-    {
-        _isClickOn = true;
-    }
 
     public void OnEnable()
     {
@@ -47,6 +35,9 @@ public class StoryBoardManager
         _storyBoardEventManager = StoryBoardEventManager.GetInstance();
         
         _currentStoryBoard = StoryBoardDataLoadManager.GetInstance().GetStoryBoard("S0001");
+        
+        ClickSystem.GetInstance().SetStoryBoardCheckClickFunc(CheckClick);
+        ClickSystem.GetInstance().SubscribeStoryBoardCheckClick();
     }
 
     private void SetNextStoryBoard()
@@ -64,15 +55,6 @@ public class StoryBoardManager
         _currentStoryBoard =StoryBoardDataLoadManager.GetInstance().GetStoryBoard(storyBoardIdValue);
     }
 
-
-    public void StoryBoardClick()
-    {
-        if (_isClickOn)
-        {
-            SetStoryBoard();
-        }
-    }
-
     public void SetStoryBoard()
     {
         if (_dialogueManager.CheckIsAnimationEnd())
@@ -86,6 +68,14 @@ public class StoryBoardManager
         else
         {
             _dialogueManager.EndAnimationForced();
+        }
+    }
+    
+    private void CheckClick(RaycastHit2D hit)
+    {
+        if (hit.transform.CompareTag("StoryBoard"))
+        {
+            SetStoryBoard();
         }
     }
 }

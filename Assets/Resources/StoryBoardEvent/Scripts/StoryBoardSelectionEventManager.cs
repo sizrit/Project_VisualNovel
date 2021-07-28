@@ -40,6 +40,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
 
     #endregion
 
+    private ClickSystem _clickSystem;
     private StoryBoardSelectionEventDataLoadManager _selectionEventDataLoadManager;
     private StoryBoardManager _storyBoardManager;
     private DialogueManager _dialogueManager;
@@ -77,8 +78,10 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
 
     public void SetSelectionEvent(string storyBoardIdValue)
     {
+        _clickSystem = ClickSystem.GetInstance();
+        _clickSystem.UnsubscribeStoryBoardCheckClick();
+        
         _storyBoardManager = StoryBoardManager.GetInstance();
-        _storyBoardManager.DisableClick();
         _dialogueManager = DialogueManager.GetInstance();
 
         SelectionInfo info = _selectionEventDataLoadManager.GetStoryBoardSelectionEventData(storyBoardIdValue);
@@ -99,33 +102,27 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
                 obj.transform.GetChild(0).GetComponent<Text>().text = _textList[i];
             }
             _eventDelegate=new EventDelegate(func0);
-            _eventDelegate += CheckClick;
+            _clickSystem.SubscribeCheckClick(CheckClick);
         }
     }
 
-    private void CheckClick()
+    private void CheckClick(RaycastHit2D hit)
     {
-        if (Input.GetMouseButtonDown(0))
+        for (int i = 0; i < _storyBoardIdList.Count; i++)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D[] hitList = Physics2D.GetRayIntersectionAll(ray);
-            foreach (var hit in hitList)
+            if (hit.transform == this.transform.GetChild(i))
             {
-                for (int i = 0; i < _storyBoardIdList.Count; i++)
-                {
-                    if (hit.transform == this.transform.GetChild(i))
-                    {
-                        _storyBoardManager.SetNextStoryBoard(_storyBoardIdList[i]);
-                        _storyBoardManager.SetStoryBoard();
-                        _storyBoardManager.EnableClick();
+                _storyBoardManager.SetNextStoryBoard(_storyBoardIdList[i]);
+                _storyBoardManager.SetStoryBoard();
 
-                        RestObject();
-                    }
-                }
+                RestObject();
+                
+                _clickSystem.UnsubscribeCheckClick(CheckClick);
+                _clickSystem.SubscribeStoryBoardCheckClick();
             }
         }
     }
-    
+
     private void Update()
     {
         _eventDelegate();

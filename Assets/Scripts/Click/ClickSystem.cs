@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Accessibility;
+
 
 public class ClickSystem : MonoBehaviour
 {
@@ -38,30 +40,57 @@ public class ClickSystem : MonoBehaviour
     }
     
     #endregion
+
+    public delegate void CheckClickFunc(RaycastHit2D hit);
+    CheckClickFunc _checkClickFunc = delegate{  };
+    CheckClickFunc _storyBoardCheckFunc =delegate{  };
     
-    private StoryBoardManager _storyBoardManager;
+    List<CheckClickFunc> _checkClickFuncList= new List<CheckClickFunc>();
 
-    List<Action> _checkCliskList = new List<Action>();
-   private event Action checkClick = delegate {  };
-
-   private void OnEnable()
+    public void SetStoryBoardCheckClickFunc(CheckClickFunc func)
     {
-        _storyBoardManager = StoryBoardManager.GetInstance();
+        _storyBoardCheckFunc = func;
+    }
+    
+    public void SubscribeCheckClick(CheckClickFunc func)
+    {
+        if (!_checkClickFuncList.Contains(func))
+        {
+            _checkClickFuncList.Add(func);
+        }
     }
 
-    public void SubscribeClick(Action func)
+    public void UnsubscribeCheckClick(CheckClickFunc func)
     {
-        _checkCliskList.Add(func);
+        if (_checkClickFuncList.Contains(func))
+        {
+            _checkClickFuncList.Remove(func);
+        }
     }
 
-    public void RequestUnIgnore()
+    public void SubscribeStoryBoardCheckClick()
     {
-        
+        if (!_checkClickFuncList.Contains(_storyBoardCheckFunc))
+        {
+            _checkClickFuncList.Add(_storyBoardCheckFunc);
+        }
+    }
+    
+    public void UnsubscribeStoryBoardCheckClick()
+    {
+        if (_checkClickFuncList.Contains(_storyBoardCheckFunc))
+        {
+            _checkClickFuncList.Remove(_storyBoardCheckFunc);
+        }
     }
 
-    private void MakeCheckList()
+    private void MakeCheckClickList()
     {
-        
+        _checkClickFunc = delegate(RaycastHit2D hit) { };
+        foreach (var func in _checkClickFuncList)
+        {
+            _checkClickFunc += func;
+        }
     }
 
     private void StroyBoardCheck(RaycastHit2D[] hitList)
@@ -76,20 +105,28 @@ public class ClickSystem : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
-            if (hit.transform != null)
+            RaycastHit2D[] hitList = Physics2D.GetRayIntersectionAll(ray);
+
+            MakeCheckClickList();
+            
+            foreach (var hit in hitList)
             {
-                switch (hit.transform.tag)
-                {
-                    case "StoryBoard":
-                        _storyBoardManager.StoryBoardClick();
-                        break;
-                
-                    case "UI_Inventory":
-                        hit.transform.GetComponent<InventoryButton>().Click();
-                        break;
-                }
+                _checkClickFunc(hit);
             }
+            //
+            // if (hit.transform != null)
+            // {
+            //     switch (hit.transform.tag)
+            //     {
+            //         case "StoryBoard":
+            //             _storyBoardManager.StoryBoardClick();
+            //             break;
+            //     
+            //         case "UI_Inventory":
+            //             hit.transform.GetComponent<InventoryButton>().Click();
+            //             break;
+            //     }
+            // }
         }
     }
 
