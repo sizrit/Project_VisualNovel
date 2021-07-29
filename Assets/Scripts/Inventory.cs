@@ -7,15 +7,13 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    private List<Clue> _currentClueList = new List<Clue>();
+    private Dictionary<string, Clue> _currentClueList = new Dictionary<string, Clue>();
     private Dictionary<string,Sprite> _clueIconImageList = new Dictionary<string, Sprite>();
 
     private GameObject _clueIconPrefabs;
 
     private void OnEnable()
     {
-        ClueManager.GetInstance().GetClue(0);
-        ClueManager.GetInstance().GetClue(1);
         _currentClueList = ClueManager.GetInstance().GetCurrentClueList();
         LoadPrefabs();
         LoadImages();
@@ -33,22 +31,22 @@ public class Inventory : MonoBehaviour
         string loadPath = "Clue/Images/";
         foreach (var clue in _currentClueList)
         {
-            if (!_clueIconImageList.ContainsKey(clue.name))
+            if (!_clueIconImageList.ContainsKey(clue.Value.id))
             {
-                _clueIconImageList.Add(clue.name,Resources.Load<Sprite>(loadPath+clue.name));
+                _clueIconImageList.Add(clue.Value.id,Resources.Load<Sprite>(loadPath+clue.Value.id));
             }
         }
     }
 
     private void ShowClue()
     {
-        
-        for(int i=0; i< _currentClueList.Count; i++)
+        int index = 0;
+        foreach (var clue in _currentClueList.OrderBy(t=>t.Key))
         {
             GameObject clueIcon = Instantiate(_clueIconPrefabs, this.transform);
-            clueIcon.name = _currentClueList[i].name;
+            clueIcon.name = clue.Key;
             clueIcon.GetComponent<Image>().sprite = _clueIconImageList[clueIcon.name];
-            clueIcon.transform.position = new Vector3(-550 + 200 * i, 250, 100);
+            clueIcon.transform.position = new Vector3(-550 + 200 * index++, 250, 100);
         }
     }
     
