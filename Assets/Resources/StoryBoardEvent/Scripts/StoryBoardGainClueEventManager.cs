@@ -61,7 +61,6 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
 
     public List<string> GetClueEventIdList()
     {
-        MakeClueEvent();
         return new List<string>(_clueEventList.Keys);
     }
 
@@ -76,13 +75,17 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
         if (_dialogueManager.CheckIsAnimationEnd())
         {
             _clickSystem.UnsubscribeStoryBoardCheckClick();
+
+            ClueManager clueManager = ClueManager.GetInstance();
             
-            string clueName = _clueEventList[_currentStoryBoardId];
+            clueManager.GetClue(_clueEventList[_currentStoryBoardId]);
+            
+            Clue clue = clueManager.GetClueData(_clueEventList[_currentStoryBoardId]);
         
             GameObject obj = Instantiate(_eventPrefab, this.transform);
-            obj.name = clueName;
+            obj.name = clue.id;
         
-            string loadPath = "Clue/GainClue/Images/clueName";
+            string loadPath = "Clue/GainClue/Images/"+clue.info;
             obj.transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>(loadPath);
 
             string showText = "";
@@ -90,10 +93,10 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
             switch (type)
             {
                 case LanguageType.English:
-                    showText ="단서 '" + clueName + "' 을 획득했습니다";
+                    showText ="단서 '" +  clue.en + "' 을 획득했습니다";
                     break;
                 case LanguageType.Korean:
-                
+                    showText ="단서 '" +  clue.ko + "' 을 획득했습니다";
                     break;
             }
 
@@ -134,7 +137,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
     public void OnEnable()
     {
         _eventDelegate = new EventDelegate(Func0);
-        //MakeClueEvent();
+        MakeClueEvent();
         LoadPrefab();
     }
 
