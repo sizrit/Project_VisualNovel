@@ -7,8 +7,9 @@ using UnityEngine;
 [Serializable]
 public struct Clue
 {
-    public int index;
-    public string name;
+    public string id;
+    public string en;
+    public string ko;
     public string info;
     public string etc;
 }
