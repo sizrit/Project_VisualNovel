@@ -1,6 +1,25 @@
 {
-  "jsonClueDataList" :[ 
-    {"index": "1","name" : "Clue01","info": "","etc" : ""},
-    {"index": "2","name" : "a2","info": "","etc" : ""}
+  "jsonClueDataList": [
+    {
+      "id": "Clue01",
+      "en": "Clue01",
+      "ko": "단서01",
+      "info": "",
+      "etc": ""
+    },
+    {
+      "id": "Clue02",
+      "en": "Clue02",
+      "ko": "단서02",
+      "info": "",
+      "etc": ""
+    },
+    {
+      "id": "Clue03",
+      "en": "Clue02",
+      "ko": "단서02",
+      "info": "",
+      "etc": ""
+    }
   ]
 }
