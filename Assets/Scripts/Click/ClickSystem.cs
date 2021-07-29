@@ -45,7 +45,7 @@ public class ClickSystem : MonoBehaviour
     CheckClickFunc _checkClickFunc = delegate{  };
     CheckClickFunc _storyBoardCheckFunc =delegate{  };
     
-    List<CheckClickFunc> _checkClickFuncList= new List<CheckClickFunc>();
+    readonly List<CheckClickFunc> _checkClickFuncList= new List<CheckClickFunc>();
 
     public void SetStoryBoardCheckClickFunc(CheckClickFunc func)
     {
@@ -92,14 +92,8 @@ public class ClickSystem : MonoBehaviour
             _checkClickFunc += func;
         }
     }
+    
 
-    private void StroyBoardCheck(RaycastHit2D[] hitList)
-    {
-        
-    }
-    
-    
-    
     private void Click()
     {
         if (Input.GetMouseButtonDown(0))
@@ -113,43 +107,11 @@ public class ClickSystem : MonoBehaviour
             {
                 _checkClickFunc(hit);
             }
-            //
-            // if (hit.transform != null)
-            // {
-            //     switch (hit.transform.tag)
-            //     {
-            //         case "StoryBoard":
-            //             _storyBoardManager.StoryBoardClick();
-            //             break;
-            //     
-            //         case "UI_Inventory":
-            //             hit.transform.GetComponent<InventoryButton>().Click();
-            //             break;
-            //     }
-            // }
         }
     }
 
     private void Update()
     {
         Click();
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            GameSystem.GetInstance().PauseOn();
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            GameSystem.GetInstance().PauseOff();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            GameObject.Find("Canvas").transform.GetChild(0).gameObject.SetActive(false);
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            GameObject.Find("Canvas").transform.GetChild(0).gameObject.SetActive(true);
-        }
     }
 }
