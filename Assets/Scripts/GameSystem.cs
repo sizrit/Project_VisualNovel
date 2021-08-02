@@ -39,6 +39,9 @@ public class GameSystem : MonoBehaviour
 
     #endregion
 
+    // ClickSystem
+    private ClickSystem _clickSystem;
+    
     // Loader
     private StoryBoardDataLoadManager _storyBoardDataLoadManager;
     private DialogueDataLoadManager _dialogueDataLoadManager;
@@ -64,6 +67,8 @@ public class GameSystem : MonoBehaviour
     {
         GetAllInstance();
 
+        _clickSystem.OnEnable();
+        
         _storyBoardDataLoadManager.OnEnable();
         _dialogueDataLoadManager.OnEnable();
         _storyBoardSelectionEventDataLoadManager.OnEnable();
@@ -83,6 +88,8 @@ public class GameSystem : MonoBehaviour
 
     private void GetAllInstance()
     {
+        _clickSystem =ClickSystem.GetInstance();
+        
         _storyBoardDataLoadManager =StoryBoardDataLoadManager.GetInstance();
         _dialogueDataLoadManager = DialogueDataLoadManager.GetInstance();
         _storyBoardSelectionEventDataLoadManager = StoryBoardSelectionEventDataLoadManager.GetInstance();
@@ -102,13 +109,11 @@ public class GameSystem : MonoBehaviour
 
     public void PauseOn()
     {
-        //ClickSystem.GetInstance().DisableClick();
         _isPaused = true;
     }
     
     public void PauseOff()
     {
-        //ClickSystem.GetInstance().EnableClick();
         _isPaused = false;
     }
     
@@ -120,6 +125,7 @@ public class GameSystem : MonoBehaviour
     
     void Update()
     {
+        _clickSystem.Update();
         if (!_isPaused)
         {
             StoryBoardUpdate();
