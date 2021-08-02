@@ -70,43 +70,48 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
         _eventPrefab = Resources.Load<GameObject>(loadPath);
     }
 
-    private void SetPrefabs()
+    private void CheckStart()
     {
         if (_dialogueManager.CheckIsAnimationEnd())
         {
             _storyBoardClickSystem.DisableStoryBoardCheckClick();
-
-            ClueManager clueManager = ClueManager.GetInstance();
-            
-            clueManager.GetClue(_clueEventList[_currentStoryBoardId]);
-            
-            Clue clue = clueManager.GetClueData(_clueEventList[_currentStoryBoardId]);
-        
-            GameObject obj = Instantiate(_eventPrefab, this.transform);
-            obj.name = clue.id;
-        
-            string loadPath = "Clue/GainClue/Images/"+clue.info;
-            obj.transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>(loadPath);
-
-            string showText = "";
-            LanguageType type = LanguageManager.GetInstance().GetLanguageType();
-            switch (type)
-            {
-                case LanguageType.English:
-                    showText ="단서 '" +  clue.en + "' 을 획득했습니다";
-                    break;
-                case LanguageType.Korean:
-                    showText ="단서 '" +  clue.ko + "' 을 획득했습니다";
-                    break;
-            }
-
-            obj.transform.GetChild(2).GetComponent<Text>().text = showText;
-            
-            _storyBoardClickSystem.SubscribeCheckClick(CheckClick);
-            
-            _eventDelegate = new EventDelegate(Func0);
+            _storyBoardClickSystem.SubscribeCheckClick(CheckClickToStart);
         }
     }
+
+    private void SetPrefabs()
+    {
+        ClueManager clueManager = ClueManager.GetInstance();
+            
+        clueManager.GetClue(_clueEventList[_currentStoryBoardId]);
+            
+        Clue clue = clueManager.GetClueData(_clueEventList[_currentStoryBoardId]);
+        
+        GameObject obj = Instantiate(_eventPrefab, this.transform);
+        obj.name = clue.id;
+        
+        string loadPath = "Clue/GainClue/Images/"+clue.info;
+        obj.transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>(loadPath);
+
+        string showText = "";
+        LanguageType type = LanguageManager.GetInstance().GetLanguageType();
+        switch (type)
+        {
+            case LanguageType.English:
+                showText ="단서 '" +  clue.en + "' 을 획득했습니다";
+                break;
+            case LanguageType.Korean:
+                showText ="단서 '" +  clue.ko + "' 을 획득했습니다";
+                break;
+        }
+
+        obj.transform.GetChild(2).GetComponent<Text>().text = showText;
+            
+        _storyBoardClickSystem.SubscribeCheckClick(CheckClickToEnd);
+            
+        _eventDelegate = new EventDelegate(Func0);
+    }
+    
 
     public void SetGettingClueEvent(string storyBoardIdValue)
     {
@@ -114,10 +119,19 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
 
         _currentStoryBoardId = storyBoardIdValue;
         _dialogueManager = DialogueManager.GetInstance();
-        _eventDelegate += SetPrefabs;
+        _eventDelegate += CheckStart;
     }
 
-    private void CheckClick( RaycastHit2D hit)
+    private void CheckClickToStart(RaycastHit2D hit)
+    {
+        if (hit.transform.CompareTag("StoryBoard"))
+        {
+            _storyBoardClickSystem.UnsubscribeCheckClick(CheckClickToStart);
+            SetPrefabs();
+        }
+    }
+    
+    private void CheckClickToEnd( RaycastHit2D hit)
     {
         if (hit.transform == this.transform.GetChild(0))
         {
@@ -127,7 +141,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
 
     private void EndEvent()
     {
-        _storyBoardClickSystem.UnsubscribeCheckClick(CheckClick);
+        _storyBoardClickSystem.UnsubscribeCheckClick(CheckClickToEnd);
         _storyBoardClickSystem.EnableStoryBoardCheckClick();
         
         Destroy(this.transform.GetChild(0).gameObject);
