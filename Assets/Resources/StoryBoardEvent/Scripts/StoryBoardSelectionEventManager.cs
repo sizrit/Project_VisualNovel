@@ -79,7 +79,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
     public void SetSelectionEvent(string storyBoardIdValue)
     {
         _storyBoardClickSystem = StoryBoardClickSystem.GetInstance();
-        _storyBoardClickSystem.UnsubscribeCheckClick(StoryBoardCheckClickPreSet.StoryBoard);
+        _storyBoardClickSystem.DisableStoryBoardCheckClick();
         
         _storyBoardManager = StoryBoardManager.GetInstance();
         _dialogueManager = DialogueManager.GetInstance();
@@ -118,7 +118,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
                 RestObject();
                 
                 _storyBoardClickSystem.UnsubscribeCheckClick(CheckClick);
-                _storyBoardClickSystem.SubscribeCheckClick(StoryBoardCheckClickPreSet.StoryBoard);
+                _storyBoardClickSystem.EnableStoryBoardCheckClick();
             }
         }
     }

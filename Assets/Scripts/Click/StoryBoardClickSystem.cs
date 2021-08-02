@@ -4,13 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Accessibility;
 
-public enum StoryBoardCheckClickPreSet
-{
-    StoryBoard,
-    Menu
-}
-
-public class StoryBoardClickSystem : MonoBehaviour
+public class StoryBoardClickSystem : I_ClickSystem
 {
     #region Singleton
 
@@ -20,41 +14,31 @@ public class StoryBoardClickSystem : MonoBehaviour
     {
         if (_instance == null)
         {
-            var obj = FindObjectOfType<StoryBoardClickSystem>();
-            if (obj != null)
-            {
-                _instance = obj;
-            }
-            else
-            {
-                GameObject gameObject = new GameObject("GameSystem");
-                _instance = gameObject.AddComponent<StoryBoardClickSystem>();
-            }
+            _instance = new StoryBoardClickSystem();
         }
-
         return _instance;
     }
 
-    private void Awake()
-    {
-        var obj = FindObjectsOfType<StoryBoardClickSystem>();
-        if (obj.Length != 1)
-        {
-            Destroy(gameObject);
-        }
-    }
-    
     #endregion
 
     public delegate void CheckClickFunc(RaycastHit2D hit);
     CheckClickFunc _checkClickFunc = delegate{  };
-
+    CheckClickFunc _storyBoardCheckClickFunc =delegate{  };
     readonly List<CheckClickFunc> _checkClickFuncList= new List<CheckClickFunc>();
-    readonly Dictionary<StoryBoardCheckClickPreSet, CheckClickFunc> _checkClickPreSetList = new Dictionary<StoryBoardCheckClickPreSet, CheckClickFunc>();
-    
-    public void SetCheckClickPreset(CheckClickFunc func, StoryBoardCheckClickPreSet preSet)
+    readonly List<CheckClickFunc> _uiCheckClickFuncList = new List<CheckClickFunc>();
+
+    public void SubscribeUiCheckClick(CheckClickFunc func)
     {
-        _checkClickPreSetList.Add(preSet,func);
+        if (!_uiCheckClickFuncList.Contains(func))
+        {
+            _uiCheckClickFuncList.Add(func);
+        }
+    }
+    
+    public void SetStoryBoardCheckClick(CheckClickFunc func)
+    {
+        _storyBoardCheckClickFunc = func;
+        _checkClickFuncList.Add(_storyBoardCheckClickFunc);
     }
     
     public void SubscribeCheckClick(CheckClickFunc func)
@@ -65,15 +49,6 @@ public class StoryBoardClickSystem : MonoBehaviour
         }
     }
 
-    public void SubscribeCheckClick(StoryBoardCheckClickPreSet preSet)
-    {
-        CheckClickFunc preSetFunc = _checkClickPreSetList[preSet];
-        if (!_checkClickFuncList.Contains(preSetFunc))
-        {
-            _checkClickFuncList.Add(preSetFunc);
-        }
-    }
-
     public void UnsubscribeCheckClick(CheckClickFunc func)
     {
         if (_checkClickFuncList.Contains(func))
@@ -81,16 +56,23 @@ public class StoryBoardClickSystem : MonoBehaviour
             _checkClickFuncList.Remove(func);
         }
     }
-
-    public void UnsubscribeCheckClick(StoryBoardCheckClickPreSet preSet)
+    
+    public void EnableStoryBoardCheckClick()
     {
-        CheckClickFunc preSetFunc = _checkClickPreSetList[preSet];
-        if (_checkClickFuncList.Contains(preSetFunc))
+        if (!_checkClickFuncList.Contains(_storyBoardCheckClickFunc))
         {
-            _checkClickFuncList.Remove(preSetFunc);
+            _checkClickFuncList.Add(_storyBoardCheckClickFunc);
         }
     }
     
+    public void DisableStoryBoardCheckClick()
+    {
+        if (_checkClickFuncList.Contains(_storyBoardCheckClickFunc))
+        {
+            _checkClickFuncList.Remove(_storyBoardCheckClickFunc);
+        }
+    }
+
     private void MakeCheckClickList()
     {
         _checkClickFunc = delegate { };
@@ -98,9 +80,14 @@ public class StoryBoardClickSystem : MonoBehaviour
         {
             _checkClickFunc += func;
         }
+
+        foreach (var func in _uiCheckClickFuncList)
+        {
+            _checkClickFunc += func;
+        }
     }
     
-    private void Click()
+    public void Click()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -114,10 +101,5 @@ public class StoryBoardClickSystem : MonoBehaviour
                 _checkClickFunc(hit);
             }
         }
-    }
-
-    private void Update()
-    {
-        Click();
     }
 }

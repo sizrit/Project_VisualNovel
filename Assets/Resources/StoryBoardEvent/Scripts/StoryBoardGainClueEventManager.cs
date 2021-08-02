@@ -74,7 +74,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
     {
         if (_dialogueManager.CheckIsAnimationEnd())
         {
-            _storyBoardClickSystem.UnsubscribeCheckClick(StoryBoardCheckClickPreSet.StoryBoard);
+            _storyBoardClickSystem.DisableStoryBoardCheckClick();
 
             ClueManager clueManager = ClueManager.GetInstance();
             
@@ -128,7 +128,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
     private void EndEvent()
     {
         _storyBoardClickSystem.UnsubscribeCheckClick(CheckClick);
-        _storyBoardClickSystem.SubscribeCheckClick(StoryBoardCheckClickPreSet.StoryBoard);
+        _storyBoardClickSystem.EnableStoryBoardCheckClick();
         
         Destroy(this.transform.GetChild(0).gameObject);
         _eventDelegate = new EventDelegate(Func0);
