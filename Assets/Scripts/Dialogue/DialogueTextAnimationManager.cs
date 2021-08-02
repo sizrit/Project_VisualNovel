@@ -34,11 +34,16 @@ public class DialogueTextAnimationManager
     private int _index = 0;
     
     [SerializeField]
-    private float fadeSpeed = 0.1f;
+    private float fadeSpeed = 0.08f;
     
     private bool _isAnimationEnd=true;
     
     private void func0(){}
+
+    public void ChangeFadeSpeed(float speedValue)
+    {
+        fadeSpeed = speedValue;
+    }
 
     public void OnEnable()
     {
