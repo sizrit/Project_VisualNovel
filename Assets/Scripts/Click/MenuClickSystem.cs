@@ -2,10 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_ClickSystem : MonoBehaviour
+public class MenuClickSystem : I_ClickSystem
 {
+    #region Singleton
 
-    private void Click()
+    private static MenuClickSystem _instance;
+
+    public static MenuClickSystem GetInstance()
+    {
+        if (_instance == null)
+        {
+            _instance=new MenuClickSystem();
+        }
+        return _instance;
+    }
+
+    #endregion
+
+    public void Click()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -26,10 +40,11 @@ public class UI_ClickSystem : MonoBehaviour
     private void EndUI_Menu()
     {
         GameObject.Find("UI _Menu").transform.GetChild(0).gameObject.SetActive(false);
+        ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         Click();
     }
