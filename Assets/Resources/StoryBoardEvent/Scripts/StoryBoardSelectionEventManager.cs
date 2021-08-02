@@ -40,7 +40,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
 
     #endregion
 
-    private ClickSystem _clickSystem;
+    private StoryBoardClickSystem _storyBoardClickSystem;
     private StoryBoardSelectionEventDataLoadManager _selectionEventDataLoadManager;
     private StoryBoardManager _storyBoardManager;
     private DialogueManager _dialogueManager;
@@ -78,8 +78,8 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
 
     public void SetSelectionEvent(string storyBoardIdValue)
     {
-        _clickSystem = ClickSystem.GetInstance();
-        _clickSystem.UnsubscribeStoryBoardCheckClick();
+        _storyBoardClickSystem = StoryBoardClickSystem.GetInstance();
+        _storyBoardClickSystem.UnsubscribeCheckClick(StoryBoardCheckClickPreSet.StoryBoard);
         
         _storyBoardManager = StoryBoardManager.GetInstance();
         _dialogueManager = DialogueManager.GetInstance();
@@ -102,7 +102,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
                 obj.transform.GetChild(0).GetComponent<Text>().text = _textList[i];
             }
             _eventDelegate=new EventDelegate(func0);
-            _clickSystem.SubscribeCheckClick(CheckClick);
+            _storyBoardClickSystem.SubscribeCheckClick(CheckClick);
         }
     }
 
@@ -117,8 +117,8 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
 
                 RestObject();
                 
-                _clickSystem.UnsubscribeCheckClick(CheckClick);
-                _clickSystem.SubscribeStoryBoardCheckClick();
+                _storyBoardClickSystem.UnsubscribeCheckClick(CheckClick);
+                _storyBoardClickSystem.SubscribeCheckClick(StoryBoardCheckClickPreSet.StoryBoard);
             }
         }
     }

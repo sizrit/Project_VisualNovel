@@ -36,8 +36,8 @@ public class StoryBoardManager
         
         _currentStoryBoard = StoryBoardDataLoadManager.GetInstance().GetStoryBoard("S0001");
         
-        ClickSystem.GetInstance().SetStoryBoardCheckClickFunc(CheckClick);
-        ClickSystem.GetInstance().SubscribeStoryBoardCheckClick();
+        StoryBoardClickSystem.GetInstance().SetCheckClickPreset(CheckClick,StoryBoardCheckClickPreSet.StoryBoard);
+        StoryBoardClickSystem.GetInstance().SubscribeCheckClick(StoryBoardCheckClickPreSet.StoryBoard);
     }
 
     private void SetNextStoryBoard()

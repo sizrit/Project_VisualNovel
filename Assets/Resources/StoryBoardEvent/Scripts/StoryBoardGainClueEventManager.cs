@@ -46,7 +46,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
     private DialogueManager _dialogueManager;
     private string _currentStoryBoardId;
 
-    private ClickSystem _clickSystem;
+    private StoryBoardClickSystem _storyBoardClickSystem;
 
     delegate void EventDelegate();
     
@@ -74,7 +74,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
     {
         if (_dialogueManager.CheckIsAnimationEnd())
         {
-            _clickSystem.UnsubscribeStoryBoardCheckClick();
+            _storyBoardClickSystem.UnsubscribeCheckClick(StoryBoardCheckClickPreSet.StoryBoard);
 
             ClueManager clueManager = ClueManager.GetInstance();
             
@@ -102,7 +102,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
 
             obj.transform.GetChild(2).GetComponent<Text>().text = showText;
             
-            _clickSystem.SubscribeCheckClick(CheckClick);
+            _storyBoardClickSystem.SubscribeCheckClick(CheckClick);
             
             _eventDelegate = new EventDelegate(Func0);
         }
@@ -110,7 +110,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
 
     public void SetGettingClueEvent(string storyBoardIdValue)
     {
-        _clickSystem = ClickSystem.GetInstance();
+        _storyBoardClickSystem = StoryBoardClickSystem.GetInstance();
 
         _currentStoryBoardId = storyBoardIdValue;
         _dialogueManager = DialogueManager.GetInstance();
@@ -127,8 +127,8 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
 
     private void EndEvent()
     {
-        _clickSystem.UnsubscribeCheckClick(CheckClick);
-        _clickSystem.SubscribeStoryBoardCheckClick();
+        _storyBoardClickSystem.UnsubscribeCheckClick(CheckClick);
+        _storyBoardClickSystem.SubscribeCheckClick(StoryBoardCheckClickPreSet.StoryBoard);
         
         Destroy(this.transform.GetChild(0).gameObject);
         _eventDelegate = new EventDelegate(Func0);
