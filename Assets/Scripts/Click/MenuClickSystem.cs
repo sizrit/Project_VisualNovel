@@ -25,15 +25,19 @@ public class MenuClickSystem : I_ClickSystem
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D[] hitList = Physics2D.GetRayIntersectionAll(ray);
+            GameObject backButton = GameObject.Find("Back");
             
             foreach (var hit in hitList)
             {
-                if (hit.transform == GameObject.Find("Back").transform)
+                
+                if (backButton != null)
                 {
-                    EndUI_Menu();
+                    if (hit.transform == backButton.transform)
+                    {
+                        EndUI_Menu();
+                    }
                 }
             }
-            
         }
     }
 
