@@ -50,12 +50,16 @@ public class DialogueManager
     private DialogueTextColorManager _colorManager;
     private DialogueTextEffectManager _effectManager;
 
+    private DialogueLogManager _dialogueLogManager;
+
     public void OnEnable()
     {
         _speaker = GameObject.Find("Dialogue_Speaker");
         _animationManager = DialogueTextAnimationManager.GetInstance();
         _colorManager = DialogueTextColorManager.GetInstance();
         _effectManager = DialogueTextEffectManager.GetInstance();
+        
+        _dialogueLogManager = DialogueLogManager.GetInstance();
     }
 
     public bool CheckIsAnimationEnd()
@@ -86,5 +90,7 @@ public class DialogueManager
         _effectManager.SetDialogueTextEffect(_currentDialogue.storyBoardId);
          
         _colorManager.SetDialogueTextColor(_currentDialogue.color);
+        
+        _dialogueLogManager.AddDialogueLog(_currentDialogue);
     }
 }
