@@ -14,6 +14,8 @@ public class ScrollSystem : MonoBehaviour
     private void OnEnable()
     {
         _content = this.transform.GetChild(0).gameObject;
+        _lockScrollDown = false;
+        _lockScrollUp = false;
     }
 
     private void ResetLock()
