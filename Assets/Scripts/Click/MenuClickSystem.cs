@@ -1,6 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public enum MenuMode
+{
+    DialogueLog,
+    Inventory,
+}
 
 public class MenuClickSystem : I_ClickSystem
 {
@@ -19,33 +26,58 @@ public class MenuClickSystem : I_ClickSystem
 
     #endregion
 
+    private PauseMenuManager _pauseMenuManager;
+    
+    private MenuMode _currentMode = MenuMode.Inventory;
+
+    public void OnEnable()
+    {
+        _pauseMenuManager = PauseMenuManager.GetInstance();
+    }
+    
     public void Click()
     {
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D[] hitList = Physics2D.GetRayIntersectionAll(ray);
-            GameObject backButton = GameObject.Find("Back");
-            
+
             foreach (var hit in hitList)
             {
-                
-                if (backButton != null)
-                {
-                    if (hit.transform == backButton.transform)
-                    {
-                        EndUI_Menu();
-                    }
-                }
+                CheckClick(hit);
             }
         }
     }
 
-    private void EndUI_Menu()
+    private void CheckClick(RaycastHit2D hit)
     {
-        GameObject.Find("UI _Menu").transform.GetChild(0).gameObject.SetActive(false);
-        ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
+        switch (hit.transform.name)
+        {
+            case "Inventory":
+                if (_currentMode != MenuMode.Inventory)
+                {
+                    _currentMode = MenuMode.Inventory;
+                    _pauseMenuManager.SetMenuMode(MenuMode.Inventory);
+                }
+                break;
+            
+            case "DialogueLog":
+                if (_currentMode != MenuMode.DialogueLog)
+                {
+                    _currentMode = MenuMode.DialogueLog;
+                    _pauseMenuManager.SetMenuMode(MenuMode.DialogueLog);
+                }
+                break;
+            
+            case "Back":
+                _currentMode = MenuMode.Inventory;
+                _pauseMenuManager.RemoveAllInMain();
+                ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
+                break;
+        }
     }
+    
+    
 
     // Update is called once per frame
     public void Update()
