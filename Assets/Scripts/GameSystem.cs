@@ -41,6 +41,7 @@ public class GameSystem : MonoBehaviour
 
     // ClickSystem
     private ClickSystem _clickSystem;
+    private UI_GameMenuClickSystem _uiGameMenuClickSystem;
     
     // Loader
     private StoryBoardDataLoadManager _storyBoardDataLoadManager;
@@ -68,6 +69,7 @@ public class GameSystem : MonoBehaviour
         GetAllInstance();
 
         _clickSystem.OnEnable();
+        _uiGameMenuClickSystem.OnEnable();
         
         _storyBoardDataLoadManager.OnEnable();
         _dialogueDataLoadManager.OnEnable();
@@ -89,6 +91,7 @@ public class GameSystem : MonoBehaviour
     private void GetAllInstance()
     {
         _clickSystem =ClickSystem.GetInstance();
+        _uiGameMenuClickSystem = UI_GameMenuClickSystem.GetInstance();
         
         _storyBoardDataLoadManager =StoryBoardDataLoadManager.GetInstance();
         _dialogueDataLoadManager = DialogueDataLoadManager.GetInstance();
