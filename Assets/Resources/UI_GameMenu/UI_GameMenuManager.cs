@@ -3,24 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PauseMenuManager : MonoBehaviour
+public class UI_GameMenuManager : MonoBehaviour
 {
     #region Singleton
 
-    private static PauseMenuManager _instance;
+    private static UI_GameMenuManager _instance;
 
-    public static PauseMenuManager GetInstance()
+    public static UI_GameMenuManager GetInstance()
     {
         if (_instance == null)
         {
-            var obj = FindObjectOfType<PauseMenuManager>();
+            var obj = FindObjectOfType<UI_GameMenuManager>();
             if (obj != null)
             {
                 _instance = obj;
             }
             else
             {
-                Debug.Log("Error! MenuUILoadManager is null");
+                Debug.Log("Error! 'UI_GameMenuManager' is null");
             }
         }
         return _instance;
@@ -28,7 +28,7 @@ public class PauseMenuManager : MonoBehaviour
 
     private void Awake()
     {
-        var obj = FindObjectsOfType<PauseMenuManager>();
+        var obj = FindObjectsOfType<UI_GameMenuManager>();
         if (obj.Length != 1)
         {
             Destroy(gameObject);
@@ -37,19 +37,25 @@ public class PauseMenuManager : MonoBehaviour
 
     #endregion
 
+    private GameObject _uiGameMenu;
+    
     private GameObject _main;
     private GameObject _dialogueLogPrefab;
     private GameObject _inventoryPrefab;
 
-    private MenuMode _currentMode = MenuMode.Inventory;
-    
     private void OnEnable()
     {
-        _main = GameObject.Find("Main");
-        
-        string loadPath = "MenuUI/Prefabs/";
+        string loadPath = "UI_GameMenu/Prefabs/";
+        _uiGameMenu = Resources.Load<GameObject>(loadPath + "UI_GameMenuPrefab");
+
         _dialogueLogPrefab = Resources.Load<GameObject>(loadPath + "DialogueLogPrefab");
         _inventoryPrefab = Resources.Load<GameObject>(loadPath + "InventoryPrefab");
+    }
+
+    public void InstantiateGameMenu()
+    {
+        Instantiate(_uiGameMenu, this.transform);
+        _main = GameObject.Find("Main");
     }
 
     public void SetMenuMode(MenuMode mode)
@@ -59,6 +65,7 @@ public class PauseMenuManager : MonoBehaviour
         {
             case MenuMode.DialogueLog:
                 Instantiate(_dialogueLogPrefab, _main.transform);
+                DialogueLogManager.GetInstance().ShowDialogueLog();
                 break;
             case MenuMode.Inventory:
                 Instantiate(_inventoryPrefab, _main.transform);
@@ -72,5 +79,10 @@ public class PauseMenuManager : MonoBehaviour
         {
             Destroy(_main.transform.GetChild(i).gameObject);
         }
+    }
+
+    public void RemoveGameMenu()
+    {
+        Destroy(this.transform.GetChild(0).gameObject);
     }
 }
