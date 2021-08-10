@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuButton : MonoBehaviour
+public class UI_Button_MenuButton : MonoBehaviour
 {
     private StoryBoardClickSystem _storyBoardClickSystem;
-    
+
     private void OnEnable()
     {
         _storyBoardClickSystem =StoryBoardClickSystem.GetInstance();
@@ -17,7 +17,7 @@ public class MenuButton : MonoBehaviour
     {
         if (hit.transform == this.transform)
         {
-            GameObject.Find("UI _Menu").transform.GetChild(0).gameObject.SetActive(true);
+            UI_GameMenuManager.GetInstance().InstantiateGameMenu();
             ClickSystem.GetInstance().SetClickMode(ClickMode.Menu);
         }
     }
