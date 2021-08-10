@@ -33,7 +33,7 @@ public class ClickSystem
     public void OnEnable()
     {
         _clickSystemList.Add(ClickMode.StoryBoard,StoryBoardClickSystem.GetInstance());
-        _clickSystemList.Add(ClickMode.Menu,MenuClickSystem.GetInstance());
+        _clickSystemList.Add(ClickMode.Menu,UI_GameMenuClickSystem.GetInstance());
         //_clickSystemList.Add(ClickMode.Disable,);
     }
 
