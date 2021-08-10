@@ -47,16 +47,5 @@ public class DialogueLogManager
         GameObject.Find("DialogueLogContent").GetComponent<Text>().text = logString;
         GameObject.Find("DialogueLogView").GetComponent<ScrollSystem>().SetPosition();
     }
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
