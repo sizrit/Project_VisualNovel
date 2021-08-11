@@ -42,7 +42,7 @@ public class UI_GameMenu_ClueInventory : MonoBehaviour
         {
             if (!_clueIconImageList.ContainsKey(clue.Value.id))
             {
-                _clueIconImageList.Add(clue.Value.id,Resources.Load<Sprite>(loadPath+clue.Value.id));
+                _clueIconImageList.Add(clue.Value.id,Resources.Load<Sprite>(loadPath+clue.Value.id+"_Icon"));
             }
         }
     }
