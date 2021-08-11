@@ -90,7 +90,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
         GameObject obj = Instantiate(_eventPrefab, this.transform);
         obj.name = clue.id;
         
-        string loadPath = "StoryBoardEvent/GainClueEvent/Images/"+clue.info;
+        string loadPath = "StoryBoardEvent/GainClueEvent/Images/"+clue.id;
         obj.transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>(loadPath);
 
         string showText = "";
