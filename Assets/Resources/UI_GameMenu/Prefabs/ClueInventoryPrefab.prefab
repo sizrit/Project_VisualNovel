@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 646414813471270047}
   - component: {fileID: 976503710586951681}
   m_Layer: 5
-  m_Name: InventoryPrefab
+  m_Name: ClueInventoryPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
