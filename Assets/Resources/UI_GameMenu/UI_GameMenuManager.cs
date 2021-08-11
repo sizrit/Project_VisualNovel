@@ -65,7 +65,7 @@ public class UI_GameMenuManager : MonoBehaviour
         {
             case MenuMode.DialogueLog:
                 Instantiate(_dialogueLogPrefab, _main.transform);
-                DialogueLogManager.GetInstance().ShowDialogueLog();
+                UI_GameMenu_DialogueLogManager.GetInstance().ShowDialogueLog();
                 break;
             case MenuMode.Inventory:
                 Instantiate(_inventoryPrefab, _main.transform);

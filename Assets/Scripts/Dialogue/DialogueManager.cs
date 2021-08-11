@@ -50,7 +50,7 @@ public class DialogueManager
     private DialogueTextColorManager _colorManager;
     private DialogueTextEffectManager _effectManager;
 
-    private DialogueLogManager _dialogueLogManager;
+    private UI_GameMenu_DialogueLogManager _uiGameMenuDialogueLogManager;
 
     public void OnEnable()
     {
@@ -59,7 +59,7 @@ public class DialogueManager
         _colorManager = DialogueTextColorManager.GetInstance();
         _effectManager = DialogueTextEffectManager.GetInstance();
         
-        _dialogueLogManager = DialogueLogManager.GetInstance();
+        _uiGameMenuDialogueLogManager = UI_GameMenu_DialogueLogManager.GetInstance();
     }
 
     public bool CheckIsAnimationEnd()
@@ -91,6 +91,6 @@ public class DialogueManager
          
         _colorManager.SetDialogueTextColor(_currentDialogue.color);
         
-        _dialogueLogManager.AddDialogueLog(_currentDialogue);
+        _uiGameMenuDialogueLogManager.AddDialogueLog(_currentDialogue);
     }
 }
