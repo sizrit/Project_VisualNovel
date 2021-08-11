@@ -12,8 +12,12 @@ public class UI_GameMenu_Inventory : MonoBehaviour
 
     private GameObject _clueIconPrefabs;
 
+    private GameObject _detail;
+
     private void OnEnable()
     {
+        _detail = GameObject.Find("Detail");
+        
         ClueManager.GetInstance().GetClue("Clue01");
         ClueManager.GetInstance().GetClue("Clue02");
 
@@ -21,6 +25,8 @@ public class UI_GameMenu_Inventory : MonoBehaviour
         LoadPrefabs();
         LoadImages();
         ShowClue();
+        
+        UI_GameMenuClickSystem.GetInstance().SubScribeCheckClickFunc(CheckClick);
     }
 
     private void LoadPrefabs()
@@ -52,48 +58,22 @@ public class UI_GameMenu_Inventory : MonoBehaviour
             clueIcon.transform.position = new Vector3(-550 + 200 * index++, 250, 100);
         }
     }
-    
-    private void Click()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D[] hitList = Physics2D.GetRayIntersectionAll(ray);
 
-            CheckClose(hitList);
-        }
-    }
-    
-    
-    private void CheckClose(RaycastHit2D[] hitListValue)
+    private void CheckClick(RaycastHit2D hit)
     {
-        bool isCheck = false;
-        foreach (var hit in hitListValue)
+        if (_currentClueList.ContainsKey(hit.transform.name))
         {
-            if (hit.transform == this.gameObject.transform)
-            {
-                isCheck = true;
-            }
-        }
-
-        if (!isCheck)
-        {
-            ClearAllChild();
-            GameSystem.GetInstance().PauseOff();
-            this.gameObject.SetActive(false);
+            ClearDetail();
+            string loadPath = "Clue/Prefabs/";
+            Instantiate(Resources.Load<GameObject>(loadPath+hit.transform.name+"_detail"),_detail.transform);
         }
     }
 
-    private void ClearAllChild()
+    private void ClearDetail()
     {
-        for (int i = 0; i < this.transform.childCount; i++)
+        for (int i = 0; i < _detail.transform.childCount; i++)
         {
-            Destroy(this.transform.GetChild(i).gameObject);
+            Destroy(_detail.transform.GetChild(i).gameObject);
         }
-    }
-
-    private void Update()
-    {
-        Click();
     }
 }
