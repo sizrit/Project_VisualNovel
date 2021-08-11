@@ -61,7 +61,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
         _selectionEventDataLoadManager = StoryBoardSelectionEventDataLoadManager.GetInstance();
         
         _eventDelegate = new EventDelegate(func0);
-        _selectionGameObject = Resources.Load<GameObject>("StoryBoardEvent/Prefabs/SelectionObject");
+        _selectionGameObject = Resources.Load<GameObject>("StoryBoardEvent/SelectionEvent/Prefabs/SelectionObject");
     }
 
     private void RestObject()

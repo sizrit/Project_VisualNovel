@@ -66,7 +66,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
 
     private void LoadPrefab()
     {
-        string loadPath = "Clue/GainClue/Prefabs/GainCluePrefab";
+        string loadPath = "StoryBoardEvent/GainClueEvent/Prefabs/GainCluePrefab";
         _eventPrefab = Resources.Load<GameObject>(loadPath);
     }
 
@@ -90,7 +90,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
         GameObject obj = Instantiate(_eventPrefab, this.transform);
         obj.name = clue.id;
         
-        string loadPath = "Clue/GainClue/Images/"+clue.info;
+        string loadPath = "StoryBoardEvent/GainClueEvent/Images/"+clue.info;
         obj.transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>(loadPath);
 
         string showText = "";
