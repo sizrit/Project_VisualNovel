@@ -53,7 +53,7 @@ public class UI_GameMenuManager : MonoBehaviour
         _uiGameMenu = Resources.Load<GameObject>(loadPath + "UI_GameMenuPrefab");
 
         _dialogueLogPrefab = Resources.Load<GameObject>(loadPath + "DialogueLogPrefab");
-        _inventoryPrefab = Resources.Load<GameObject>(loadPath + "InventoryPrefab");
+        _inventoryPrefab = Resources.Load<GameObject>(loadPath + "ClueInventoryPrefab");
     }
 
     public void InstantiateGameMenu()

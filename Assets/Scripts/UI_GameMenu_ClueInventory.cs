@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_GameMenu_Inventory : MonoBehaviour
+public class UI_GameMenu_ClueInventory : MonoBehaviour
 {
     private Dictionary<string, Clue> _currentClueList = new Dictionary<string, Clue>();
     private Dictionary<string,Sprite> _clueIconImageList = new Dictionary<string, Sprite>();
@@ -31,13 +31,13 @@ public class UI_GameMenu_Inventory : MonoBehaviour
 
     private void LoadPrefabs()
     {
-        string loadPath = "Clue/Prefabs/ClueIcon";
+        string loadPath = "UI_GameMenu/ClueInventory/Prefabs/ClueIcon";
         _clueIconPrefabs = Resources.Load<GameObject>(loadPath);
     }
 
     private void LoadImages()
     {
-        string loadPath = "Clue/Images/";
+        string loadPath = "UI_GameMenu/ClueInventory/Images/";
         foreach (var clue in _currentClueList)
         {
             if (!_clueIconImageList.ContainsKey(clue.Value.id))
@@ -64,7 +64,7 @@ public class UI_GameMenu_Inventory : MonoBehaviour
         if (_currentClueList.ContainsKey(hit.transform.name))
         {
             ClearDetail();
-            string loadPath = "Clue/Prefabs/";
+            string loadPath = "UI_GameMenu/ClueInventory/Prefabs/";
             Instantiate(Resources.Load<GameObject>(loadPath+hit.transform.name+"_detail"),_detail.transform);
         }
     }
