@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogueLogManager
+public class UI_GameMenu_DialogueLogManager
 {
     #region Singleton
 
-    private static DialogueLogManager _instance;
+    private static UI_GameMenu_DialogueLogManager _instance;
 
-    public static DialogueLogManager GetInstance()
+    public static UI_GameMenu_DialogueLogManager GetInstance()
     {
         if (_instance == null)
         {
-            _instance = new DialogueLogManager();
+            _instance = new UI_GameMenu_DialogueLogManager();
         }
         return _instance;
     }
