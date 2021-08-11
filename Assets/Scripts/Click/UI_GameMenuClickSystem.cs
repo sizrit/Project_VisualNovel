@@ -7,6 +7,7 @@ public enum MenuMode
 {
     DialogueLog,
     Inventory,
+    Setting
 }
 
 public class UI_GameMenuClickSystem : I_ClickSystem
@@ -104,6 +105,15 @@ public class UI_GameMenuClickSystem : I_ClickSystem
                     _currentMode = MenuMode.DialogueLog;
                     _uiGameMenuManager.SetMenuMode(MenuMode.DialogueLog);
                 }
+                break;
+            
+            case "Setting":
+                if (_currentMode != MenuMode.Setting)
+                {
+                    _currentMode = MenuMode.Setting;
+                    _uiGameMenuManager.SetMenuMode(MenuMode.Setting);
+                }
+                
                 break;
             
             case "Back":
