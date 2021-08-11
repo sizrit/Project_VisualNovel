@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Inventory : MonoBehaviour
+public class UI_GameMenu_Inventory : MonoBehaviour
 {
     private Dictionary<string, Clue> _currentClueList = new Dictionary<string, Clue>();
     private Dictionary<string,Sprite> _clueIconImageList = new Dictionary<string, Sprite>();
@@ -14,6 +14,9 @@ public class Inventory : MonoBehaviour
 
     private void OnEnable()
     {
+        ClueManager.GetInstance().GetClue("Clue01");
+        ClueManager.GetInstance().GetClue("Clue02");
+
         _currentClueList = ClueManager.GetInstance().GetCurrentClueList();
         LoadPrefabs();
         LoadImages();
