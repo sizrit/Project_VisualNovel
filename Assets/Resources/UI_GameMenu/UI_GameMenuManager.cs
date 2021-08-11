@@ -37,6 +37,8 @@ public class UI_GameMenuManager : MonoBehaviour
 
     #endregion
 
+    private UI_GameMenuClickSystem _uiGameMenuClickSystem;
+    
     private GameObject _uiGameMenu;
     
     private GameObject _main;
@@ -45,6 +47,8 @@ public class UI_GameMenuManager : MonoBehaviour
 
     private void OnEnable()
     {
+        _uiGameMenuClickSystem = UI_GameMenuClickSystem.GetInstance();
+        
         string loadPath = "UI_GameMenu/Prefabs/";
         _uiGameMenu = Resources.Load<GameObject>(loadPath + "UI_GameMenuPrefab");
 
@@ -60,14 +64,16 @@ public class UI_GameMenuManager : MonoBehaviour
 
     public void SetMenuMode(MenuMode mode)
     {
-        RemoveAllInMain();
+        _uiGameMenuClickSystem.ResetCheckClickList();
         switch (mode)
         {
             case MenuMode.DialogueLog:
+                RemoveAllInMain();
                 Instantiate(_dialogueLogPrefab, _main.transform);
                 UI_GameMenu_DialogueLogManager.GetInstance().ShowDialogueLog();
                 break;
             case MenuMode.Inventory:
+                RemoveAllInMain();
                 Instantiate(_inventoryPrefab, _main.transform);
                 break;
         }
