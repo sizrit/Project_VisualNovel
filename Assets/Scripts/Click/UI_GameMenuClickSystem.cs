@@ -30,6 +30,40 @@ public class UI_GameMenuClickSystem : I_ClickSystem
     
     private MenuMode _currentMode = MenuMode.Inventory;
 
+    public delegate void CheckClickDelegate(RaycastHit2D hit);
+    private CheckClickDelegate _checkClickFunc = delegate {  };
+    List<CheckClickDelegate> _checkClickList = new List<CheckClickDelegate>();
+
+    public void SubScribeCheckClickFunc(CheckClickDelegate checkClickDelegate)
+    {
+        if (!_checkClickList.Contains(checkClickDelegate))
+        {
+            _checkClickList.Add(checkClickDelegate);
+        }
+    }
+
+    public void UnSubscribeCheckClick(CheckClickDelegate checkClickDelegate)
+    {
+        if (_checkClickList.Contains(checkClickDelegate))
+        {
+            _checkClickList.Remove(checkClickDelegate);
+        }
+    }
+
+    public void ResetCheckClickList()
+    {
+        _checkClickList = new List<CheckClickDelegate>();
+    }
+
+    private void MakeCheckClickFunc()
+    {
+        _checkClickFunc= delegate {  };
+        foreach (var checkClick in _checkClickList)
+        {
+            _checkClickFunc += checkClick;
+        }
+    }
+
     public void OnEnable()
     {
         _uiGameMenuManager = UI_GameMenuManager.GetInstance();
@@ -42,9 +76,12 @@ public class UI_GameMenuClickSystem : I_ClickSystem
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D[] hitList = Physics2D.GetRayIntersectionAll(ray);
 
+            MakeCheckClickFunc();
+            
             foreach (var hit in hitList)
             {
                 CheckClick(hit);
+                _checkClickFunc(hit);
             }
         }
     }
