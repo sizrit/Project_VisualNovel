@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Image = UnityEngine.UI.Image;
 
 public class StoryBoardGainClueEventManager : MonoBehaviour
 {
@@ -40,35 +39,14 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
 
     #endregion
 
-    private readonly Dictionary<string,string> _clueEventList = new Dictionary<string, string>();
-
-    private GameObject _eventPrefab;
+    private StoryBoardClickSystem _storyBoardClickSystem;
     private DialogueManager _dialogueManager;
     private string _currentStoryBoardId;
-
-    private StoryBoardClickSystem _storyBoardClickSystem;
-
+    private GameObject _eventPrefab;
+    
     delegate void EventDelegate();
     
-    EventDelegate _eventDelegate;
-
-    private void Func0(){}
-    
-    private void MakeClueEvent()
-    {
-        _clueEventList.Add("S0004","Clue01");
-    }
-
-    public List<string> GetClueEventIdList()
-    {
-        return new List<string>(_clueEventList.Keys);
-    }
-
-    private void LoadPrefab()
-    {
-        string loadPath = "StoryBoardEvent/GainClueEvent/Prefabs/GainCluePrefab";
-        _eventPrefab = Resources.Load<GameObject>(loadPath);
-    }
+    EventDelegate _eventDelegate =delegate {  };
 
     private void CheckStart()
     {
@@ -78,45 +56,56 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
             _storyBoardClickSystem.SubscribeCheckClick(CheckClickToStart);
         }
     }
+    
+    private void LoadPrefab()
+    {
+        string loadPath = "StoryBoardEvent/GainClueEvent/Prefabs/GainCluePrefab";
+        _eventPrefab = Resources.Load<GameObject>(loadPath);
+    }
 
     private void SetPrefabs()
     {
         ClueManager clueManager = ClueManager.GetInstance();
-            
-        clueManager.GetClue(_clueEventList[_currentStoryBoardId]);
-            
-        Clue clue = clueManager.GetClueData(_clueEventList[_currentStoryBoardId]);
-        
-        GameObject obj = Instantiate(_eventPrefab, this.transform);
-        obj.name = clue.id;
-        
-        string loadPath = "StoryBoardEvent/GainClueEvent/Images/"+clue.id;
-        obj.transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>(loadPath);
 
-        string showText = "";
+        Clue clue = clueManager.GetClueByStoryBoardId(_currentStoryBoardId);
+        string clueId = clue.id;
+        
+        clueManager.GainClue(clueId);
+        
+        string loadPath = "StoryBoardEvent/GainClueEvent/Prefabs/"+clueId;
+        
         LanguageType type = LanguageManager.GetInstance().GetLanguageType();
         switch (type)
         {
             case LanguageType.English:
-                showText ="단서 '" +  clue.en + "' 을 획득했습니다";
+                loadPath += "_En";
                 break;
             case LanguageType.Korean:
-                showText ="단서 '" +  clue.ko + "' 을 획득했습니다";
+                loadPath += "_Ko";
                 break;
         }
+        
+        GameObject obj = Instantiate(Resources.Load<GameObject>(loadPath), this.transform);
+        obj.name = clueId;
 
-        obj.transform.GetChild(2).GetComponent<Text>().text = showText;
-            
+        /*
+        GameObject obj = Instantiate(_eventPrefab, this.transform);
+
+        string loadPath = "";
+        Sprite sprite = Resources.Load<Sprite>(loadPath);
+
+        obj.transform.GetChild(1).GetComponent<Image>().sprite = sprite;
+        */
+        
         _storyBoardClickSystem.SubscribeCheckClick(CheckClickToEnd);
             
-        _eventDelegate = new EventDelegate(Func0);
+        _eventDelegate = delegate {  };
     }
     
 
     public void SetGettingClueEvent(string storyBoardIdValue)
     {
         _storyBoardClickSystem = StoryBoardClickSystem.GetInstance();
-
         _currentStoryBoardId = storyBoardIdValue;
         _dialogueManager = DialogueManager.GetInstance();
         _eventDelegate += CheckStart;
@@ -145,14 +134,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
         _storyBoardClickSystem.EnableStoryBoardCheckClick();
         
         Destroy(this.transform.GetChild(0).gameObject);
-        _eventDelegate = new EventDelegate(Func0);
-    }
-    
-    public void OnEnable()
-    {
-        _eventDelegate = new EventDelegate(Func0);
-        MakeClueEvent();
-        LoadPrefab();
+        _eventDelegate = delegate {  };
     }
 
     public void Update()

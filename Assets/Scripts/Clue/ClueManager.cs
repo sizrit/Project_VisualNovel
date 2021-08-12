@@ -21,18 +21,20 @@ public class ClueManager
 
     #endregion
     
-    private readonly Dictionary<string,Clue> _currentClueList = new Dictionary<string,Clue>();
-    private Dictionary<string,Clue> _allClueList = new Dictionary<string, Clue>();
+    private readonly Dictionary<string,Clue> _allClueList = new Dictionary<string, Clue>();
+    
+    private readonly List<string> _currentClueList = new List<string>();
+    private readonly Dictionary<string,Clue> _gainClueStoryBoardEvent = new Dictionary<string, Clue>();
 
-    public void GetClue(string idValue)
+    public void GainClue(string idValue)
     {
-        if (!_currentClueList.ContainsKey(idValue))
+        if (!_currentClueList.Contains(idValue))
         {
-            _currentClueList.Add(idValue,_allClueList[idValue]);
+            _currentClueList.Add(idValue);
         }
     }
 
-    public Dictionary<string, Clue> GetCurrentClueList()
+    public List<string> GetCurrentClueList()
     {
         return _currentClueList;
     }
@@ -42,12 +44,30 @@ public class ClueManager
         return _allClueList[idValue];
     }
 
+    public Clue GetClueByStoryBoardId(string storyBoardId)
+    {
+        return _gainClueStoryBoardEvent[storyBoardId];
+    }
+
+    public List<string> GetGainClueEventStoryBoardIdList()
+    {
+        return _gainClueStoryBoardEvent.Keys.ToList();
+    }
+
     public void OnEnable()
     {
         List<Clue> allClueList = ClueDataLoadManager.GetInstance().GetAllClueList().OrderBy(t=>t.id).ToList();
         foreach (var clue in allClueList)
         {
             _allClueList.Add(clue.id,clue);
+        }
+
+        foreach (var clue in _allClueList)
+        {
+            if (clue.Value.storyBoardId != "")
+            {
+                _gainClueStoryBoardEvent.Add(clue.Value.storyBoardId,clue.Value);
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ using UnityEngine;
 public struct Clue
 {
     public string id;
+    public string storyBoardId;
     public string en;
     public string ko;
     public string info;
