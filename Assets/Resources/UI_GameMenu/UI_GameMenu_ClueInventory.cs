@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public class UI_GameMenu_ClueInventory : MonoBehaviour
 {
-    private Dictionary<string, Clue> _currentClueList = new Dictionary<string, Clue>();
-    private Dictionary<string,Sprite> _clueIconImageList = new Dictionary<string, Sprite>();
+    private List<string> _currentClueList = new List<string>();
+    readonly private Dictionary<string,Sprite> _clueIconImageList = new Dictionary<string, Sprite>();
 
     private GameObject _clueIconPrefabs;
 
@@ -17,9 +17,6 @@ public class UI_GameMenu_ClueInventory : MonoBehaviour
     private void OnEnable()
     {
         _detail = GameObject.Find("Detail");
-        
-        ClueManager.GetInstance().GetClue("Clue01");
-        ClueManager.GetInstance().GetClue("Clue02");
 
         _currentClueList = ClueManager.GetInstance().GetCurrentClueList();
         LoadPrefabs();
@@ -38,11 +35,11 @@ public class UI_GameMenu_ClueInventory : MonoBehaviour
     private void LoadImages()
     {
         string loadPath = "UI_GameMenu/ClueInventory/Images/";
-        foreach (var clue in _currentClueList)
+        foreach (var clueId in _currentClueList)
         {
-            if (!_clueIconImageList.ContainsKey(clue.Value.id))
+            if (!_clueIconImageList.ContainsKey(clueId))
             {
-                _clueIconImageList.Add(clue.Value.id,Resources.Load<Sprite>(loadPath+clue.Value.id+"_Icon"));
+                _clueIconImageList.Add(clueId,Resources.Load<Sprite>(loadPath+clueId+"_Icon"));
             }
         }
     }
@@ -50,10 +47,10 @@ public class UI_GameMenu_ClueInventory : MonoBehaviour
     private void ShowClue()
     {
         int index = 0;
-        foreach (var clue in _currentClueList.OrderBy(t=>t.Key))
+        foreach (var clueId in _currentClueList.OrderBy(t=>t))
         {
             GameObject clueIcon = Instantiate(_clueIconPrefabs, this.transform);
-            clueIcon.name = clue.Key;
+            clueIcon.name = clueId;
             clueIcon.GetComponent<Image>().sprite = _clueIconImageList[clueIcon.name];
             clueIcon.transform.position = new Vector3(-550 + 200 * index++, 250, 100);
         }
@@ -61,7 +58,7 @@ public class UI_GameMenu_ClueInventory : MonoBehaviour
 
     private void CheckClick(RaycastHit2D hit)
     {
-        if (_currentClueList.ContainsKey(hit.transform.name))
+        if (_currentClueList.Contains(hit.transform.name))
         {
             ClearDetail();
             string loadPath = "UI_GameMenu/ClueInventory/Prefabs/";
