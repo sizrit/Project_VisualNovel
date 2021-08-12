@@ -39,6 +39,10 @@ public class GameSystem : MonoBehaviour
 
     #endregion
 
+    // GameModManager
+    private GameModeManager _gameModeManager = GameModeManager.GetInstance();
+
+
     // ClickSystem
     private ClickSystem _clickSystem;
     private UI_GameMenuClickSystem _uiGameMenuClickSystem;
@@ -128,6 +132,8 @@ public class GameSystem : MonoBehaviour
     
     void Update()
     {
+        _gameModeManager.Update();
+        
         _clickSystem.Update();
         if (!_isPaused)
         {
