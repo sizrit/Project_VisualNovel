@@ -18,6 +18,7 @@ public class UI_Button_MenuButton : MonoBehaviour
         if (hit.transform == this.transform)
         {
             UI_GameMenuManager.GetInstance().InstantiateGameMenu();
+            UI_GameMenuManager.GetInstance().SetMenuMode(MenuMode.Inventory);
             ClickSystem.GetInstance().SetClickMode(ClickMode.Menu);
         }
     }
