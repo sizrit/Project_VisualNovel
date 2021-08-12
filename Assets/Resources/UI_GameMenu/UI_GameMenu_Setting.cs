@@ -5,29 +5,13 @@ using UnityEngine;
 
 public class UI_GameMenu_Setting : MonoBehaviour
 {
-    
-    
-    
     private void OnEnable()
     {
-        
+        UI_GameMenuClickSystem.GetInstance().SubScribeCheckClickFunc(CheckClick);
     }
 
-    private void CheckClick()
+    private void CheckClick(RaycastHit2D hit)
     {
-        
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log("setting click");
     }
 }

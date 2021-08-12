@@ -124,8 +124,7 @@ public class UI_GameMenuClickSystem : I_ClickSystem
                 break;
         }
     }
-    
-    
+
 
     // Update is called once per frame
     public void Update()
