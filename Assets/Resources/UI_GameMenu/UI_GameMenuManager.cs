@@ -44,7 +44,9 @@ public class UI_GameMenuManager : MonoBehaviour
     private GameObject _main;
     private GameObject _dialogueLogPrefab;
     private GameObject _inventoryPrefab;
+    private GameObject _clueInventoryPrefab;
     private GameObject _settingPrefab;
+    
 
     private void OnEnable()
     {
@@ -54,7 +56,8 @@ public class UI_GameMenuManager : MonoBehaviour
         _uiGameMenu = Resources.Load<GameObject>(loadPath + "UI_GameMenuPrefab");
 
         _dialogueLogPrefab = Resources.Load<GameObject>(loadPath + "DialogueLogPrefab");
-        _inventoryPrefab = Resources.Load<GameObject>(loadPath + "ClueInventoryPrefab");
+        _inventoryPrefab = Resources.Load<GameObject>(loadPath + "InventoryPrefab");
+        _clueInventoryPrefab = Resources.Load<GameObject>(loadPath + "ClueInventoryPrefab");
         _settingPrefab = Resources.Load<GameObject>(loadPath + "SettingPrefab");
     }
 
@@ -77,6 +80,10 @@ public class UI_GameMenuManager : MonoBehaviour
             case MenuMode.Inventory:
                 RemoveAllInMain();
                 Instantiate(_inventoryPrefab, _main.transform);
+                break;
+            case MenuMode.ClueInventory:
+                RemoveAllInMain();
+                Instantiate(_clueInventoryPrefab, _main.transform);
                 break;
             case MenuMode.Setting:
                 RemoveAllInMain();

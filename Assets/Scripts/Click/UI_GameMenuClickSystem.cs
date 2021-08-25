@@ -7,6 +7,7 @@ public enum MenuMode
 {
     DialogueLog,
     Inventory,
+    ClueInventory,
     Setting
 }
 
@@ -96,6 +97,14 @@ public class UI_GameMenuClickSystem : I_ClickSystem
                 {
                     _currentMode = MenuMode.Inventory;
                     _uiGameMenuManager.SetMenuMode(MenuMode.Inventory);
+                }
+                break;
+            
+            case "ClueInventory":
+                if (_currentMode != MenuMode.ClueInventory)
+                {
+                    _currentMode = MenuMode.ClueInventory;
+                    _uiGameMenuManager.SetMenuMode(MenuMode.ClueInventory);
                 }
                 break;
             
