@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Inventory : MonoBehaviour
+public class UI_GameMenu_Inventory : MonoBehaviour
 {
     readonly ItemManager _itemManager = ItemManager.GetInstance();
     private IEnumerable<Item> _currentItemList;
@@ -65,7 +65,6 @@ public class Inventory : MonoBehaviour
     {
         if (currentDetail != item)
         {
-            Debug.Log(item);
             currentDetail = item;
             Instantiate(_detailPrefabList[item], _detailParentGameObject.transform);
         }
@@ -85,7 +84,6 @@ public class Inventory : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            Debug.Log("Add Items");
             _itemManager.AddItem(Item.Item01);
             _itemManager.AddItem(Item.Item02);   
         }
