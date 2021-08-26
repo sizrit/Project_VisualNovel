@@ -40,7 +40,7 @@ public class ClueManager
         }
     }
 
-    public List<Clue> GetCurrentClueList()
+    public IEnumerable<Clue> GetCurrentClueList()
     {
         return _currentClueList;
     }
@@ -50,7 +50,7 @@ public class ClueManager
         return _gainClueStoryBoardEvent[storyBoardId];
     }
 
-    public List<string> GetGainClueEventStoryBoardIdList()
+    public IEnumerable<string> GetGainClueEventStoryBoardIdList()
     {
         if (!_isLoadDone)
         {

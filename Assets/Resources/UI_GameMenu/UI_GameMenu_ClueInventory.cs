@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class UI_GameMenu_ClueInventory : MonoBehaviour
 {
-    private List<Clue> _currentClueList = new List<Clue>();
+    private IEnumerable<Clue> _currentClueList;
     private readonly Dictionary<Clue,Sprite> _clueIconImageList = new Dictionary<Clue, Sprite>();
 
     private GameObject _clueIconPrefabs;
