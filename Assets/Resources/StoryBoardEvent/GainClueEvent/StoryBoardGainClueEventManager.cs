@@ -68,11 +68,10 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
         ClueManager clueManager = ClueManager.GetInstance();
 
         Clue clue = clueManager.GetClueByStoryBoardId(_currentStoryBoardId);
-        string clueId = clue.id;
+
+        clueManager.GainClue(clue);
         
-        clueManager.GainClue(clueId);
-        
-        string loadPath = "StoryBoardEvent/GainClueEvent/Prefabs/"+clueId;
+        string loadPath = "StoryBoardEvent/GainClueEvent/Prefabs/"+clue;
         
         LanguageType type = LanguageManager.GetInstance().GetLanguageType();
         switch (type)
@@ -86,7 +85,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
         }
         
         GameObject obj = Instantiate(Resources.Load<GameObject>(loadPath), this.transform);
-        obj.name = clueId;
+        obj.name = clue.ToString();
 
         /*
         GameObject obj = Instantiate(_eventPrefab, this.transform);
