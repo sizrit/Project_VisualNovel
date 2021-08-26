@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
-
+/*
 [Serializable]
 public struct Clue
 {
@@ -64,3 +64,4 @@ public class ClueDataLoadManager
         return JsonUtility.FromJson<T>(jsonData.ToString());
     }
 }
+*/
