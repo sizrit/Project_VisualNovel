@@ -7,12 +7,14 @@ using UnityEngine.UI;
 
 public class UI_GameMenu_ClueInventory : MonoBehaviour
 {
-    private List<string> _currentClueList = new List<string>();
-    readonly private Dictionary<string,Sprite> _clueIconImageList = new Dictionary<string, Sprite>();
+    private List<Clue> _currentClueList = new List<Clue>();
+    private readonly Dictionary<Clue,Sprite> _clueIconImageList = new Dictionary<Clue, Sprite>();
 
     private GameObject _clueIconPrefabs;
 
     private GameObject _detail;
+
+    [SerializeField] private string currentClueDetail = "";
 
     private void OnEnable()
     {
@@ -35,11 +37,11 @@ public class UI_GameMenu_ClueInventory : MonoBehaviour
     private void LoadImages()
     {
         string loadPath = "UI_GameMenu/ClueInventory/Images/";
-        foreach (var clueId in _currentClueList)
+        foreach (var clue in _currentClueList)
         {
-            if (!_clueIconImageList.ContainsKey(clueId))
+            if (!_clueIconImageList.ContainsKey(clue))
             {
-                _clueIconImageList.Add(clueId,Resources.Load<Sprite>(loadPath+clueId+"_Icon"));
+                _clueIconImageList.Add(clue,Resources.Load<Sprite>(loadPath+clue+"_Icon"));
             }
         }
     }
@@ -47,19 +49,32 @@ public class UI_GameMenu_ClueInventory : MonoBehaviour
     private void ShowClue()
     {
         int index = 0;
-        foreach (var clueId in _currentClueList.OrderBy(t=>t))
+        foreach (var clue in _currentClueList.OrderBy(t=>t))
         {
             GameObject clueIcon = Instantiate(_clueIconPrefabs, this.transform);
-            clueIcon.name = clueId;
-            clueIcon.GetComponent<Image>().sprite = _clueIconImageList[clueIcon.name];
+            clueIcon.name = clue.ToString();
+            clueIcon.GetComponent<Image>().sprite = _clueIconImageList[clue];
             clueIcon.transform.position = new Vector3(-550 + 200 * index++, 250, 100);
         }
     }
 
     private void CheckClick(RaycastHit2D hit)
     {
-        if (_currentClueList.Contains(hit.transform.name))
+        foreach (var clue in _currentClueList)
         {
+            if (clue.ToString() == hit.transform.name)
+            {
+                ShowDetail(hit);
+            }
+        }
+    }
+
+    private void ShowDetail(RaycastHit2D hit)
+    {
+        string clueName = hit.transform.name;
+        if (currentClueDetail != clueName)
+        {
+            currentClueDetail = clueName;
             ClearDetail();
             string loadPath = "UI_GameMenu/ClueInventory/Prefabs/";
             Instantiate(Resources.Load<GameObject>(loadPath+hit.transform.name+"_detail"),_detail.transform);
