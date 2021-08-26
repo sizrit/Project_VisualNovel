@@ -51,8 +51,7 @@ public class GameSystem : MonoBehaviour
     private StoryBoardDataLoadManager _storyBoardDataLoadManager;
     private DialogueDataLoadManager _dialogueDataLoadManager;
     private StoryBoardSelectionEventDataLoadManager _storyBoardSelectionEventDataLoadManager;
-    private ClueDataLoadManager _clueDataLoadManager;
-    
+
     // Loader & Manager
     private BgLoadManager _bgLoadManager;
     
@@ -78,17 +77,18 @@ public class GameSystem : MonoBehaviour
         _storyBoardDataLoadManager.OnEnable();
         _dialogueDataLoadManager.OnEnable();
         _storyBoardSelectionEventDataLoadManager.OnEnable();
-        _clueDataLoadManager.OnEnable();
-        
+
         _bgLoadManager.OnEnable();
         
         _storyBoardManager.OnEnable();
-        _storyBoardEventManager.OnEnable();
+        
         _dialogueManager.OnEnable();
         _dialogueTextAnimationManager.OnEnable();
         _dialogueTextEffectManager.OnEnable();
         _dialogueTextColorManager.OnEnable();
         _clueManager.OnEnable();
+        
+        _storyBoardEventManager.OnEnable();
         //_storyBoardGainClueEventManager.OnEnable();
     }
 
@@ -100,8 +100,7 @@ public class GameSystem : MonoBehaviour
         _storyBoardDataLoadManager =StoryBoardDataLoadManager.GetInstance();
         _dialogueDataLoadManager = DialogueDataLoadManager.GetInstance();
         _storyBoardSelectionEventDataLoadManager = StoryBoardSelectionEventDataLoadManager.GetInstance();
-        _clueDataLoadManager =ClueDataLoadManager.GetInstance();
-        
+
         _bgLoadManager = BgLoadManager.GetInstance();
         
         _storyBoardManager = StoryBoardManager.GetInstance();
