@@ -19,9 +19,7 @@ public class UI_GameMenu_DialogueLogManager
     }
 
     #endregion
-    
-    private GameObject _dialogueTextGameObject;
-    
+
     List<string> _dialogueList= new List<string>();
 
     public void ResetDialogueLog()

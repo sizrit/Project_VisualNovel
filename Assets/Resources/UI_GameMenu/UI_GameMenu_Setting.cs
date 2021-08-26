@@ -12,6 +12,6 @@ public class UI_GameMenu_Setting : MonoBehaviour
 
     private void CheckClick(RaycastHit2D hit)
     {
-        Debug.Log("setting click");
+
     }
 }
