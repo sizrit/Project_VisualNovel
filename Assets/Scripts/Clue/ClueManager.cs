@@ -4,6 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public enum Clue
+{
+    Clue01,
+    Clue02
+}
+
 public class ClueManager
 {
     #region Singleton
@@ -20,28 +26,23 @@ public class ClueManager
     }
 
     #endregion
-    
-    private readonly Dictionary<string,Clue> _allClueList = new Dictionary<string, Clue>();
-    
-    private readonly List<string> _currentClueList = new List<string>();
-    private readonly Dictionary<string,Clue> _gainClueStoryBoardEvent = new Dictionary<string, Clue>();
 
-    public void GainClue(string idValue)
+    private List<Clue> _allClueList;
+    private readonly List<Clue> _currentClueList = new List<Clue>();
+    private readonly Dictionary<string,Clue> _gainClueStoryBoardEvent = new Dictionary<string, Clue>();
+    private bool _isLoadDone = false;
+
+    public void GainClue(Clue clue)
     {
-        if (!_currentClueList.Contains(idValue))
+        if (!_currentClueList.Contains(clue))
         {
-            _currentClueList.Add(idValue);
+            _currentClueList.Add(clue);
         }
     }
 
-    public List<string> GetCurrentClueList()
+    public List<Clue> GetCurrentClueList()
     {
         return _currentClueList;
-    }
-
-    public Clue GetClueData(string idValue)
-    {
-        return _allClueList[idValue];
     }
 
     public Clue GetClueByStoryBoardId(string storyBoardId)
@@ -51,23 +52,22 @@ public class ClueManager
 
     public List<string> GetGainClueEventStoryBoardIdList()
     {
+        if (!_isLoadDone)
+        {
+            MakeClueList();
+        }
         return _gainClueStoryBoardEvent.Keys.ToList();
     }
 
     public void OnEnable()
     {
-        List<Clue> allClueList = ClueDataLoadManager.GetInstance().GetAllClueList().OrderBy(t=>t.id).ToList();
-        foreach (var clue in allClueList)
-        {
-            _allClueList.Add(clue.id,clue);
-        }
+        _allClueList = Enum.GetValues(typeof(Clue)).Cast<Clue>().ToList();
+        MakeClueList();
+    }
 
-        foreach (var clue in _allClueList)
-        {
-            if (clue.Value.storyBoardId != "")
-            {
-                _gainClueStoryBoardEvent.Add(clue.Value.storyBoardId,clue.Value);
-            }
-        }
+    private void MakeClueList()
+    {
+        _gainClueStoryBoardEvent.Add("S0004",Clue.Clue01);
+        _isLoadDone = true;
     }
 }
