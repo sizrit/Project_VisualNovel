@@ -101,8 +101,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
         _eventDelegate = delegate {  };
     }
     
-
-    public void SetGettingClueEvent(string storyBoardIdValue)
+    public void SetGainClueEvent(string storyBoardIdValue)
     {
         _storyBoardClickSystem = StoryBoardClickSystem.GetInstance();
         _currentStoryBoardId = storyBoardIdValue;

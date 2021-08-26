@@ -64,7 +64,7 @@ public class StoryBoardEventManager
 
     private void GettingClueEvent()
     {
-        _clueEventManager.SetGettingClueEvent(_currentStoryBoardId);
+        _clueEventManager.SetGainClueEvent(_currentStoryBoardId);
     }
 
     public void OnEnable()
