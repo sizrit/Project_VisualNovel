@@ -4,6 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public enum Clue
+{
+    Clue01,
+    Clue02
+}
+
 public class ClueManager
 {
     #region Singleton
@@ -20,34 +26,48 @@ public class ClueManager
     }
 
     #endregion
-    
-    private readonly Dictionary<string,Clue> _currentClueList = new Dictionary<string,Clue>();
-    private Dictionary<string,Clue> _allClueList = new Dictionary<string, Clue>();
 
-    public void GetClue(string idValue)
+    private List<Clue> _allClueList;
+    private readonly List<Clue> _currentClueList = new List<Clue>();
+    private readonly Dictionary<string,Clue> _gainClueStoryBoardEvent = new Dictionary<string, Clue>();
+    private bool _isLoadDone = false;
+
+    public void GainClue(Clue clue)
     {
-        if (!_currentClueList.ContainsKey(idValue))
+        if (!_currentClueList.Contains(clue))
         {
-            _currentClueList.Add(idValue,_allClueList[idValue]);
+            _currentClueList.Add(clue);
         }
     }
 
-    public Dictionary<string, Clue> GetCurrentClueList()
+    public IEnumerable<Clue> GetCurrentClueList()
     {
         return _currentClueList;
     }
 
-    public Clue GetClueData(string idValue)
+    public Clue GetClueByStoryBoardId(string storyBoardId)
     {
-        return _allClueList[idValue];
+        return _gainClueStoryBoardEvent[storyBoardId];
+    }
+
+    public IEnumerable<string> GetGainClueEventStoryBoardIdList()
+    {
+        if (!_isLoadDone)
+        {
+            MakeClueList();
+        }
+        return _gainClueStoryBoardEvent.Keys.ToList();
     }
 
     public void OnEnable()
     {
-        List<Clue> allClueList = ClueDataLoadManager.GetInstance().GetAllClueList().OrderBy(t=>t.id).ToList();
-        foreach (var clue in allClueList)
-        {
-            _allClueList.Add(clue.id,clue);
-        }
+        _allClueList = Enum.GetValues(typeof(Clue)).Cast<Clue>().ToList();
+        MakeClueList();
+    }
+
+    private void MakeClueList()
+    {
+        _gainClueStoryBoardEvent.Add("S0004",Clue.Clue01);
+        _isLoadDone = true;
     }
 }

@@ -39,15 +39,19 @@ public class GameSystem : MonoBehaviour
 
     #endregion
 
+    // GameModManager
+    private GameModeManager _gameModeManager = GameModeManager.GetInstance();
+
+
     // ClickSystem
     private ClickSystem _clickSystem;
+    private UI_GameMenuClickSystem _uiGameMenuClickSystem;
     
     // Loader
     private StoryBoardDataLoadManager _storyBoardDataLoadManager;
     private DialogueDataLoadManager _dialogueDataLoadManager;
     private StoryBoardSelectionEventDataLoadManager _storyBoardSelectionEventDataLoadManager;
-    private ClueDataLoadManager _clueDataLoadManager;
-    
+
     // Loader & Manager
     private BgLoadManager _bgLoadManager;
     
@@ -68,33 +72,35 @@ public class GameSystem : MonoBehaviour
         GetAllInstance();
 
         _clickSystem.OnEnable();
+        _uiGameMenuClickSystem.OnEnable();
         
         _storyBoardDataLoadManager.OnEnable();
         _dialogueDataLoadManager.OnEnable();
         _storyBoardSelectionEventDataLoadManager.OnEnable();
-        _clueDataLoadManager.OnEnable();
-        
+
         _bgLoadManager.OnEnable();
         
         _storyBoardManager.OnEnable();
-        _storyBoardEventManager.OnEnable();
+        
         _dialogueManager.OnEnable();
         _dialogueTextAnimationManager.OnEnable();
         _dialogueTextEffectManager.OnEnable();
         _dialogueTextColorManager.OnEnable();
         _clueManager.OnEnable();
+        
+        _storyBoardEventManager.OnEnable();
         //_storyBoardGainClueEventManager.OnEnable();
     }
 
     private void GetAllInstance()
     {
         _clickSystem =ClickSystem.GetInstance();
+        _uiGameMenuClickSystem = UI_GameMenuClickSystem.GetInstance();
         
         _storyBoardDataLoadManager =StoryBoardDataLoadManager.GetInstance();
         _dialogueDataLoadManager = DialogueDataLoadManager.GetInstance();
         _storyBoardSelectionEventDataLoadManager = StoryBoardSelectionEventDataLoadManager.GetInstance();
-        _clueDataLoadManager =ClueDataLoadManager.GetInstance();
-        
+
         _bgLoadManager = BgLoadManager.GetInstance();
         
         _storyBoardManager = StoryBoardManager.GetInstance();
@@ -125,6 +131,8 @@ public class GameSystem : MonoBehaviour
     
     void Update()
     {
+        _gameModeManager.Update();
+        
         _clickSystem.Update();
         if (!_isPaused)
         {

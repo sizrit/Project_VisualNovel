@@ -91,6 +91,7 @@ public class StoryBoardClickSystem : I_ClickSystem
     {
         if (Input.GetMouseButtonDown(0))
         {
+            ClickEffectManager.GetInstance().MakeClickEffect();
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D[] hitList = Physics2D.GetRayIntersectionAll(ray);
 
