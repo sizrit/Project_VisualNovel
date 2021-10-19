@@ -26,30 +26,36 @@
     },
     {
       "storyBoardId": "S0005",
-      "speaker": "라디오",
-      "dialogueText": "하지만 최근 송곳살인마의 모방범이 많아지는 와중에...",
-      "color": "White"
-    },
-    {
-      "storyBoardId": "S0006",
       "speaker": "",
       "dialogueText": "",
       "color": "White"
     },
     {
+      "storyBoardId": "S0006",
+      "speaker": "라디오",
+      "dialogueText": "하지만 최근 송곳살인마의 모방범이 많아지는 와중에...",
+      "color": "White"
+    },
+    {
       "storyBoardId": "S0007",
       "speaker": "",
-      "dialogueText": "'치직... 치이이이이이이...'",
+      "dialogueText": "",
       "color": "White"
     },
     {
       "storyBoardId": "S0008",
       "speaker": "",
-      "dialogueText": "'와장창!'",
+      "dialogueText": "'치직... 치이이이이이이...'",
       "color": "White"
     },
     {
       "storyBoardId": "S0009",
+      "speaker": "",
+      "dialogueText": "'와장창!'",
+      "color": "White"
+    },
+    {
+      "storyBoardId": "S0010",
       "speaker": "",
       "dialogueText": "끝endddddddddddd",
       "color": "White"
