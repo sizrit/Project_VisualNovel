@@ -60,9 +60,15 @@ public class StoryBoardManager
         {
             _bgLoadManager.SetBg(_currentStoryBoard.bgId);
             _imageLoadManager.SetImage(_currentStoryBoard.imageId);
-            _storyBoardEventManager.CheckEvent(_currentStoryBoard.storyBoardId);
-            _dialogueManager.SetDialogue(_currentStoryBoard.storyBoardId);
-            SetNextStoryBoard();
+            if (_storyBoardEventManager.IsStoryBoardEvent(_currentStoryBoard.storyBoardId))
+            {
+                _storyBoardEventManager.StoryBoardEventOn(_currentStoryBoard.storyBoardId);
+            }
+            else
+            {
+                _dialogueManager.SetDialogue(_currentStoryBoard.storyBoardId);
+                SetNextStoryBoard();
+            }
         }
         else
         {
