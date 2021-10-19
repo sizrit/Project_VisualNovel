@@ -10,6 +10,21 @@ public enum Clue
     Clue02
 }
 
+public struct ClueEventData
+{
+
+    public string startStoryBoardId;
+    public string nextStoryBoardId;
+    public Clue clue;
+    
+    public ClueEventData(string startStoryBoardId, string nextStoryBoardId, Clue clue)
+    {
+        this.startStoryBoardId = startStoryBoardId;
+        this.nextStoryBoardId = nextStoryBoardId;
+        this.clue = clue;
+    }
+}
+
 public class ClueManager
 {
     #region Singleton
@@ -29,7 +44,7 @@ public class ClueManager
 
     private List<Clue> _allClueList;
     private readonly List<Clue> _currentClueList = new List<Clue>();
-    private readonly Dictionary<string,Clue> _gainClueStoryBoardEvent = new Dictionary<string, Clue>();
+    private readonly Dictionary<string,ClueEventData> _gainClueStoryBoardEvent = new Dictionary<string, ClueEventData>();
     private bool _isLoadDone = false;
 
     public void GainClue(Clue clue)
@@ -45,7 +60,7 @@ public class ClueManager
         return _currentClueList;
     }
 
-    public Clue GetClueByStoryBoardId(string storyBoardId)
+    public ClueEventData GetClueEventByStoryBoardId(string storyBoardId)
     {
         return _gainClueStoryBoardEvent[storyBoardId];
     }
@@ -67,7 +82,7 @@ public class ClueManager
 
     private void MakeClueList()
     {
-        _gainClueStoryBoardEvent.Add("S0004",Clue.Clue01);
+        _gainClueStoryBoardEvent.Add("S0005",new ClueEventData("S0005","S0006",Clue.Clue01));
         _isLoadDone = true;
     }
 }
