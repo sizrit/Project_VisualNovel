@@ -40,35 +40,18 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
     #endregion
 
     private StoryBoardClickSystem _storyBoardClickSystem;
-    private DialogueManager _dialogueManager;
+    private StoryBoardManager _storyBoardManager;
     private string _currentStoryBoardId;
-    private GameObject _eventPrefab;
-    
-    delegate void EventDelegate();
-    
-    EventDelegate _eventDelegate =delegate {  };
-
-    private void CheckStart()
-    {
-        if (_dialogueManager.CheckIsAnimationEnd())
-        {
-            _storyBoardClickSystem.DisableStoryBoardCheckClick();
-            _storyBoardClickSystem.SubscribeCheckClick(CheckClickToStart);
-        }
-    }
-    
-    private void LoadPrefab()
-    {
-        string loadPath = "StoryBoardEvent/GainClueEvent/Prefabs/GainCluePrefab";
-        _eventPrefab = Resources.Load<GameObject>(loadPath);
-    }
+    private string _nextStoryBoardId;
 
     private void SetPrefabs()
     {
         ClueManager clueManager = ClueManager.GetInstance();
 
-        Clue clue = clueManager.GetClueByStoryBoardId(_currentStoryBoardId);
-
+        ClueEventData clueEventData = clueManager.GetClueEventByStoryBoardId(_currentStoryBoardId);
+        Clue clue = clueEventData.clue;
+        _nextStoryBoardId = clueEventData.nextStoryBoardId;
+        
         clueManager.GainClue(clue);
         
         string loadPath = "StoryBoardEvent/GainClueEvent/Prefabs/"+clue;
@@ -87,38 +70,20 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
         GameObject obj = Instantiate(Resources.Load<GameObject>(loadPath), this.transform);
         obj.name = clue.ToString();
 
-        /*
-        GameObject obj = Instantiate(_eventPrefab, this.transform);
-
-        string loadPath = "";
-        Sprite sprite = Resources.Load<Sprite>(loadPath);
-
-        obj.transform.GetChild(1).GetComponent<Image>().sprite = sprite;
-        */
-        
-        _storyBoardClickSystem.SubscribeCheckClick(CheckClickToEnd);
-            
-        _eventDelegate = delegate {  };
+        _storyBoardClickSystem.SubscribeCheckClick(CheckClick);
     }
     
     public void SetGainClueEvent(string storyBoardIdValue)
     {
         _storyBoardClickSystem = StoryBoardClickSystem.GetInstance();
+        _storyBoardManager = StoryBoardManager.GetInstance();
         _currentStoryBoardId = storyBoardIdValue;
-        _dialogueManager = DialogueManager.GetInstance();
-        _eventDelegate += CheckStart;
+        _storyBoardClickSystem.DisableStoryBoardCheckClick();
+
+        SetPrefabs();
     }
 
-    private void CheckClickToStart(RaycastHit2D hit)
-    {
-        if (hit.transform.CompareTag("StoryBoard"))
-        {
-            _storyBoardClickSystem.UnsubscribeCheckClick(CheckClickToStart);
-            SetPrefabs();
-        }
-    }
-    
-    private void CheckClickToEnd( RaycastHit2D hit)
+    private void CheckClick( RaycastHit2D hit)
     {
         if (hit.transform == this.transform.GetChild(0))
         {
@@ -128,15 +93,10 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
 
     private void EndEvent()
     {
-        _storyBoardClickSystem.UnsubscribeCheckClick(CheckClickToEnd);
+        _storyBoardClickSystem.UnsubscribeCheckClick(CheckClick);
         _storyBoardClickSystem.EnableStoryBoardCheckClick();
-        
+        _storyBoardManager.SetNextStoryBoard(_nextStoryBoardId);
+        _storyBoardManager.SetStoryBoard();
         Destroy(this.transform.GetChild(0).gameObject);
-        _eventDelegate = delegate {  };
-    }
-
-    public void Update()
-    {
-        _eventDelegate();
     }
 }
