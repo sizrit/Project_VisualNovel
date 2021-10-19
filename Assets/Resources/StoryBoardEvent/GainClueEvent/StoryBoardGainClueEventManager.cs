@@ -87,16 +87,30 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
     {
         if (hit.transform == this.transform.GetChild(0))
         {
-            EndEvent();
+            Destroy(this.transform.GetChild(0).gameObject);
+            _storyBoardClickSystem.UnsubscribeCheckClick(CheckClick);
+            _storyBoardClickSystem.SubscribeCheckClick(LastCheckClick);
+        }
+    }
+
+    private void LastCheckClick(RaycastHit2D hit)
+    {
+        GameObject dialogueClickZone = GameObject.Find("DialogueClickZone");
+        if (dialogueClickZone != null)
+        {
+            if (hit.transform == dialogueClickZone.transform)
+            {
+                EndEvent();
+            }
         }
     }
 
     private void EndEvent()
     {
-        _storyBoardClickSystem.UnsubscribeCheckClick(CheckClick);
+        _storyBoardClickSystem.UnsubscribeCheckClick(LastCheckClick);
         _storyBoardClickSystem.EnableStoryBoardCheckClick();
         _storyBoardManager.SetNextStoryBoard(_nextStoryBoardId);
         _storyBoardManager.SetStoryBoard();
-        Destroy(this.transform.GetChild(0).gameObject);
     }
+    
 }
