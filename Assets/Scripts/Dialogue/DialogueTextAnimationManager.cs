@@ -71,6 +71,8 @@ public class DialogueTextAnimationManager
 
     public void ResetDialogueTextAnimationManager()
     {
+        _currentDialogueText.GetComponent<Text>().text = "";
+        _pastDialogueText.GetComponent<Text>().text = "";
         _dialogueTextDataChar = "".ToCharArray();
         _currentString = "";
         _pastString = "";
