@@ -45,7 +45,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
     private StoryBoardManager _storyBoardManager;
     private DialogueManager _dialogueManager;
 
-    private List<string> _storyBoardIdList = new List<string>();
+    private List<string> _selectionStoryBoardIdList = new List<string>();
     private List<string> _textList = new List<string>();
 
     private GameObject _selectionGameObject;
@@ -67,7 +67,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
     private void RestObject()
     {
         _eventDelegate=new EventDelegate(func0);
-        _storyBoardIdList= new List<string>();
+        _selectionStoryBoardIdList= new List<string>();
         _textList =new List<string>();
         for (int i = 0; i < this.transform.childCount; i++)
         {
@@ -78,6 +78,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
 
     public void SetSelectionEvent(string storyBoardIdValue)
     {
+        Debug.Log("sss");
         _storyBoardClickSystem = StoryBoardClickSystem.GetInstance();
         _storyBoardClickSystem.DisableStoryBoardCheckClick();
         
@@ -85,34 +86,30 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
         _dialogueManager = DialogueManager.GetInstance();
 
         SelectionInfo info = _selectionEventDataLoadManager.GetStoryBoardSelectionEventData(storyBoardIdValue);
-        _storyBoardIdList = info.nextStoryIdList;
+        _selectionStoryBoardIdList = info.nextStoryIdList;
         _textList = info.textList;
 
-        _eventDelegate += ShowSelectionEvent;
+        ShowSelectionEvent();
     }
 
     private void ShowSelectionEvent()
     {
-        if (_dialogueManager.CheckIsAnimationEnd())
+        for (int i = 0; i < _selectionStoryBoardIdList.Count; i++)
         {
-            for (int i = 0; i < _storyBoardIdList.Count; i++)
-            {
-                GameObject obj =  Instantiate(_selectionGameObject, this.transform);
-                obj.transform.localPosition = new Vector3(0, 100 * _storyBoardIdList.Count - 200 * i, 0);
-                obj.transform.GetChild(0).GetComponent<Text>().text = _textList[i];
-            }
-            _eventDelegate=new EventDelegate(func0);
-            _storyBoardClickSystem.SubscribeCheckClick(CheckClick);
+            GameObject obj =  Instantiate(_selectionGameObject, this.transform);
+            obj.transform.localPosition = new Vector3(0, 100 * _selectionStoryBoardIdList.Count - 200 * i, 0);
+            obj.transform.GetChild(0).GetComponent<Text>().text = _textList[i];
         }
+        _storyBoardClickSystem.SubscribeCheckClick(CheckClick);
     }
 
     private void CheckClick(RaycastHit2D hit)
     {
-        for (int i = 0; i < _storyBoardIdList.Count; i++)
+        for (int i = 0; i < _selectionStoryBoardIdList.Count; i++)
         {
             if (hit.transform == this.transform.GetChild(i))
             {
-                _storyBoardManager.SetNextStoryBoard(_storyBoardIdList[i]);
+                _storyBoardManager.SetNextStoryBoard(_selectionStoryBoardIdList[i]);
                 _storyBoardManager.SetStoryBoard();
 
                 RestObject();
@@ -121,10 +118,5 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
                 _storyBoardClickSystem.EnableStoryBoardCheckClick();
             }
         }
-    }
-
-    private void Update()
-    {
-        _eventDelegate();
     }
 }
