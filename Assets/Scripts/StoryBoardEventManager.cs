@@ -47,14 +47,15 @@ public class StoryBoardEventManager
         }
     }
 
-    public void CheckEvent(string storyBoardIdValue)
+    public bool IsStoryBoardEvent(string storyBoardIdValue)
+    {
+        return _eventList.ContainsKey(storyBoardIdValue);
+    }
+
+    public void StoryBoardEventOn(string storyBoardIdValue)
     {
         _currentStoryBoardId = storyBoardIdValue;
-        
-        if (_eventList.ContainsKey(_currentStoryBoardId))
-        {
-            _eventList[_currentStoryBoardId]();
-        }
+        _eventList[storyBoardIdValue]();
     }
 
     private void SelectionEvent()
