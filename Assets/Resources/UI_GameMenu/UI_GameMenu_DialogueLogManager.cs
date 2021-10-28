@@ -40,7 +40,7 @@ public class UI_GameMenu_DialogueLogManager
         string logString ="";
         foreach (var dialogue in _dialogueList)
         {
-            logString += dialogue + "\n\n\n\n"+"우효우효우효우효"+"\n\n\n";
+            logString += dialogue + "\n\n\n\n";
         }
         GameObject.Find("DialogueLogContent").GetComponent<Text>().text = logString;
         GameObject.Find("DialogueLogView").GetComponent<ScrollSystem>().SetPosition();
