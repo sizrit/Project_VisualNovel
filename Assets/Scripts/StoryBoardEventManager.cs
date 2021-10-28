@@ -39,11 +39,11 @@ public class StoryBoardEventManager
             _eventList.Add(selectionId,selection);
         }
 
-        EventDelegate gettingClue = GettingClueEvent;
-        IEnumerable<string> gettingClueIdList = ClueManager.GetInstance().GetGainClueEventStoryBoardIdList();
-        foreach (var gettingClueId in gettingClueIdList)
+        EventDelegate gainClue = GainClueEvent;
+        IEnumerable<string> gainClueIdList = ClueManager.GetInstance().GetGainClueEventStoryBoardIdList();
+        foreach (var gainClueId in gainClueIdList)
         {
-            _eventList.Add(gettingClueId,gettingClue);
+            _eventList.Add(gainClueId,gainClue);
         }
     }
 
@@ -63,7 +63,7 @@ public class StoryBoardEventManager
         StoryBoardSelectionEventManager.GetInstance().SetSelectionEvent(_currentStoryBoardId);
     }
 
-    private void GettingClueEvent()
+    private void GainClueEvent()
     {
         _clueEventManager.SetGainClueEvent(_currentStoryBoardId);
     }

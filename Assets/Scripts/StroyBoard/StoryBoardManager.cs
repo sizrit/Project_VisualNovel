@@ -75,12 +75,16 @@ public class StoryBoardManager
             _dialogueManager.EndAnimationForced();
         }
     }
-    
+
     private void CheckClick(RaycastHit2D hit)
     {
-        if (hit.transform.CompareTag("StoryBoard"))
+        GameObject dialogueClickZone = GameObject.Find("DialogueClickZone");
+        if (dialogueClickZone != null)
         {
-            SetStoryBoard();
+            if (hit.transform == dialogueClickZone.transform)
+            {
+                SetStoryBoard();
+            }
         }
     }
 }
