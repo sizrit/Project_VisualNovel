@@ -10,6 +10,8 @@ public class ScrollSystem : MonoBehaviour
 
     private bool _lockScrollDown = false;
     private bool _lockScrollUp = false;
+
+    private float _scrollSpeed = 6f;
     
     private void OnEnable()
     {
@@ -54,19 +56,18 @@ public class ScrollSystem : MonoBehaviour
         }
 
         Vector2 d = Input.mouseScrollDelta;
-        //Debug.Log(d);
         Vector3 vec3 = new Vector3(0, d.y*5, 0);
 
         if (!_lockScrollDown && d.y > 0)
         {
             _lockScrollUp = false;
-            this.transform.GetChild(0).localPosition += vec3;
+            this.transform.GetChild(0).localPosition += vec3*_scrollSpeed;
         }
 
         if (!_lockScrollUp && d.y < 0)
         {
             _lockScrollDown = false;
-            this.transform.GetChild(0).localPosition += vec3;
+            this.transform.GetChild(0).localPosition += vec3*_scrollSpeed;
         }
     }
 
