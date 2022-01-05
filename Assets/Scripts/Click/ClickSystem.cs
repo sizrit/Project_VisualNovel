@@ -29,12 +29,24 @@ public class ClickSystem
     
     readonly Dictionary<ClickMode,I_ClickSystem> _clickSystemList = new Dictionary<ClickMode, I_ClickSystem>();
     private ClickMode _currentClickMode = ClickMode.StoryBoard;
+
+    private bool _isClickEnable = true;
     
     public void OnEnable()
     {
         _clickSystemList.Add(ClickMode.StoryBoard,StoryBoardClickSystem.GetInstance());
         _clickSystemList.Add(ClickMode.Menu,UI_GameMenuClickSystem.GetInstance());
         //_clickSystemList.Add(ClickMode.Disable,);
+    }
+
+    public void DisableClick()
+    {
+        _isClickEnable = false;
+    }
+
+    public void EnableClick()
+    {
+        _isClickEnable = true;
     }
 
     public void SetClickMode(ClickMode mode)
@@ -50,6 +62,9 @@ public class ClickSystem
     // Update is called once per frame
     public void Update()
     {
-        Click();
+        if (_isClickEnable)
+        {
+            Click();
+        }
     }
 }
