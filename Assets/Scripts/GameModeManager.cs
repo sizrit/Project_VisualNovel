@@ -62,6 +62,7 @@ public class GameModeManager : MonoBehaviour
                 break;
             
             case GameMode.PointAndClick:
+                // 구현필요
                 break;
             
             case GameMode.Idle:
@@ -83,6 +84,7 @@ public class GameModeManager : MonoBehaviour
         Debug.Log("EndGameModeCallBack");
         storyBoardMode.SetActive(false);
         pointAndClickMode.SetActive(false);
+        currentMode = nextMode;
         switch (nextMode)
         {
             case GameMode.StoryBoard:
@@ -99,7 +101,6 @@ public class GameModeManager : MonoBehaviour
     {
         Debug.Log("ChangeGameModeToStoryBoard");
         storyBoardMode.SetActive(true);
-        currentMode = GameMode.StoryBoard;
         ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
         _storyBoardManager.SetNextStoryBoard(nextId);
         StoryBoardSwitchEffectManager.GetInstance().SwitchOnEffect(StoryBoardSwitchOnCallBack);
