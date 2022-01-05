@@ -27,7 +27,7 @@ public class StoryBoardSelectionEventDataLoadManager
     {
         if (_instance == null)
         {
-            _instance=new StoryBoardSelectionEventDataLoadManager();
+            _instance = new StoryBoardSelectionEventDataLoadManager();
         }
         return _instance;
     }
