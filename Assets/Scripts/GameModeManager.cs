@@ -36,7 +36,10 @@ public class GameModeManager : MonoBehaviour
     [SerializeField] private GameObject storyBoardMode;
     [SerializeField] private GameObject pointAndClickMode;
     
-    [SerializeField] private GameMode gameMode = GameMode.Idle;
+    [SerializeField] private GameMode currentMode = GameMode.Idle;
+    
+    [SerializeField] private GameMode nextMode = GameMode.Idle;
+    [SerializeField] private string nextId = "";
     
     readonly StoryBoardManager _storyBoardManager = StoryBoardManager.GetInstance();
 
@@ -45,33 +48,89 @@ public class GameModeManager : MonoBehaviour
         ChangeGameModeToIdle();
     }
 
-    public void ChangeGameModeToIdle()
+    public void ChangeGameMode(GameMode mode,string id)
+    {
+        nextMode = mode;
+        nextId = id;
+        
+        ClickSystem.GetInstance().DisableClick();
+        
+        switch (currentMode)
+        {
+            case GameMode.StoryBoard:
+                StoryBoardSwitchEffectManager.GetInstance().SwitchOffEffect(EndGameModeCallBack);
+                break;
+            
+            case GameMode.PointAndClick:
+                break;
+            
+            case GameMode.Idle:
+                // for test
+                StoryBoardSwitchEffectManager.GetInstance().SwitchOffEffect(EndGameModeCallBack);
+                break;
+        }
+    }
+
+    private void ChangeGameModeToIdle()
     {
         storyBoardMode.SetActive(false);
         pointAndClickMode.SetActive(false);
         ClickSystem.GetInstance().DisableClick();
     }
-
-    public void ChangeGameModeToStoryBoard (string storyBoardId)
+    
+    private void EndGameModeCallBack()
     {
-        storyBoardMode.SetActive(true);
-        gameMode = GameMode.StoryBoard;
-        ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
-        _storyBoardManager.SetNextStoryBoard(storyBoardId);
-        StoryBoardSwitchEffectManager.GetInstance().SwitchEffectOn(StoryBoardSwitchOnCallBack);
+        Debug.Log("EndGameModeCallBack");
+        storyBoardMode.SetActive(false);
+        pointAndClickMode.SetActive(false);
+        switch (nextMode)
+        {
+            case GameMode.StoryBoard:
+                ChangeGameModeToStoryBoard();
+                break;
+            
+            case GameMode.PointAndClick:
+                ChangeGameModeToPointAndClick();
+                break;
+        }
     }
-
+    
+    private void ChangeGameModeToStoryBoard ()
+    {
+        Debug.Log("ChangeGameModeToStoryBoard");
+        storyBoardMode.SetActive(true);
+        currentMode = GameMode.StoryBoard;
+        ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
+        _storyBoardManager.SetNextStoryBoard(nextId);
+        StoryBoardSwitchEffectManager.GetInstance().SwitchOnEffect(StoryBoardSwitchOnCallBack);
+    }
+    
     private void StoryBoardSwitchOnCallBack()
     {
+        Debug.Log("StoryBoardSwitchOnCallBack");
         _storyBoardManager.SetStoryBoard();
         ClickSystem.GetInstance().EnableClick();
+        ResetNextData();
+    }
+
+    private void ChangeGameModeToPointAndClick()
+    {
+        ClickSystem.GetInstance().EnableClick();
+    }
+    
+
+    private void ResetNextData()
+    {
+        nextMode = GameMode.Idle;
+        nextId = "";
     }
 
     public void Update()
     {
+        //for test
         if (Input.GetKeyDown(KeyCode.V))
         {
-            ChangeGameModeToStoryBoard("S0001");
+            ChangeGameMode(GameMode.StoryBoard,"S0001");
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
