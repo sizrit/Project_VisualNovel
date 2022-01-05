@@ -14,7 +14,12 @@ public class StoryBoardSwitchEffectManager : MonoBehaviour
         if (_instance == null)
         {
             var obj = FindObjectOfType<StoryBoardSwitchEffectManager>();
-            if (obj == null)
+            
+            if (obj != null)
+            {
+                _instance = obj;
+            }
+            else
             {
                 GameObject gameObject = new GameObject("GameModeManager");
                 _instance = gameObject.AddComponent<StoryBoardSwitchEffectManager>();
@@ -30,24 +35,36 @@ public class StoryBoardSwitchEffectManager : MonoBehaviour
     [SerializeField] private GameObject object3;
 
     private Action _callBack = delegate { };
-    private Action _effect;
-    
-    public void SwitchEffectOn()
+    private Action _effect = delegate { };
+
+    public void SwitchOnEffect(Action func)
     {
-        _effect = SwitchEffect;
-    }
-    
-    public void SwitchEffectOn(Action func)
-    {
-        _effect = SwitchEffect;
+        ResetCallBack();
+        _effect = SwitchOnEffectAnimation;
         _callBack = func;
     }
 
-    private void SwitchEffect()
+    public void SwitchOffEffect(Action func)
     {
+        ResetCallBack();
+        _effect = SwitchOffEffectAnimation;
+        _callBack = func;
+    }
+
+    // effect
+    private void SwitchOnEffectAnimation()
+    {
+        Debug.Log("StoryBoard mode witch on");
         _effect = delegate { };
         _callBack();
-        ResetCallBack();
+    }
+
+    // effect
+    private void SwitchOffEffectAnimation()
+    {
+        Debug.Log("StoryBoard mode switch off");
+        _effect = delegate { };
+        _callBack();
     }
 
     private void ResetCallBack()
