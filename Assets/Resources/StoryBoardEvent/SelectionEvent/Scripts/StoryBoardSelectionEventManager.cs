@@ -41,14 +41,13 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
     #endregion
 
     private StoryBoardClickSystem _storyBoardClickSystem;
-    private StoryBoardSelectionEventDataLoadManager _selectionEventDataLoadManager;
     private StoryBoardManager _storyBoardManager;
     private DialogueManager _dialogueManager;
 
     private List<string> _selectionStoryBoardIdList = new List<string>();
     private List<string> _textList = new List<string>();
 
-    private GameObject _selectionGameObject;
+    [SerializeField] private GameObject selectionGameObject;
 
     private delegate void EventDelegate();
 
@@ -58,10 +57,14 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
     
     public void Start()
     {
-        _selectionEventDataLoadManager = StoryBoardSelectionEventDataLoadManager.GetInstance();
-        
         _eventDelegate = new EventDelegate(func0);
-        _selectionGameObject = Resources.Load<GameObject>("StoryBoardEvent/SelectionEvent/Prefabs/SelectionObject");
+        selectionGameObject = Resources.Load<GameObject>("StoryBoardEvent/SelectionEvent/Prefabs/SelectionObject");
+    }
+
+    public void Initial()
+    {
+        _eventDelegate = new EventDelegate(func0);
+        selectionGameObject = Resources.Load<GameObject>("StoryBoardEvent/SelectionEvent/Prefabs/SelectionObject");
     }
 
     private void RestObject()
@@ -78,14 +81,13 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
 
     public void SetSelectionEvent(string storyBoardIdValue)
     {
-        Debug.Log("sss");
         _storyBoardClickSystem = StoryBoardClickSystem.GetInstance();
         _storyBoardClickSystem.DisableStoryBoardCheckClick();
         
         _storyBoardManager = StoryBoardManager.GetInstance();
         _dialogueManager = DialogueManager.GetInstance();
-
-        SelectionInfo info = _selectionEventDataLoadManager.GetStoryBoardSelectionEventData(storyBoardIdValue);
+        
+        SelectionInfo info = StoryBoardSelectionEventDataLoadManager.GetInstance().GetStoryBoardSelectionEventData(storyBoardIdValue);
         _selectionStoryBoardIdList = info.nextStoryIdList;
         _textList = info.textList;
 
@@ -96,7 +98,7 @@ public class StoryBoardSelectionEventManager : MonoBehaviour
     {
         for (int i = 0; i < _selectionStoryBoardIdList.Count; i++)
         {
-            GameObject obj =  Instantiate(_selectionGameObject, this.transform);
+            GameObject obj =  Instantiate(selectionGameObject, this.transform);
             obj.transform.localPosition = new Vector3(0, 100 * _selectionStoryBoardIdList.Count - 200 * i, 0);
             obj.transform.GetChild(0).GetComponent<Text>().text = _textList[i];
         }
