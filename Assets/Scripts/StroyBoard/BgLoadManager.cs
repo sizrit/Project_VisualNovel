@@ -28,7 +28,6 @@ public class BgLoadManager
     
     public void OnEnable()
     {
-        _bg = GameObject.Find("Bg");
         LoadBg();
     }
 
@@ -44,6 +43,6 @@ public class BgLoadManager
 
     public void SetBg(string bgIdValue)
     {
-        _bg.GetComponent<Image>().sprite = _bgList[bgIdValue];
+        GameObject.Find("StoryBoardBg").GetComponent<Image>().sprite = _bgList[bgIdValue];
     }
 }
