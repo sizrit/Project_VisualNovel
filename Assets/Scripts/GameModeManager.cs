@@ -1,14 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 public enum GameMode
 {
     StoryBoard,
-    Adventure,
+    PointAndClick,
+    Idle
 }
 
-public class GameModeManager
+public class GameModeManager : MonoBehaviour
 {
     #region Singleton
 
@@ -18,45 +21,61 @@ public class GameModeManager
     {
         if (_instance == null)
         {
-            _instance = new GameModeManager();
+            var obj = FindObjectOfType<GameModeManager>();
+            if (obj == null)
+            {
+                GameObject gameObject = new GameObject("GameModeManager");
+                _instance = gameObject.AddComponent<GameModeManager>();
+            }
         }
         return _instance;
     }
 
     #endregion
 
-    private GameObject _gameModManagerGameObject;
-    private GameMode _gameMode = GameMode.StoryBoard;
+    [SerializeField] private GameObject storyBoardMode;
+    [SerializeField] private GameObject pointAndClickMode;
     
-    StoryBoardManager _storyBoardManager = StoryBoardManager.GetInstance();
+    [SerializeField] private GameMode gameMode = GameMode.Idle;
     
-    public void ChangeGameMode(GameMode mode, string stroyBoardId)
+    readonly StoryBoardManager _storyBoardManager = StoryBoardManager.GetInstance();
+
+    private void OnEnable()
     {
-        _gameModManagerGameObject = GameObject.Find("GameModeManager");
-        _gameModManagerGameObject.transform.GetChild(0).gameObject.SetActive(true);
-        
-        _gameMode = mode;
-        _storyBoardManager.SetNextStoryBoard(stroyBoardId);
-        _storyBoardManager.SetStoryBoard();
-        
+        ChangeGameModeToIdle();
     }
 
-    public void ChangeGameMode()
+    public void ChangeGameModeToIdle()
     {
-        _gameModManagerGameObject.transform.GetChild(0).gameObject.SetActive(false);
-        
-        //_gameMode 
+        storyBoardMode.SetActive(false);
+        pointAndClickMode.SetActive(false);
+        ClickSystem.GetInstance().DisableClick();
+    }
+
+    public void ChangeGameModeToStoryBoard (string storyBoardId)
+    {
+        storyBoardMode.SetActive(true);
+        gameMode = GameMode.StoryBoard;
+        ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
+        _storyBoardManager.SetNextStoryBoard(storyBoardId);
+        StoryBoardSwitchEffectManager.GetInstance().SwitchEffectOn(StoryBoardSwitchOnCallBack);
+    }
+
+    private void StoryBoardSwitchOnCallBack()
+    {
+        _storyBoardManager.SetStoryBoard();
+        ClickSystem.GetInstance().EnableClick();
     }
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.V))
         {
-            ChangeGameMode(GameMode.StoryBoard,"S0001");
+            ChangeGameModeToStoryBoard("S0001");
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.B))
         {
-            ChangeGameMode();
+
         }
     }
     
