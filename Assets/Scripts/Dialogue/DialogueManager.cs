@@ -30,7 +30,7 @@ public class DialogueManager : MonoBehaviour
     #region Singleton
 
     private static DialogueManager _instance;
-    
+
     public static DialogueManager GetInstance()
     {
         if (_instance == null)
@@ -40,13 +40,9 @@ public class DialogueManager : MonoBehaviour
             {
                 Debug.Log("Error! DialogueManager is disable now");
                 return null;
-                // GameObject gameObject = new GameObject("Dialogue");
-                // _instance = gameObject.AddComponent<DialogueManager>();
             }
-            else
-            {
-                _instance = obj;
-            }
+
+            _instance = obj;
         }
 
         return _instance;
@@ -76,8 +72,7 @@ public class DialogueManager : MonoBehaviour
     public void SetDialogue(string storyBoardIdValue)
     {
         _currentDialogue = DialogueDataLoadManager.GetInstance().GetDialogue(storyBoardIdValue);
-
-        Debug.Log(speaker);
+        
         speaker.GetComponent<Text>().text = _currentDialogue.speaker;
         
         DialogueTextAnimationManager.GetInstance().ResetDialogueTextAnimationManager();
