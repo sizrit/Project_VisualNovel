@@ -7,7 +7,7 @@ using UnityEngine;
 public enum GameMode
 {
     StoryBoard,
-    PointAndClick,
+    Research,
     Idle
 }
 
@@ -34,7 +34,7 @@ public class GameModeManager : MonoBehaviour
     #endregion
 
     [SerializeField] private GameObject storyBoardMode;
-    [SerializeField] private GameObject pointAndClickMode;
+    [SerializeField] private GameObject researchMode;
     
     [SerializeField] private GameMode currentMode = GameMode.Idle;
     
@@ -61,7 +61,7 @@ public class GameModeManager : MonoBehaviour
                 StoryBoardSwitchEffectManager.GetInstance().SwitchOffEffect(EndGameModeCallBack);
                 break;
             
-            case GameMode.PointAndClick:
+            case GameMode.Research:
                 // 구현필요
                 break;
             
@@ -75,7 +75,7 @@ public class GameModeManager : MonoBehaviour
     private void ChangeGameModeToIdle()
     {
         storyBoardMode.SetActive(false);
-        pointAndClickMode.SetActive(false);
+        researchMode.SetActive(false);
         ClickSystem.GetInstance().DisableClick();
     }
     
@@ -83,7 +83,7 @@ public class GameModeManager : MonoBehaviour
     {
         Debug.Log("EndGameModeCallBack");
         storyBoardMode.SetActive(false);
-        pointAndClickMode.SetActive(false);
+        researchMode.SetActive(false);
         currentMode = nextMode;
         switch (nextMode)
         {
@@ -91,7 +91,7 @@ public class GameModeManager : MonoBehaviour
                 ChangeGameModeToStoryBoard();
                 break;
             
-            case GameMode.PointAndClick:
+            case GameMode.Research:
                 ChangeGameModeToPointAndClick();
                 break;
         }

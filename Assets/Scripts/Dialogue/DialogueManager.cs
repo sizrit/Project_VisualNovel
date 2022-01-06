@@ -25,6 +25,38 @@ public enum Chapter
     */
 }
 
+class AA
+{
+    private static AA aa = new AA();
+    public static AA GetInstance()
+    {
+        return aa;
+    }
+
+    public void Hi()
+    {
+    }
+}
+
+class BB
+{
+    private AA aa;
+    //시작시 단한번 불림
+    void Start()
+    {
+        aa = AA.GetInstance();
+    }
+    
+    // 자주는 아니지만 여러번 불림
+    private void Test()
+    {
+        AA.GetInstance().Hi();      // 1번
+        aa.Hi();                    // 2번
+    }
+}
+
+
+
 public class DialogueManager
 {
     #region Singleton
