@@ -3,17 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogueTextColorManager
+public class DialogueTextColorManager : MonoBehaviour
 {
     #region Singleton
 
     private static DialogueTextColorManager _instance;
-    
+
     public static DialogueTextColorManager GetInstance()
     {
         if (_instance == null)
         {
-            _instance = new DialogueTextColorManager();
+            var obj = FindObjectOfType<DialogueTextColorManager>();
+            if (obj == null)
+            {
+                Debug.LogError("Error! DialogueTextColorManager is disable now");
+                return null;
+            }
+
+            _instance = obj;
+
         }
 
         return _instance;
@@ -21,14 +29,8 @@ public class DialogueTextColorManager
 
     #endregion
     
-    private GameObject _currentDialogueText;
-    private GameObject _pastDialogueText;
-
-    public void OnEnable()
-    {
-        _currentDialogueText = GameObject.Find("Dialogue_CurrentText");
-        _pastDialogueText = GameObject.Find("Dialogue_PastText");
-    }
+    [SerializeField] private GameObject currentDialogueText;
+    [SerializeField] private GameObject pastDialogueText;
 
     public void SetDialogueTextColor(string colorValue)
     {
@@ -48,7 +50,7 @@ public class DialogueTextColorManager
                 break;
         }
 
-        _currentDialogueText.GetComponent<Text>().color = color;
-        _pastDialogueText.GetComponent<Text>().color = color;
+        currentDialogueText.GetComponent<Text>().color = color;
+        pastDialogueText.GetComponent<Text>().color = color;
     }
 }

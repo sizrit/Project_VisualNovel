@@ -6,17 +6,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class DialogueTextEffectManager
+public class DialogueTextEffectManager : MonoBehaviour
 {
     #region Singleton
 
     private static DialogueTextEffectManager _instance;
-    
+
     public static DialogueTextEffectManager GetInstance()
     {
         if (_instance == null)
         {
-            _instance = new DialogueTextEffectManager();
+            var obj = FindObjectOfType<DialogueTextEffectManager>();
+            if (obj == null)
+            {
+                Debug.LogError("Error! DialogueTextEffectManager is disable now");
+                return null;
+            }
+
+            _instance = obj;
         }
 
         return _instance;
@@ -24,21 +31,19 @@ public class DialogueTextEffectManager
 
     #endregion
     
-    readonly Dictionary<string,EffectDelegate> _effectList =new Dictionary<string,EffectDelegate>();
-    delegate void EffectDelegate();
+    readonly Dictionary<string,Action> _effectList =new Dictionary<string,Action>();
 
-    private EffectDelegate _effectDelegate;
+    private Action _effectDelegate = delegate { };
 
-    private GameObject _currentTextGameObject;
-    private GameObject _pastTextGameObject;
+    [SerializeField] private GameObject currentTextGameObject;
+    [SerializeField] private GameObject pastTextGameObject;
     
     private void Func0(){}
 
     private void MakeEffectList()
     {
-        EffectDelegate shake = Shake;
-        _effectList.Add("S0001",shake);
-        _effectList.Add("S0002",shake);
+        _effectList.Add("S0001",Shake);
+        _effectList.Add("S0002",Shake);
     }
     
     public void SetDialogueTextEffect(string storyBoardIdValue)
@@ -51,25 +56,22 @@ public class DialogueTextEffectManager
 
     public void EndEffect()
     {
-        _effectDelegate = new EffectDelegate(Func0);
-        _currentTextGameObject.transform.localPosition = new Vector3(0,0,0);
-        _pastTextGameObject.transform.localPosition = new Vector3(0,0,0);
+        _effectDelegate = delegate { };
+        currentTextGameObject.transform.localPosition = new Vector3(0,0,0);
+        pastTextGameObject.transform.localPosition = new Vector3(0,0,0);
     }
 
     private void Shake()
     {
         float randY = Random.Range(-10, 10);
         float randX = Random.Range(-3, 3);
-        _currentTextGameObject.transform.localPosition = new Vector3(randX,randY,0);
-        _pastTextGameObject.transform.localPosition = new Vector3(randX,randY,0);
+        currentTextGameObject.transform.localPosition = new Vector3(randX,randY,0);
+        pastTextGameObject.transform.localPosition = new Vector3(randX,randY,0);
     }
 
-    public void OnEnable()
+    public void Awake()
     {
         MakeEffectList();
-        _effectDelegate=new EffectDelegate(Func0);
-        _currentTextGameObject = GameObject.Find("Dialogue_CurrentText");
-        _pastTextGameObject = GameObject.Find("Dialogue_PastText");
     }
 
     public void Update()
