@@ -15,26 +15,17 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
         if (_instance == null)
         {
             var obj = FindObjectOfType<StoryBoardGainClueEventManager>();
-            if (obj != null)
+            if (obj == null)
             {
-                _instance = obj;
+                Debug.LogError("Error! StoryBoardGainClueEventManager is disable now");
+                return null;
             }
             else
             {
-                GameObject gameObject = new GameObject("StoryBoardGettingClueEventManager");
-                _instance = gameObject.AddComponent<StoryBoardGainClueEventManager>();
+                _instance = obj;
             }
         }
         return _instance;
-    }
-
-    private void Awake()
-    {
-        var obj = FindObjectsOfType<StoryBoardSelectionEventManager>();
-        if (obj.Length != 1)
-        {
-            Destroy(gameObject);
-        }
     }
 
     #endregion
