@@ -25,39 +25,7 @@ public enum Chapter
     */
 }
 
-class AA
-{
-    private static AA aa = new AA();
-    public static AA GetInstance()
-    {
-        return aa;
-    }
-
-    public void Hi()
-    {
-    }
-}
-
-class BB
-{
-    private AA aa;
-    //시작시 단한번 불림
-    void Start()
-    {
-        aa = AA.GetInstance();
-    }
-    
-    // 자주는 아니지만 여러번 불림
-    private void Test()
-    {
-        AA.GetInstance().Hi();      // 1번
-        aa.Hi();                    // 2번
-    }
-}
-
-
-
-public class DialogueManager
+public class DialogueManager : MonoBehaviour
 {
     #region Singleton
 
@@ -67,62 +35,58 @@ public class DialogueManager
     {
         if (_instance == null)
         {
-            _instance = new DialogueManager();
+            var obj = FindObjectOfType<DialogueManager>();
+            if (obj == null)
+            {
+                Debug.Log("Error! DialogueManager is disable now");
+                return null;
+                // GameObject gameObject = new GameObject("Dialogue");
+                // _instance = gameObject.AddComponent<DialogueManager>();
+            }
+            else
+            {
+                _instance = obj;
+            }
         }
 
         return _instance;
     }
 
     #endregion
-    
-    private GameObject _speaker;
+
+    [SerializeField] private GameObject speaker;
     private Dialogue _currentDialogue;
-
-    private DialogueTextAnimationManager _animationManager;
-    private DialogueTextColorManager _colorManager;
-    private DialogueTextEffectManager _effectManager;
-
-    private UI_GameMenu_DialogueLogManager _uiGameMenuDialogueLogManager;
-
-    public void OnEnable()
-    {
-        _speaker = GameObject.Find("Dialogue_Speaker");
-        _animationManager = DialogueTextAnimationManager.GetInstance();
-        _colorManager = DialogueTextColorManager.GetInstance();
-        _effectManager = DialogueTextEffectManager.GetInstance();
-        
-        _uiGameMenuDialogueLogManager = UI_GameMenu_DialogueLogManager.GetInstance();
-    }
 
     public bool CheckIsAnimationEnd()
     {
-        return _animationManager.GetIsAnimationEnd();
+        return DialogueTextAnimationManager.GetInstance().GetIsAnimationEnd();
     }
 
     public void EndAnimationForced()
     {
-        _animationManager.EndAnimationForced();
-        _effectManager.EndEffect();
+        DialogueTextAnimationManager.GetInstance().EndAnimationForced();
+        DialogueTextEffectManager.GetInstance().EndEffect();
     }
 
     public void AnimationEnd()
     {
-        _effectManager.EndEffect();
+        DialogueTextEffectManager.GetInstance().EndEffect();
     }
     
     public void SetDialogue(string storyBoardIdValue)
     {
         _currentDialogue = DialogueDataLoadManager.GetInstance().GetDialogue(storyBoardIdValue);
 
-        _speaker.GetComponent<Text>().text = _currentDialogue.speaker;
+        Debug.Log(speaker);
+        speaker.GetComponent<Text>().text = _currentDialogue.speaker;
         
-        _animationManager.ResetDialogueTextAnimationManager();
-        _animationManager.PlayDialogueTextAnimation(_currentDialogue.dialogueText);
-        
-        _effectManager.SetDialogueTextEffect(_currentDialogue.storyBoardId);
+        DialogueTextAnimationManager.GetInstance().ResetDialogueTextAnimationManager();
+        DialogueTextAnimationManager.GetInstance().PlayDialogueTextAnimation(_currentDialogue.dialogueText);
+
+        DialogueTextEffectManager.GetInstance().SetDialogueTextEffect(_currentDialogue.storyBoardId);
          
-        _colorManager.SetDialogueTextColor(_currentDialogue.color);
+        DialogueTextColorManager.GetInstance().SetDialogueTextColor(_currentDialogue.color);
         
-        _uiGameMenuDialogueLogManager.AddDialogueLog(_currentDialogue);
+        UI_GameMenu_DialogueLogManager.GetInstance().AddDialogueLog(_currentDialogue);
     }
 }
