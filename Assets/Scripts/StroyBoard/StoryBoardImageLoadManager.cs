@@ -4,56 +4,39 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class ImageLoadManager : MonoBehaviour
+public class StoryBoardImageLoadManager : MonoBehaviour
 {
     #region Singleton
 
-    private static ImageLoadManager _instance;
+    private static StoryBoardImageLoadManager _instance;
 
-    public static ImageLoadManager GetInstance()
+    public static StoryBoardImageLoadManager GetInstance()
     {
         if (_instance == null)
         {
-            var obj = FindObjectOfType<ImageLoadManager>();
-            if (obj != null)
+            var obj = FindObjectOfType<StoryBoardImageLoadManager>();
+            if (obj == null)
             {
-                _instance = obj;
+                Debug.LogError("Error! StoryBoardImageLoadManager is disable now");
+                return null;
             }
-            else
-            {
-                GameObject gameObject = new GameObject("ImageLoadManager");
-                _instance = gameObject.AddComponent<ImageLoadManager>();
-            }
+            _instance = obj;
         }
 
         return _instance;
-    }
-
-    private void Awake()
-    {
-        var obj = FindObjectsOfType<ImageLoadManager>();
-        if (obj.Length != 1)
-        {
-            Destroy(gameObject);
-        }
     }
 
     #endregion
 
     private readonly Dictionary<string, GameObject> _imagePrefabsList = new Dictionary<string, GameObject>();
 
-    private void LoadAllPrefabs()
+    public void LoadAllPrefabs()
     {
         GameObject[] imagePrefabs = Resources.LoadAll<GameObject>("Images/Prefabs");
         foreach (var imagePrefab in imagePrefabs)
         {
             _imagePrefabsList.Add(imagePrefab.name,imagePrefab);
         }
-    }
-
-    private void OnEnable()
-    {
-        LoadAllPrefabs();
     }
 
     public void SetImage(string imageIdValue)
