@@ -3,26 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FastForwardButton : MonoBehaviour
+public class StoryBoardFastForwardButton : MonoBehaviour
 {
-    private StoryBoardClickSystem _storyBoardClickSystem;
-    private DialogueTextAnimationManager _dialogueTextAnimationManager;
-    [SerializeField]
-    private bool isOn = false;
-    List<Sprite> _imageList = new List<Sprite>();
-    
-    private void OnEnable()
+    [SerializeField] private bool isOn = false;
+    readonly List<Sprite> _imageList = new List<Sprite>();
+
+    private void Start()
     {
         string loadPath = "Images/UI_Button/";
         _imageList.Add(Resources.Load<Sprite>(loadPath+"FFoff"));
         _imageList.Add(Resources.Load<Sprite>(loadPath+"FFon"));
         this.gameObject.GetComponent<Image>().sprite = _imageList[0];
-
-        _storyBoardClickSystem =StoryBoardClickSystem.GetInstance();
-        _dialogueTextAnimationManager =DialogueTextAnimationManager.GetInstance();
-        _storyBoardClickSystem.SubscribeUiCheckClick(CheckClick);
+        
+        StoryBoardClickSystem.GetInstance().SubscribeUiCheckClick(CheckClick);
     }
-    
+
     private void CheckClick(RaycastHit2D hit)
     {
         if (hit.transform == this.transform)
@@ -31,13 +26,13 @@ public class FastForwardButton : MonoBehaviour
             {
                 isOn = true;
                 this.gameObject.GetComponent<Image>().sprite = _imageList[1];
-                _dialogueTextAnimationManager.ChangeFadeSpeed(0.24f);
+                DialogueTextAnimationManager.GetInstance().ChangeFadeSpeed(0.24f);
             }
             else
             {
                 isOn = false;
                 this.gameObject.GetComponent<Image>().sprite = _imageList[0];
-                _dialogueTextAnimationManager.ChangeFadeSpeed(0.08f);
+                DialogueTextAnimationManager.GetInstance().ChangeFadeSpeed(0.08f);
             }
         }
     }
