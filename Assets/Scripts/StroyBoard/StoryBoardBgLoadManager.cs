@@ -5,17 +5,23 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BgLoadManager
+public class StoryBoardBgLoadManager : MonoBehaviour
 {
     #region Singleton
 
-    private static BgLoadManager _instance;
+    private static StoryBoardBgLoadManager _instance;
 
-    public static BgLoadManager GetInstance()
+    public static StoryBoardBgLoadManager GetInstance()
     {
         if (_instance == null)
         {
-            _instance = new BgLoadManager();
+            var obj = FindObjectOfType<StoryBoardBgLoadManager>();
+            if (obj == null)
+            {
+                Debug.LogError("Error! StoryBoardBgLoadManager is disable now");
+                return null;
+            }
+            _instance = obj;
         }
 
         return _instance;
@@ -24,14 +30,9 @@ public class BgLoadManager
     #endregion
     
     private readonly Dictionary<string,Sprite> _bgList = new Dictionary<string, Sprite>();
-    private GameObject _bg;
+    [SerializeField] private GameObject bg;
     
-    public void OnEnable()
-    {
-        LoadBg();
-    }
-
-    private void LoadBg()
+    public void LoadBg()
     {
         string loadPath = "Bg";
         Sprite[] spriteList = Resources.LoadAll<Sprite>(loadPath);
@@ -43,6 +44,6 @@ public class BgLoadManager
 
     public void SetBg(string bgIdValue)
     {
-        GameObject.Find("StoryBoardBg").GetComponent<Image>().sprite = _bgList[bgIdValue];
+        bg.GetComponent<Image>().sprite = _bgList[bgIdValue];
     }
 }
