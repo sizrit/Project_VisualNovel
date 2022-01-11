@@ -29,12 +29,7 @@ public class StoryBoardDataLoadManager
     
     private readonly Dictionary<string,StoryBoard> _storyBoardList = new Dictionary<string, StoryBoard>();
 
-    public void OnEnable()
-    {
-        LoadData();
-    }
-    
-    private void LoadData()
+    public void LoadData()
     {
         string loadPath = "JsonData/StoryBoard/JsonStoryBoardData";
         List<StoryBoard> tempList = LoadJsonFiles<JsonStoryBoardData>(loadPath).storyBoardList;
@@ -44,8 +39,7 @@ public class StoryBoardDataLoadManager
             _storyBoardList.Add(storyBoard.storyBoardId,storyBoard);
         }
     }
-
-
+    
     public StoryBoard GetStoryBoard(string storyBoardId)
     {
         return _storyBoardList[storyBoardId];
