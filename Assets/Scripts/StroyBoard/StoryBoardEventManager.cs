@@ -21,29 +21,22 @@ public class StoryBoardEventManager
 
     #endregion
 
-    private StoryBoardSelectionEventDataLoadManager _selectionEventDataLoadManager;
-    private StoryBoardGainClueEventManager _clueEventManager;
-    
     private string _currentStoryBoardId = "";
     
-    private readonly Dictionary<string, EventDelegate> _eventList = new Dictionary<string, EventDelegate>();
+    private readonly Dictionary<string, Action> _eventList = new Dictionary<string, Action>();
 
-    private delegate void EventDelegate();
-    
-    private void MakeEventList()
+    public void MakeEventList()
     {
-        EventDelegate selection = SelectionEvent;
-        List<string> selectionIdList = _selectionEventDataLoadManager.GetSelectionEventId();
+        List<string> selectionIdList = StoryBoardSelectionEventDataLoadManager.GetInstance().GetSelectionEventId();
         foreach (var selectionId in selectionIdList)
         {
-            _eventList.Add(selectionId,selection);
+            _eventList.Add(selectionId,SelectionEvent);
         }
-
-        EventDelegate gainClue = GainClueEvent;
+        
         IEnumerable<string> gainClueIdList = ClueManager.GetInstance().GetGainClueEventStoryBoardIdList();
         foreach (var gainClueId in gainClueIdList)
         {
-            _eventList.Add(gainClueId,gainClue);
+            _eventList.Add(gainClueId,GainClueEvent);
         }
     }
 
@@ -65,14 +58,6 @@ public class StoryBoardEventManager
 
     private void GainClueEvent()
     {
-        _clueEventManager.SetGainClueEvent(_currentStoryBoardId);
-    }
-
-    public void OnEnable()
-    {
-        _selectionEventDataLoadManager = StoryBoardSelectionEventDataLoadManager.GetInstance();
-        _clueEventManager = StoryBoardGainClueEventManager.GetInstance();
-        ;
-        MakeEventList();
+        StoryBoardGainClueEventManager.GetInstance().SetGainClueEvent(_currentStoryBoardId);
     }
 }
