@@ -21,22 +21,10 @@ public class StoryBoardManager
     #endregion
     
     private StoryBoard _currentStoryBoard;
-    
-    private DialogueManager _dialogueManager;
-    private BgLoadManager _bgLoadManager;
-    private ImageLoadManager _imageLoadManager;
-    private StoryBoardEventManager _storyBoardEventManager;
 
-    public void OnEnable()
+    public void TestRun()
     {
-        _dialogueManager = DialogueManager.GetInstance();
-        _bgLoadManager = BgLoadManager.GetInstance();
-        _imageLoadManager = ImageLoadManager.GetInstance();
-        _storyBoardEventManager = StoryBoardEventManager.GetInstance();
-        
         _currentStoryBoard = StoryBoardDataLoadManager.GetInstance().GetStoryBoard("S0001");
-        
-        StoryBoardClickSystem.GetInstance().SetStoryBoardCheckClick(CheckClick);
     }
 
     private void SetNextStoryBoard()
@@ -56,35 +44,23 @@ public class StoryBoardManager
 
     public void SetStoryBoard()
     {
-        if (_dialogueManager.CheckIsAnimationEnd())
+        if (DialogueManager.GetInstance().CheckIsAnimationEnd())
         {
-            _bgLoadManager.SetBg(_currentStoryBoard.bgId);
-            _imageLoadManager.SetImage(_currentStoryBoard.imageId);
-            if (_storyBoardEventManager.IsStoryBoardEvent(_currentStoryBoard.storyBoardId))
+            StoryBoardBgLoadManager.GetInstance().SetBg(_currentStoryBoard.bgId);
+            StoryBoardImageLoadManager.GetInstance().SetImage(_currentStoryBoard.imageId);
+            if (StoryBoardEventManager.GetInstance().IsStoryBoardEvent(_currentStoryBoard.storyBoardId))
             {
-                _storyBoardEventManager.StoryBoardEventOn(_currentStoryBoard.storyBoardId);
+                StoryBoardEventManager.GetInstance().StoryBoardEventOn(_currentStoryBoard.storyBoardId);
             }
             else
             {
-                _dialogueManager.SetDialogue(_currentStoryBoard.storyBoardId);
+                DialogueManager.GetInstance().SetDialogue(_currentStoryBoard.storyBoardId);
                 SetNextStoryBoard();
             }
         }
         else
         {
-            _dialogueManager.EndAnimationForced();
-        }
-    }
-
-    private void CheckClick(RaycastHit2D hit)
-    {
-        GameObject dialogueClickZone = GameObject.Find("DialogueClickZone");
-        if (dialogueClickZone != null)
-        {
-            if (hit.transform == dialogueClickZone.transform)
-            {
-                SetStoryBoard();
-            }
+            DialogueManager.GetInstance().EndAnimationForced();
         }
     }
 }
