@@ -36,12 +36,7 @@ public class StoryBoardSelectionEventDataLoadManager
 
     private readonly Dictionary<string,SelectionInfo> _storyBoardSelectionInfoList = new Dictionary<string, SelectionInfo>();
     
-    public void OnEnable()
-    {
-        LoadData();
-    }
-    
-    private void LoadData()
+    public void LoadData()
     {
         string loadPath = "JsonData/StoryBoardEvent/JsonStoryBoardSelectionEventInfoData";
         List<SelectionInfo> infoList = LoadJsonFiles<JsonStoryBoardSelectionEventData>(loadPath)
