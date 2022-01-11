@@ -31,8 +31,6 @@ public class DialogueDataLoadManager
 
     #endregion
 
-    private LanguageType _languageType;
-
     private readonly Dictionary<string, Dialogue> _dialogueList = new Dictionary<string, Dialogue>();
 
     public Dialogue GetDialogue(string storyBoardIdValue)
@@ -40,20 +38,15 @@ public class DialogueDataLoadManager
         return _dialogueList[storyBoardIdValue];
     }
 
-    public void OnEnable()
-    {
-        _languageType = LanguageManager.GetInstance().GetLanguageType();
-        LoadJsonData();
-    }
-
-    private void LoadJsonData()
+    public void LoadJsonData()
     {
         var chapterList = Enum.GetValues(typeof(Chapter)).Cast<Chapter>().ToList();
+        LanguageType type = LanguageManager.GetInstance().GetLanguageType();
 
         for (int i = 1; i < chapterList.Count + 1; i++)
         {
             string filePath = "JsonData/Chapter0"+i.ToString()+"DialogueData";
-            switch (_languageType)
+            switch (type)
             {
                 case LanguageType.English:
                     filePath += "_En";
