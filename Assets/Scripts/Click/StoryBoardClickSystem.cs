@@ -20,28 +20,22 @@ public class StoryBoardClickSystem : I_ClickSystem
     }
 
     #endregion
+    
+    readonly List<Action<RaycastHit2D>> _checkClickFuncList= new List<Action<RaycastHit2D>>();
 
-    public delegate void CheckClickFunc(RaycastHit2D hit);
-    CheckClickFunc _checkClickFunc = delegate{  };
-    CheckClickFunc _storyBoardCheckClickFunc =delegate{  };
-    readonly List<CheckClickFunc> _checkClickFuncList= new List<CheckClickFunc>();
-    readonly List<CheckClickFunc> _uiCheckClickFuncList = new List<CheckClickFunc>();
+    private bool _isStoryBoardClickEnable = true;
+    
+    readonly List<Action<RaycastHit2D>> _uiCheckClickFuncList = new List<Action<RaycastHit2D>>();
 
-    public void SubscribeUiCheckClick(CheckClickFunc func)
+    public void SubscribeUiCheckClick(Action<RaycastHit2D> func)
     {
         if (!_uiCheckClickFuncList.Contains(func))
         {
             _uiCheckClickFuncList.Add(func);
         }
     }
-    
-    public void SetStoryBoardCheckClick(CheckClickFunc func)
-    {
-        _storyBoardCheckClickFunc = func;
-        _checkClickFuncList.Add(_storyBoardCheckClickFunc);
-    }
-    
-    public void SubscribeCheckClick(CheckClickFunc func)
+
+    public void SubscribeCheckClick(Action<RaycastHit2D> func)
     {
         if (!_checkClickFuncList.Contains(func))
         {
@@ -49,7 +43,7 @@ public class StoryBoardClickSystem : I_ClickSystem
         }
     }
 
-    public void UnsubscribeCheckClick(CheckClickFunc func)
+    public void UnsubscribeCheckClick(Action<RaycastHit2D> func)
     {
         if (_checkClickFuncList.Contains(func))
         {
@@ -59,34 +53,14 @@ public class StoryBoardClickSystem : I_ClickSystem
     
     public void EnableStoryBoardCheckClick()
     {
-        if (!_checkClickFuncList.Contains(_storyBoardCheckClickFunc))
-        {
-            _checkClickFuncList.Add(_storyBoardCheckClickFunc);
-        }
+        _isStoryBoardClickEnable = true;
     }
     
     public void DisableStoryBoardCheckClick()
     {
-        if (_checkClickFuncList.Contains(_storyBoardCheckClickFunc))
-        {
-            _checkClickFuncList.Remove(_storyBoardCheckClickFunc);
-        }
+        _isStoryBoardClickEnable = false;
     }
 
-    private void MakeCheckClickList()
-    {
-        _checkClickFunc = delegate { };
-        foreach (var func in _checkClickFuncList)
-        {
-            _checkClickFunc += func;
-        }
-
-        foreach (var func in _uiCheckClickFuncList)
-        {
-            _checkClickFunc += func;
-        }
-    }
-    
     public void Click()
     {
         if (Input.GetMouseButtonDown(0))
@@ -95,11 +69,39 @@ public class StoryBoardClickSystem : I_ClickSystem
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D[] hitList = Physics2D.GetRayIntersectionAll(ray);
 
-            MakeCheckClickList();
-            
             foreach (var hit in hitList)
             {
-                _checkClickFunc(hit);
+                CheckClick(hit);
+            }
+        }
+    }
+
+    private void CheckClick(RaycastHit2D hit)
+    {
+        foreach (var func in _checkClickFuncList)
+        {
+            func(hit);
+        }
+        
+        if (_isStoryBoardClickEnable)
+        {
+            StoryBoardCheckClick(hit);
+        }
+        
+        foreach (var func in _uiCheckClickFuncList)
+        {
+            func(hit);
+        }
+    }
+    
+    private void StoryBoardCheckClick(RaycastHit2D hit)
+    {
+        GameObject dialogueClickZone = GameObject.Find("DialogueClickZone");
+        if (dialogueClickZone != null)
+        {
+            if (hit.transform == dialogueClickZone.transform)
+            {
+                StoryBoardManager.GetInstance().SetStoryBoard();
             }
         }
     }
