@@ -5,12 +5,9 @@ using UnityEngine;
 
 public class UI_Button_MenuButton : MonoBehaviour
 {
-    private StoryBoardClickSystem _storyBoardClickSystem;
-
     private void OnEnable()
     {
-        _storyBoardClickSystem =StoryBoardClickSystem.GetInstance();
-        _storyBoardClickSystem.SubscribeUiCheckClick(CheckClick);
+        StoryBoardClickSystem.GetInstance().SubscribeUiCheckClick(CheckClick);
     }
     
     private void CheckClick(RaycastHit2D hit)
@@ -18,7 +15,7 @@ public class UI_Button_MenuButton : MonoBehaviour
         if (hit.transform == this.transform)
         {
             UI_GameMenuManager.GetInstance().InstantiateGameMenu();
-            UI_GameMenuManager.GetInstance().SetMenuMode(MenuMode.Inventory);
+            UI_GameMenuManager.GetInstance().SetMenuMode(UiMenuMode.Inventory);
             ClickSystem.GetInstance().SetClickMode(ClickMode.Menu);
         }
     }
