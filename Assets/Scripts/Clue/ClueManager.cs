@@ -12,7 +12,6 @@ public enum Clue
 
 public struct ClueEventData
 {
-
     public string startStoryBoardId;
     public string nextStoryBoardId;
     public Clue clue;
@@ -42,10 +41,9 @@ public class ClueManager
 
     #endregion
 
-    private List<Clue> _allClueList;
+    private List<Clue> _allClueList= Enum.GetValues(typeof(Clue)).Cast<Clue>().ToList();
     private readonly List<Clue> _currentClueList = new List<Clue>();
     private readonly Dictionary<string,ClueEventData> _gainClueStoryBoardEvent = new Dictionary<string, ClueEventData>();
-    private bool _isLoadDone = false;
 
     public void GainClue(Clue clue)
     {
@@ -67,22 +65,11 @@ public class ClueManager
 
     public IEnumerable<string> GetGainClueEventStoryBoardIdList()
     {
-        if (!_isLoadDone)
-        {
-            MakeClueList();
-        }
         return _gainClueStoryBoardEvent.Keys.ToList();
     }
 
-    public void OnEnable()
-    {
-        _allClueList = Enum.GetValues(typeof(Clue)).Cast<Clue>().ToList();
-        MakeClueList();
-    }
-
-    private void MakeClueList()
+    public void MakeClueList()
     {
         _gainClueStoryBoardEvent.Add("S0005",new ClueEventData("S0005","S0006",Clue.Clue01));
-        _isLoadDone = true;
     }
 }
