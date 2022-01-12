@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MenuMode
+public enum UiMenuMode
 {
     DialogueLog,
     Inventory,
@@ -27,16 +27,12 @@ public class UI_GameMenuClickSystem : I_ClickSystem
     }
 
     #endregion
-
-    private UI_GameMenuManager _uiGameMenuManager;
     
-    private MenuMode _currentMode = MenuMode.Inventory;
+    private UiMenuMode _currentMode = UiMenuMode.Inventory;
 
-    public delegate void CheckClickDelegate(RaycastHit2D hit);
-    private CheckClickDelegate _checkClickFunc = delegate {  };
-    List<CheckClickDelegate> _checkClickList = new List<CheckClickDelegate>();
+    readonly List<Action<RaycastHit2D>> _checkClickList = new List<Action<RaycastHit2D>>();
 
-    public void SubScribeCheckClickFunc(CheckClickDelegate checkClickDelegate)
+    public void SubScribeCheckClickFunc(Action<RaycastHit2D> checkClickDelegate)
     {
         if (!_checkClickList.Contains(checkClickDelegate))
         {
@@ -44,31 +40,12 @@ public class UI_GameMenuClickSystem : I_ClickSystem
         }
     }
 
-    public void UnSubscribeCheckClick(CheckClickDelegate checkClickDelegate)
+    public void UnSubscribeCheckClick(Action<RaycastHit2D> checkClickDelegate)
     {
         if (_checkClickList.Contains(checkClickDelegate))
         {
             _checkClickList.Remove(checkClickDelegate);
         }
-    }
-
-    public void ResetCheckClickList()
-    {
-        _checkClickList = new List<CheckClickDelegate>();
-    }
-
-    private void MakeCheckClickFunc()
-    {
-        _checkClickFunc= delegate {  };
-        foreach (var checkClick in _checkClickList)
-        {
-            _checkClickFunc += checkClick;
-        }
-    }
-
-    public void OnEnable()
-    {
-        _uiGameMenuManager = UI_GameMenuManager.GetInstance();
     }
 
     public void Click()
@@ -78,66 +55,68 @@ public class UI_GameMenuClickSystem : I_ClickSystem
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D[] hitList = Physics2D.GetRayIntersectionAll(ray);
 
-            MakeCheckClickFunc();
-            
             foreach (var hit in hitList)
             {
+                CheckTabMenuClick(hit);
                 CheckClick(hit);
-                _checkClickFunc(hit);
             }
         }
     }
 
     private void CheckClick(RaycastHit2D hit)
     {
+        Action<RaycastHit2D> tempDelegate = delegate { };
+        foreach (var checkClick in _checkClickList)
+        {
+            tempDelegate += checkClick;
+        }
+
+        tempDelegate(hit);
+    }
+
+    private void CheckTabMenuClick(RaycastHit2D hit)
+    {
         switch (hit.transform.name)
         {
             case "Inventory":
-                if (_currentMode != MenuMode.Inventory)
+                if (_currentMode != UiMenuMode.Inventory)
                 {
-                    _currentMode = MenuMode.Inventory;
-                    _uiGameMenuManager.SetMenuMode(MenuMode.Inventory);
+                    _currentMode = UiMenuMode.Inventory;
+                    UI_GameMenuManager.GetInstance().SetMenuMode(UiMenuMode.Inventory);
                 }
                 break;
             
             case "ClueInventory":
-                if (_currentMode != MenuMode.ClueInventory)
+                if (_currentMode != UiMenuMode.ClueInventory)
                 {
-                    _currentMode = MenuMode.ClueInventory;
-                    _uiGameMenuManager.SetMenuMode(MenuMode.ClueInventory);
+                    _currentMode = UiMenuMode.ClueInventory;
+                    UI_GameMenuManager.GetInstance().SetMenuMode(UiMenuMode.ClueInventory);
                 }
                 break;
             
             case "DialogueLog":
-                if (_currentMode != MenuMode.DialogueLog)
+                if (_currentMode != UiMenuMode.DialogueLog)
                 {
-                    _currentMode = MenuMode.DialogueLog;
-                    _uiGameMenuManager.SetMenuMode(MenuMode.DialogueLog);
+                    _currentMode = UiMenuMode.DialogueLog;
+                    UI_GameMenuManager.GetInstance().SetMenuMode(UiMenuMode.DialogueLog);
                 }
                 break;
             
             case "Setting":
-                if (_currentMode != MenuMode.Setting)
+                if (_currentMode != UiMenuMode.Setting)
                 {
-                    _currentMode = MenuMode.Setting;
-                    _uiGameMenuManager.SetMenuMode(MenuMode.Setting);
+                    _currentMode = UiMenuMode.Setting;
+                    UI_GameMenuManager.GetInstance().SetMenuMode(UiMenuMode.Setting);
                 }
                 
                 break;
             
             case "Back":
-                _currentMode = MenuMode.Inventory;
-                _uiGameMenuManager.RemoveAllInMain();
-                _uiGameMenuManager.RemoveGameMenu();
+                _currentMode = UiMenuMode.Inventory;
+                UI_GameMenuManager.GetInstance().RemoveAllInMain();
+                UI_GameMenuManager.GetInstance().RemoveGameMenu();
                 ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
                 break;
         }
-    }
-
-
-    // Update is called once per frame
-    public void Update()
-    {
-        Click();
     }
 }
