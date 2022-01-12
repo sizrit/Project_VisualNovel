@@ -37,66 +37,48 @@ public class UI_GameMenuManager : MonoBehaviour
 
     #endregion
 
-    private UI_GameMenuClickSystem _uiGameMenuClickSystem;
-    
-    private GameObject _uiGameMenu;
-    
-    private GameObject _main;
-    private GameObject _dialogueLogPrefab;
-    private GameObject _inventoryPrefab;
-    private GameObject _clueInventoryPrefab;
-    private GameObject _settingPrefab;
-    
-
-    private void OnEnable()
-    {
-        _uiGameMenuClickSystem = UI_GameMenuClickSystem.GetInstance();
-        
-        string loadPath = "UI_GameMenu/Prefabs/";
-        _uiGameMenu = Resources.Load<GameObject>(loadPath + "UI_GameMenuPrefab");
-
-        _dialogueLogPrefab = Resources.Load<GameObject>(loadPath + "DialogueLogPrefab");
-        _inventoryPrefab = Resources.Load<GameObject>(loadPath + "InventoryPrefab");
-        _clueInventoryPrefab = Resources.Load<GameObject>(loadPath + "ClueInventoryPrefab");
-        _settingPrefab = Resources.Load<GameObject>(loadPath + "SettingPrefab");
-    }
+    [SerializeField] private GameObject uiGameMenuPrefab;
+    [SerializeField] private GameObject dialogueLogPrefab;
+    [SerializeField] private GameObject inventoryPrefab;
+    [SerializeField] private GameObject clueInventoryPrefab;
+    [SerializeField] private GameObject settingPrefab;
 
     public void InstantiateGameMenu()
     {
-        Instantiate(_uiGameMenu, this.transform);
-        _main = GameObject.Find("Main");
+        Instantiate(uiGameMenuPrefab, this.transform);
     }
 
-    public void SetMenuMode(MenuMode mode)
+    public void SetMenuMode(UiMenuMode mode)
     {
-        _uiGameMenuClickSystem.ResetCheckClickList();
+        Transform main = uiGameMenuPrefab.transform.GetChild(2);
         switch (mode)
         {
-            case MenuMode.DialogueLog:
+            case UiMenuMode.DialogueLog:
                 RemoveAllInMain();
-                Instantiate(_dialogueLogPrefab, _main.transform);
+                Instantiate(dialogueLogPrefab, main.transform);
                 UI_GameMenu_DialogueLogManager.GetInstance().ShowDialogueLog();
                 break;
-            case MenuMode.Inventory:
+            case UiMenuMode.Inventory:
                 RemoveAllInMain();
-                Instantiate(_inventoryPrefab, _main.transform);
+                Instantiate(inventoryPrefab, main.transform);
                 break;
-            case MenuMode.ClueInventory:
+            case UiMenuMode.ClueInventory:
                 RemoveAllInMain();
-                Instantiate(_clueInventoryPrefab, _main.transform);
+                Instantiate(clueInventoryPrefab, main.transform);
                 break;
-            case MenuMode.Setting:
+            case UiMenuMode.Setting:
                 RemoveAllInMain();
-                Instantiate(_settingPrefab, _main.transform);
+                Instantiate(settingPrefab, main.transform);
                 break;
         }
     }
 
     public void RemoveAllInMain()
     {
-        for (int i = 0; i < _main.transform.childCount; i++)
+        Transform main = uiGameMenuPrefab.transform.GetChild(2);
+        for (int i = 0; i < main.transform.childCount; i++)
         {
-            Destroy(_main.transform.GetChild(i).gameObject);
+            Destroy(main.transform.GetChild(i).gameObject);
         }
     }
 
