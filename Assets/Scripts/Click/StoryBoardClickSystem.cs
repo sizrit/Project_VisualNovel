@@ -78,10 +78,13 @@ public class StoryBoardClickSystem : I_ClickSystem
 
     private void CheckClick(RaycastHit2D hit)
     {
+        Action<RaycastHit2D> tempDelegate = delegate { };
         foreach (var func in _checkClickFuncList)
         {
-            func(hit);
+            tempDelegate += func;
         }
+
+        tempDelegate(hit);
         
         if (_isStoryBoardClickEnable)
         {
