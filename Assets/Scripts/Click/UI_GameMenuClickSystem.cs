@@ -113,8 +113,7 @@ public class UI_GameMenuClickSystem : I_ClickSystem
             
             case "Back":
                 _currentMode = UiMenuMode.Inventory;
-                UI_GameMenuManager.GetInstance().RemoveAllInMain();
-                UI_GameMenuManager.GetInstance().RemoveGameMenu();
+                UI_GameMenuManager.GetInstance().Hide_UI_GameMenu();
                 ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
                 break;
         }

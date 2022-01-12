@@ -37,53 +37,51 @@ public class UI_GameMenuManager : MonoBehaviour
 
     #endregion
 
-    [SerializeField] private GameObject uiGameMenuPrefab;
+    [SerializeField] private GameObject uiGameMenuObject;
     [SerializeField] private GameObject dialogueLogPrefab;
     [SerializeField] private GameObject inventoryPrefab;
     [SerializeField] private GameObject clueInventoryPrefab;
     [SerializeField] private GameObject settingPrefab;
 
-    public void InstantiateGameMenu()
+    public void Show_UI_GameMenu()
     {
-        Instantiate(uiGameMenuPrefab, this.transform);
+        RemoveAllInMain();
+        uiGameMenuObject.SetActive(true);
     }
 
     public void SetMenuMode(UiMenuMode mode)
     {
-        Transform main = uiGameMenuPrefab.transform.GetChild(2);
+        Transform main = uiGameMenuObject.transform.GetChild(2);
+        RemoveAllInMain();
         switch (mode)
         {
             case UiMenuMode.DialogueLog:
-                RemoveAllInMain();
                 Instantiate(dialogueLogPrefab, main.transform);
                 UI_GameMenu_DialogueLogManager.GetInstance().ShowDialogueLog();
                 break;
             case UiMenuMode.Inventory:
-                RemoveAllInMain();
                 Instantiate(inventoryPrefab, main.transform);
                 break;
             case UiMenuMode.ClueInventory:
-                RemoveAllInMain();
                 Instantiate(clueInventoryPrefab, main.transform);
                 break;
             case UiMenuMode.Setting:
-                RemoveAllInMain();
                 Instantiate(settingPrefab, main.transform);
                 break;
         }
     }
 
-    public void RemoveAllInMain()
+    private void RemoveAllInMain()
     {
-        Transform main = uiGameMenuPrefab.transform.GetChild(2);
+        Transform main = uiGameMenuObject.transform.GetChild(2);
         for (int i = 0; i < main.transform.childCount; i++)
         {
             Destroy(main.transform.GetChild(i).gameObject);
         }
     }
 
-    public void RemoveGameMenu()
+    public void Hide_UI_GameMenu()
     {
-        Destroy(this.transform.GetChild(0).gameObject);
+        uiGameMenuObject.SetActive(false);
     }
 }
