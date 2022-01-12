@@ -32,7 +32,7 @@ public class ClickSystem
 
     private bool _isClickEnable = true;
     
-    public void OnEnable()
+    public void Initialize()
     {
         _clickSystemList.Add(ClickMode.StoryBoard,StoryBoardClickSystem.GetInstance());
         _clickSystemList.Add(ClickMode.Menu,UI_GameMenuClickSystem.GetInstance());
@@ -58,8 +58,7 @@ public class ClickSystem
     {
         _clickSystemList[_currentClickMode].Click();
     }
-
-    // Update is called once per frame
+    
     public void Update()
     {
         if (_isClickEnable)

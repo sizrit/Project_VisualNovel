@@ -43,11 +43,6 @@ public class GameModeManager : MonoBehaviour
     
     readonly StoryBoardManager _storyBoardManager = StoryBoardManager.GetInstance();
 
-    private void OnEnable()
-    {
-        ChangeGameModeToIdle();
-    }
-
     public void ChangeGameMode(GameMode mode,string id)
     {
         nextMode = mode;
@@ -68,6 +63,7 @@ public class GameModeManager : MonoBehaviour
             case GameMode.Idle:
                 // for test
                 StoryBoardSwitchEffectManager.GetInstance().SwitchOffEffect(EndGameModeCallBack);
+                //ChangeGameModeToIdle();
                 break;
         }
     }

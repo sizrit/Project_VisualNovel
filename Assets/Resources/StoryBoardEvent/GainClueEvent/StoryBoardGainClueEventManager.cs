@@ -29,9 +29,7 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
     }
 
     #endregion
-
-    private StoryBoardClickSystem _storyBoardClickSystem;
-    private StoryBoardManager _storyBoardManager;
+    
     private string _currentStoryBoardId;
     private string _nextStoryBoardId;
 
@@ -61,16 +59,13 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
         GameObject obj = Instantiate(Resources.Load<GameObject>(loadPath), this.transform);
         obj.name = clue.ToString();
 
-        _storyBoardClickSystem.SubscribeCheckClick(CheckClick);
+         StoryBoardClickSystem.GetInstance().SubscribeCheckClick(CheckClick);
     }
     
     public void SetGainClueEvent(string storyBoardIdValue)
     {
-        _storyBoardClickSystem = StoryBoardClickSystem.GetInstance();
-        _storyBoardManager = StoryBoardManager.GetInstance();
         _currentStoryBoardId = storyBoardIdValue;
-        _storyBoardClickSystem.DisableStoryBoardCheckClick();
-
+        StoryBoardClickSystem.GetInstance().DisableStoryBoardCheckClick();
         SetPrefabs();
     }
 
@@ -79,8 +74,8 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
         if (hit.transform == this.transform.GetChild(0))
         {
             Destroy(this.transform.GetChild(0).gameObject);
-            _storyBoardClickSystem.UnsubscribeCheckClick(CheckClick);
-            _storyBoardClickSystem.SubscribeCheckClick(LastCheckClick);
+            StoryBoardClickSystem.GetInstance().UnsubscribeCheckClick(CheckClick);
+            StoryBoardClickSystem.GetInstance().SubscribeCheckClick(LastCheckClick);
         }
     }
 
@@ -98,10 +93,10 @@ public class StoryBoardGainClueEventManager : MonoBehaviour
 
     private void EndEvent()
     {
-        _storyBoardClickSystem.UnsubscribeCheckClick(LastCheckClick);
-        _storyBoardClickSystem.EnableStoryBoardCheckClick();
-        _storyBoardManager.SetNextStoryBoard(_nextStoryBoardId);
-        _storyBoardManager.SetStoryBoard();
+        StoryBoardClickSystem.GetInstance().UnsubscribeCheckClick(LastCheckClick);
+        StoryBoardClickSystem.GetInstance().EnableStoryBoardCheckClick();
+        StoryBoardManager.GetInstance().SetNextStoryBoard(_nextStoryBoardId);
+        StoryBoardManager.GetInstance().SetStoryBoard();
     }
     
 }
