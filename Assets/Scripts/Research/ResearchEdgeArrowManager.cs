@@ -42,7 +42,8 @@ public class ResearchEdgeArrowManager : MonoBehaviour
     [SerializeField] private GameObject downArrow;
 
     private readonly Dictionary<string, Sprite> _arrowImageList = new Dictionary<string, Sprite>();
-    
+    private static readonly int State = Animator.StringToHash("State");
+
     public void LoadImage()
     {
         Sprite[] imageList = Resources.LoadAll<Sprite>("ResearchArrow");
@@ -57,7 +58,8 @@ public class ResearchEdgeArrowManager : MonoBehaviour
         switch (direction)
         {
             case EdgeArrowDirection.Left:
-                leftArrow.GetComponent<Image>().sprite = _arrowImageList["Left_On"];
+                leftArrow.GetComponent<Animator>().SetInteger(State,2);
+                //leftArrow.GetComponent<Image>().sprite = _arrowImageList["Left_On"];
                 return;
             
             case EdgeArrowDirection.Right:
@@ -101,7 +103,7 @@ public class ResearchEdgeArrowManager : MonoBehaviour
         switch (direction)
         {
             case EdgeArrowDirection.Left:
-                leftArrow.GetComponent<Image>().sprite = _arrowImageList["Left_Idle"];
+                //leftArrow.GetComponent<Image>().sprite = _arrowImageList["Left_Idle"];
                 return;
             
             case EdgeArrowDirection.Right:
