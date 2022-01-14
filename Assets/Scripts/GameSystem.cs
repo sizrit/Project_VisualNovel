@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class GameSystem : MonoBehaviour
@@ -39,101 +40,47 @@ public class GameSystem : MonoBehaviour
 
     #endregion
 
-
-    // ClickSystem
-    private ClickSystem _clickSystem;
-    private UI_GameMenuClickSystem _uiGameMenuClickSystem;
-    
-    // Loader
-    private StoryBoardDataLoadManager _storyBoardDataLoadManager;
-    private DialogueDataLoadManager _dialogueDataLoadManager;
-    private StoryBoardSelectionEventDataLoadManager _storyBoardSelectionEventDataLoadManager;
-
-    // Loader & Manager
-    private BgLoadManager _bgLoadManager;
-    
-    // Manager
-    private StoryBoardManager _storyBoardManager;
-    private StoryBoardEventManager _storyBoardEventManager;
-    private DialogueManager _dialogueManager;
-    private DialogueTextAnimationManager _dialogueTextAnimationManager;
-    private DialogueTextEffectManager _dialogueTextEffectManager;
-    private DialogueTextColorManager _dialogueTextColorManager;
-    private ClueManager _clueManager;
-    private StoryBoardGainClueEventManager _storyBoardGainClueEventManager;
-
-    private bool _isPaused = false;
-    
-    private void OnEnable()
+    private void Start()
     {
-        GetAllInstance();
-
-        _clickSystem.OnEnable();
-        _uiGameMenuClickSystem.OnEnable();
-        
-        _storyBoardDataLoadManager.OnEnable();
-        _dialogueDataLoadManager.OnEnable();
-        _storyBoardSelectionEventDataLoadManager.OnEnable();
-
-        _bgLoadManager.OnEnable();
-        
-        _storyBoardManager.OnEnable();
-        
-        _dialogueManager.OnEnable();
-        _dialogueTextAnimationManager.OnEnable();
-        _dialogueTextEffectManager.OnEnable();
-        _dialogueTextColorManager.OnEnable();
-        _clueManager.OnEnable();
-        
-        _storyBoardEventManager.OnEnable();
-        //_storyBoardGainClueEventManager.OnEnable();
+        LoadAllData();
+        MakeList();
+        Initialize();
+        GameSetting();
+        //GameModeManager.GetInstance().ChangeGameMode(GameMode.Idle,"");
+        //StoryBoardManager.GetInstance().TestRun();
     }
 
-    private void GetAllInstance()
+    private void LoadAllData()
     {
-        _clickSystem =ClickSystem.GetInstance();
-        _uiGameMenuClickSystem = UI_GameMenuClickSystem.GetInstance();
+        StoryBoardDataLoadManager.GetInstance().LoadData();
+        StoryBoardSelectionEventDataLoadManager.GetInstance().LoadData();
+        DialogueDataLoadManager.GetInstance().LoadJsonData();
+        StoryBoardBgLoadManager.GetInstance().LoadBg();
+        StoryBoardImageLoadManager.GetInstance().LoadAllPrefabs();
         
-        _storyBoardDataLoadManager =StoryBoardDataLoadManager.GetInstance();
-        _dialogueDataLoadManager = DialogueDataLoadManager.GetInstance();
-        _storyBoardSelectionEventDataLoadManager = StoryBoardSelectionEventDataLoadManager.GetInstance();
-
-        _bgLoadManager = BgLoadManager.GetInstance();
-        
-        _storyBoardManager = StoryBoardManager.GetInstance();
-        _storyBoardEventManager = StoryBoardEventManager.GetInstance();
-        _dialogueManager = DialogueManager.GetInstance();
-        _dialogueTextAnimationManager = DialogueTextAnimationManager.GetInstance();
-        _dialogueTextEffectManager = DialogueTextEffectManager.GetInstance();
-        _dialogueTextColorManager = DialogueTextColorManager.GetInstance();
-        _clueManager = ClueManager.GetInstance();
-        _storyBoardGainClueEventManager = StoryBoardGainClueEventManager.GetInstance();
+        ResearchObjectSetLoadManger.GetInstance().LoadAllObjectSet();
+        ResearchEdgeController.GetInstance().LoadEdgeControlData();
+        ResearchEdgeArrowManager.GetInstance().LoadImage();
     }
 
-    public void PauseOn()
+    private void MakeList()
     {
-        _isPaused = true;
+        ClueManager.GetInstance().MakeClueList();
+        StoryBoardEventManager.GetInstance().MakeEventList();
     }
-    
-    public void PauseOff()
+
+    private void Initialize()
     {
-        _isPaused = false;
+        ClickSystem.GetInstance().Initialize();
     }
-    
-    private void StoryBoardUpdate()
+
+    private void GameSetting()
     {
-        _dialogueTextAnimationManager.Update();
-        _dialogueTextEffectManager.Update();
+        UI_GameMenuManager.GetInstance().Hide_UI_GameMenu();
     }
-    
+
     void Update()
     {
-        //_gameModeManager.Update();
-        
-        _clickSystem.Update();
-        if (!_isPaused)
-        {
-            StoryBoardUpdate();
-        }
+        ClickSystem.GetInstance().Update();
     }
 }

@@ -24,9 +24,11 @@ public class GameModeManager : MonoBehaviour
             var obj = FindObjectOfType<GameModeManager>();
             if (obj == null)
             {
-                GameObject gameObject = new GameObject("GameModeManager");
-                _instance = gameObject.AddComponent<GameModeManager>();
+                Debug.LogError("Error! GameModeManager is disable now");
+                return null;
             }
+
+            _instance = obj;
         }
         return _instance;
     }
@@ -40,8 +42,6 @@ public class GameModeManager : MonoBehaviour
     
     [SerializeField] private GameMode nextMode = GameMode.Idle;
     [SerializeField] private string nextId = "";
-    
-    readonly StoryBoardManager _storyBoardManager = StoryBoardManager.GetInstance();
 
     public void ChangeGameMode(GameMode mode,string id)
     {
@@ -57,7 +57,7 @@ public class GameModeManager : MonoBehaviour
                 break;
             
             case GameMode.Research:
-                // 구현필요
+                EndGameModeCallBack();
                 break;
             
             case GameMode.Idle:
@@ -88,7 +88,7 @@ public class GameModeManager : MonoBehaviour
                 break;
             
             case GameMode.Research:
-                ChangeGameModeToPointAndClick();
+                ChangeGameModeToResearch();
                 break;
         }
     }
@@ -98,21 +98,24 @@ public class GameModeManager : MonoBehaviour
         Debug.Log("ChangeGameModeToStoryBoard");
         storyBoardMode.SetActive(true);
         ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
-        _storyBoardManager.SetNextStoryBoard(nextId);
+        StoryBoardManager.GetInstance().SetNextStoryBoard(nextId);
         StoryBoardSwitchEffectManager.GetInstance().SwitchOnEffect(StoryBoardSwitchOnCallBack);
     }
     
     private void StoryBoardSwitchOnCallBack()
     {
         Debug.Log("StoryBoardSwitchOnCallBack");
-        _storyBoardManager.SetStoryBoard();
+        StoryBoardManager.GetInstance().SetStoryBoard();
         ClickSystem.GetInstance().EnableClick();
         ResetNextData();
     }
 
-    private void ChangeGameModeToPointAndClick()
+    private void ChangeGameModeToResearch()
     {
+        researchMode.SetActive(true);
+        ResearchManager.GetInstance().SetResearch("R001");
         ClickSystem.GetInstance().EnableClick();
+        
     }
     
 
@@ -131,7 +134,7 @@ public class GameModeManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
-
+            ChangeGameMode(GameMode.Research, "");
         }
     }
     
