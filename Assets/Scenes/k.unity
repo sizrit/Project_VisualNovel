@@ -617,7 +617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47537ab9ba6f34833b78762d4db6be94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiGameMenuObject: {fileID: 570482983}
+  uiGameMenuObject: {fileID: 7704232631137037362, guid: c79d77bdfc6cf4ea69a7c7ef6741afbe, type: 3}
   dialogueLogPrefab: {fileID: 6094290472072012606, guid: 9d74754fc493840a487458b891b12480, type: 3}
   inventoryPrefab: {fileID: 4155261645492451789, guid: 36e3a275b30154e14bdb3edb3fc88cf3, type: 3}
   clueInventoryPrefab: {fileID: 6717336486822602803, guid: a60f39e73ecb34c6a9442bf3d563d678, type: 3}
@@ -633,6 +633,7 @@ GameObject:
   - component: {fileID: 232724403}
   - component: {fileID: 232724405}
   - component: {fileID: 232724404}
+  - component: {fileID: 232724406}
   m_Layer: 5
   m_Name: RightArrow
   m_TagString: Untagged
@@ -697,6 +698,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 232724402}
   m_CullTransparentMesh: 1
+--- !u!95 &232724406
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 232724402}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8086eef6614339a47844f9703d527d83, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &336861974
 GameObject:
   m_ObjectHideFlags: 0
@@ -2351,7 +2371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   researchObjectSetLoadManger: {fileID: 1169335016}
-  speed: 10
+  speed: 3
 --- !u!114 &1523050060
 MonoBehaviour:
   m_ObjectHideFlags: 0
