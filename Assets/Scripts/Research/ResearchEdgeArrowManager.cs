@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.UI;
 using UnityEngine;
+using UnityEngine.Accessibility;
 using UnityEngine.UI;
 
 public enum EdgeArrowDirection
@@ -50,6 +51,8 @@ public class ResearchEdgeArrowManager : MonoBehaviour
     [SerializeField] private GameObject upArrow;
     [SerializeField] private GameObject downArrow;
 
+    [SerializeField] private GameObject animationSync;
+
     private readonly Dictionary<string, Sprite> _arrowImageList = new Dictionary<string, Sprite>();
     private static readonly int State = Animator.StringToHash("State");
 
@@ -75,11 +78,11 @@ public class ResearchEdgeArrowManager : MonoBehaviour
                 return;
             
             case EdgeArrowDirection.Up:
-                upArrow.GetComponent<Image>().sprite = _arrowImageList["Up_On"];
+                upArrow.GetComponent<Animator>().SetInteger(State,(int)ArrowState.On);
                 return;
             
             case EdgeArrowDirection.Down:
-                downArrow.GetComponent<Image>().sprite = _arrowImageList["Down_On"];
+                downArrow.GetComponent<Animator>().SetInteger(State,(int)ArrowState.On);
                 return;
         }
     }
@@ -97,11 +100,11 @@ public class ResearchEdgeArrowManager : MonoBehaviour
                 return;
             
             case EdgeArrowDirection.Up:
-                upArrow.GetComponent<Image>().sprite = _arrowImageList["null"];
+                upArrow.GetComponent<Animator>().SetInteger(State,(int)ArrowState.Off);
                 return;
             
             case EdgeArrowDirection.Down:
-                downArrow.GetComponent<Image>().sprite = _arrowImageList["null"];
+                downArrow.GetComponent<Animator>().SetInteger(State,(int)ArrowState.Off);
                 return;
         }
     }
@@ -112,18 +115,26 @@ public class ResearchEdgeArrowManager : MonoBehaviour
         {
             case EdgeArrowDirection.Left:
                 leftArrow.GetComponent<Animator>().SetInteger(State,(int)ArrowState.Idle);
+                leftArrow.GetComponent<Animator>().Play("Idle", 0,
+                    animationSync.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime);
                 return;
             
             case EdgeArrowDirection.Right:
                 rightArrow.GetComponent<Animator>().SetInteger(State,(int)ArrowState.Idle);
+                rightArrow.GetComponent<Animator>().Play("Idle", 0,
+                    animationSync.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime);
                 return;
             
             case EdgeArrowDirection.Up:
-                upArrow.GetComponent<Image>().sprite = _arrowImageList["Up_Idle"];
+                upArrow.GetComponent<Animator>().SetInteger(State,(int)ArrowState.Idle);
+                upArrow.GetComponent<Animator>().Play("Idle", 0,
+                    animationSync.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime);
                 return;
             
             case EdgeArrowDirection.Down:
-                downArrow.GetComponent<Image>().sprite = _arrowImageList["Down_Idle"];
+                downArrow.GetComponent<Animator>().SetInteger(State,(int)ArrowState.Idle);
+                downArrow.GetComponent<Animator>().Play("Idle", 0,
+                    animationSync.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime);
                 return;
         }
     }
