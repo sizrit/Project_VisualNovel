@@ -19,18 +19,13 @@ public class ResearchClickSystem : I_ClickSystem
 
     #endregion
 
-    private void CheckClick()
-    {
-        
-    }
-    
     public void Click()
     {
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D[] hits = Physics2D.GetRayIntersectionAll(ray);
-
+            
             foreach (var hit in hits)
             {
                 hit.transform.GetComponent<IResearchClickable>().Click();

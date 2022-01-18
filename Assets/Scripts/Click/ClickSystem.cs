@@ -7,6 +7,7 @@ public enum ClickMode
 {
     StoryBoard,
     Menu,
+    Research,
     Disable
 }
 
@@ -36,6 +37,7 @@ public class ClickSystem
     {
         _clickSystemList.Add(ClickMode.StoryBoard,StoryBoardClickSystem.GetInstance());
         _clickSystemList.Add(ClickMode.Menu,UI_GameMenuClickSystem.GetInstance());
+        _clickSystemList.Add(ClickMode.Research,ResearchClickSystem.GetInstance());
         //_clickSystemList.Add(ClickMode.Disable,);
     }
 
