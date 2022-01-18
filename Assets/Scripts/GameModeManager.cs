@@ -114,8 +114,8 @@ public class GameModeManager : MonoBehaviour
     {
         researchMode.SetActive(true);
         ResearchManager.GetInstance().SetResearch("R001");
+        ClickSystem.GetInstance().SetClickMode(ClickMode.Research);
         ClickSystem.GetInstance().EnableClick();
-        
     }
     
 

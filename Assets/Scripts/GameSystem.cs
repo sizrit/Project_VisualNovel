@@ -52,6 +52,8 @@ public class GameSystem : MonoBehaviour
 
     private void LoadAllData()
     {
+        CursorManager.GetInstance().LoadCursor();
+        
         StoryBoardDataLoadManager.GetInstance().LoadData();
         StoryBoardSelectionEventDataLoadManager.GetInstance().LoadData();
         DialogueDataLoadManager.GetInstance().LoadJsonData();
