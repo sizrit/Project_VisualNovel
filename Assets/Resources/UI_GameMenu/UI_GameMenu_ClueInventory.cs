@@ -54,7 +54,6 @@ public class UI_GameMenu_ClueInventory : MonoBehaviour
             GameObject clueIcon = Instantiate(_clueIconPrefabs, this.transform);
             clueIcon.name = clue.ToString();
             clueIcon.GetComponent<Image>().sprite = _clueIconImageList[clue];
-            clueIcon.transform.position = new Vector3(-550 + 200 * index++, 250, 100);
         }
     }
 
