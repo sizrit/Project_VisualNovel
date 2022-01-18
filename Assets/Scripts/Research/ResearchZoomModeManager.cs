@@ -49,7 +49,7 @@ public class ResearchZoomModeManager : MonoBehaviour
     private void EndZoomModeCallBack01()
     {
         FadeSystem.GetInstance().SetCallBack(EndZoomModeCallBack02);
-        ResearchObjectSetLoadManger.GetInstance().EnableeObjectSet();
+        ResearchObjectSetLoadManger.GetInstance().EnableObjectSet();
         ResetZoomMode();
         FadeSystem.GetInstance().CallFadeSystem(FadeMode.FadeIn);
     }

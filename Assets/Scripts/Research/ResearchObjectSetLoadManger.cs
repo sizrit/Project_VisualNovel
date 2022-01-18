@@ -47,4 +47,14 @@ public class ResearchObjectSetLoadManger : MonoBehaviour
         GameObject objectSet = Instantiate(_objectSetList[researchId],this.transform);
         // 진행상황 적용 필요
     }
+
+    public void DisableObjectSet()
+    {
+        this.transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    public void EnableObjectSet()
+    {
+        this.transform.GetChild(0).gameObject.SetActive(true);
+    }
 }
