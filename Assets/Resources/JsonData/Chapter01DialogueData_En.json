@@ -3,61 +3,37 @@
     {
       "storyBoardId": "S0001",
       "speaker": "",
-      "dialogueText": "",
+      "dialogueText": "어둡고 낯선 방에서 소녀가 눈을 뜬다",
       "color": "White"
     },
     {
       "storyBoardId": "S0002",
-      "speaker": "라디오",
-      "dialogueText": "<color=#FF0000>긴급 속보입니다.</color>",
+      "speaker": "Alice",
+      "dialogueText": "나는 왜 여기 있는거야...",
       "color": "White"
     },
     {
       "storyBoardId": "S0003",
-      "speaker": "라디오",
-      "dialogueText": "수도권 인근 지역에서 12차례에 걸쳐 살인 사건을 일으킨 연쇄살인범,\n일명 송곳 살인마가 오늘 저녁 6시, 또다시 예고장을 보내왔습니다.",
+      "speaker": "Alice",
+      "dialogueText": "머리가 너무 아파... 아무것도 기억나지 않아...",
       "color": "White"
     },
     {
       "storyBoardId": "S0004",
-      "speaker": "라디오",
-      "dialogueText": "이번 예고장 역시 송곳 살인마의 상징인 <color=#FF0000>송곳 그림</color>과 함께\n<color=#FF0000>빨간 글씨로 ‘7월 21일 서울파크에서 두 명의 희생자가 나올 것.’</color>\n이라는 간단한 메ㅔ세지를 보내왔습니다.",
-      "color": "White"
-    },
-    {
-      "storyBoardId": "S0005",
       "speaker": "",
-      "dialogueText": "",
+      "dialogueText": "소녀가 눈을 찡그리고 주변을 둘러본다",
       "color": "White"
     },
     {
       "storyBoardId": "S0006",
-      "speaker": "라디오",
-      "dialogueText": "하지만 최근 송곳살인마의 모방범이 많아지는 와중에...",
+      "speaker": "Alice",
+      "dialogueText": "일단 여기가 어딘지 알아야겠어...",
       "color": "White"
     },
     {
       "storyBoardId": "S0007",
       "speaker": "",
-      "dialogueText": "",
-      "color": "White"
-    },
-    {
-      "storyBoardId": "S0008",
-      "speaker": "",
-      "dialogueText": "'치직... 치이이이이이이...'",
-      "color": "White"
-    },
-    {
-      "storyBoardId": "S0009",
-      "speaker": "",
-      "dialogueText": "'와장창!'",
-      "color": "White"
-    },
-    {
-      "storyBoardId": "S0010",
-      "speaker": "",
-      "dialogueText": "끝endddddddddddd",
+      "dialogueText": "소녀는 몸을 일으켜 세웠다",
       "color": "White"
     }
   ]

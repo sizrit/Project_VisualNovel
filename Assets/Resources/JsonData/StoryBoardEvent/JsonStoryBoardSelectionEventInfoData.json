@@ -1,6 +1,5 @@
 {
   "JsonStoryBoardSelectionEventDataList" :[ 
-    { "storyBoardId" : "S0001", "nextStoryIdList" : ["S0002", "S0002"],"textList": ["라디오를 켠다.", "라디오를 안키는척 다시 킨다."]},
-    { "storyBoardId" : "S0007", "nextStoryIdList" : ["S0008", "S0009"],"textList": ["라디오를 끈다.", "라디오를 부순다."]}
+    { "storyBoardId" : "S0000", "nextStoryIdList" : ["S0001", "S0001"],"textList": ["...", "......"]}
   ]
 }

@@ -1,6 +1,12 @@
 {
   "storyBoardList": [
     {
+      "storyBoardId": "S0000",
+      "bgId": "Bg001",
+      "imageId": "ImageSet001",
+      "nextStoryBoardId": "S0001"
+    },
+    {
       "storyBoardId": "S0001",
       "bgId": "Bg001",
       "imageId": "ImageSet001",
@@ -21,7 +27,7 @@
     {
       "storyBoardId": "S0004",
       "bgId": "Bg001",
-      "imageId": "ImageSet002",
+      "imageId": "ImageSet001",
       "nextStoryBoardId": "S0005"
     },
     {
@@ -39,20 +45,14 @@
     {
       "storyBoardId": "S0007",
       "bgId": "Bg001",
-      "imageId": "ImageSet002",
+      "imageId": "ImageSet001",
       "nextStoryBoardId": "S0008"
     },
     {
       "storyBoardId": "S0008",
       "bgId": "Bg001",
-      "imageId": "ImageSet002",
-      "nextStoryBoardId": "S0010"
-    },
-    {
-      "storyBoardId": "S0009",
-      "bgId": "Bg001",
-      "imageId": "ImageSet002",
-      "nextStoryBoardId": "S0010"
+      "imageId": "ImageSet001",
+      "nextStoryBoardId": ""
     }
   ]
 }
