@@ -59,6 +59,7 @@ public class GameSystem : MonoBehaviour
         DialogueDataLoadManager.GetInstance().LoadJsonData();
         StoryBoardBgLoadManager.GetInstance().LoadBg();
         StoryBoardImageLoadManager.GetInstance().LoadAllPrefabs();
+        StoryBoardSwitchManager.GetInstance().LoadData();
         
         ResearchObjectSetLoadManger.GetInstance().LoadAllObjectSet();
         ResearchEdgeController.GetInstance().LoadEdgeControlData();
