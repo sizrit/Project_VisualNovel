@@ -5,6 +5,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum BgId
+{
+    Chapter01Room
+}
+
 public class StoryBoardBgLoadManager : MonoBehaviour
 {
     #region Singleton
@@ -29,21 +34,29 @@ public class StoryBoardBgLoadManager : MonoBehaviour
 
     #endregion
     
-    private readonly Dictionary<string,Sprite> _bgList = new Dictionary<string, Sprite>();
+    private readonly Dictionary<BgId,Sprite> _bgList = new Dictionary<BgId, Sprite>();
     [SerializeField] private GameObject bg;
     
     public void LoadBg()
     {
+        List<BgId> bgNameList = Enum.GetValues(typeof(BgId)).Cast<BgId>().ToList();
         string loadPath = "Bg";
         Sprite[] spriteList = Resources.LoadAll<Sprite>(loadPath);
+
         foreach (var sprite in spriteList)
         {
-            _bgList.Add(sprite.name,sprite);
+            foreach (var bgName in bgNameList)
+            {
+                if (bgName.ToString() == sprite.name)
+                {
+                    _bgList.Add(bgName,sprite);
+                }
+            }
         }
     }
 
-    public void SetBg(string bgIdValue)
+    public void SetBg(BgId bgId)
     {
-        bg.GetComponent<Image>().sprite = _bgList[bgIdValue];
+        bg.GetComponent<Image>().sprite = _bgList[bgId];
     }
 }
