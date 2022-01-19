@@ -46,9 +46,6 @@ public class StoryBoardImageLoadManager : MonoBehaviour
             Destroy(this.transform.GetChild(i).gameObject);
         }
 
-        if (imageIdValue != "")
-        {
-            Instantiate(_imagePrefabsList[imageIdValue], this.transform);
-        }
+        Instantiate(_imagePrefabsList[imageIdValue], this.transform);
     }
 }
