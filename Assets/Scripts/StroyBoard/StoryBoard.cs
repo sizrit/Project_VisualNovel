@@ -3,46 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum StoryBoardMode
+{
+    Dialogue,
+    Selection,
+    GainClue,
+    GetItem,
+    SwitchToResearch,
+    ReturnToReserch,
+}
+
 [Serializable]
 public struct StoryBoard
 {
     public string storyBoardId;
-    public string bgId;
+    public StoryBoardMode mode;
+    public BgId bgId;
     public string imageId;
     public string nextStoryBoardId;
-/*
-    public StoryBoard()
-    {
-        
-    }
-    
-    public StoryBoard(string storyBoardId, string bgId, string eventId, string dialogueId)
-    {
-        _storyBoardId = storyBoardId;
-        _dialogueId = dialogueId;
-        _bgId = bgId;
-        _eventId = eventId;
-    }
 
-    public string GetStroyBoardId()
+    public StoryBoard(string storyBoardId,StoryBoardMode mode, BgId bgId, string imageId, string nextStoryBoardId)
     {
-        return _storyBoardId;
+        this.storyBoardId = storyBoardId;
+        this.mode = mode;
+        this.bgId = bgId;
+        this.imageId = imageId;
+        this.nextStoryBoardId = nextStoryBoardId;
     }
-    
-    public string GetDialogueId()
-    {
-        return _dialogueId;
-    }
-    
-    public string GetBgId()
-    {
-        return _bgId;
-    }
-
-    public string GetNextStoryBoardId()
-    {
-        return _nextStoryBoardId;
-    }
-    
-*/
 }
