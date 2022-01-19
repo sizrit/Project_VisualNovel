@@ -42,8 +42,6 @@ public class DialogueTextEffectManager : MonoBehaviour
 
     private void MakeEffectList()
     {
-        _effectList.Add("S0001",Shake);
-        _effectList.Add("S0002",Shake);
     }
     
     public void SetDialogueTextEffect(string storyBoardIdValue)
