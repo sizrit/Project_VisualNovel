@@ -130,7 +130,7 @@ public class GameModeManager : MonoBehaviour
         //for test
         if (Input.GetKeyDown(KeyCode.V))
         {
-            ChangeGameMode(GameMode.StoryBoard,"S0001");
+            ChangeGameMode(GameMode.StoryBoard,"S0000");
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
