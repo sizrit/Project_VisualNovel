@@ -3,12 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class JsonStoryBoardData
-{
-    public List<StoryBoard> storyBoardList =new List<StoryBoard>();
-}
-
 public class StoryBoardDataLoadManager
 {
     #region Singleton
@@ -31,15 +25,14 @@ public class StoryBoardDataLoadManager
 
     public void LoadData()
     {
-        string loadPath = "JsonData/StoryBoard/JsonStoryBoardData";
-        List<StoryBoard> tempList = LoadJsonFiles<JsonStoryBoardData>(loadPath).storyBoardList;
-        
-        foreach (var storyBoard in tempList)
-        {
-            _storyBoardList.Add(storyBoard.storyBoardId,storyBoard);
-        }
+        _storyBoardList.Add("S0000",
+            new StoryBoard("S0000", StoryBoardMode.Selection, BgId.Chapter01Room, "ImageSet001", "S0001"));
+        _storyBoardList.Add("S0001",
+            new StoryBoard("S0001", StoryBoardMode.Dialogue, BgId.Chapter01Room, "ImageSet001", "S0002"));
+        _storyBoardList.Add("S0002",
+            new StoryBoard("S0001", StoryBoardMode.Dialogue, BgId.Chapter01Room, "ImageSet002", "S0003"));
     }
-    
+
     public StoryBoard GetStoryBoard(string storyBoardId)
     {
         return _storyBoardList[storyBoardId];
