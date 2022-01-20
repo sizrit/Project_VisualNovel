@@ -43,6 +43,13 @@ public class GameModeManager : MonoBehaviour
     [SerializeField] private GameMode nextMode = GameMode.Idle;
     [SerializeField] private string nextId = "";
 
+
+    public void ReturnToResearchFromStoryBoard()
+    {
+        ClickSystem.GetInstance().DisableClick();
+        StoryBoardSwitchEffectManager.GetInstance().SwitchOffEffect(EndGameModeCallBack);
+    }
+
     public void ChangeGameMode(GameMode mode,string id)
     {
         nextMode = mode;
@@ -112,9 +119,12 @@ public class GameModeManager : MonoBehaviour
 
     private void ChangeGameModeToResearch()
     {
+        Debug.Log("ChangeGameModeToResearch");
         researchMode.SetActive(true);
-        ResearchManager.GetInstance().SetResearch("R001");
         ClickSystem.GetInstance().SetClickMode(ClickMode.Research);
+        ResearchManager.GetInstance().SetResearch("R001");
+        
+        
         ClickSystem.GetInstance().EnableClick();
     }
     
