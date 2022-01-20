@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Accessibility;
 
@@ -55,6 +56,11 @@ public class StoryBoardClickSystem : I_ClickSystem
     {
         _isStoryBoardClickEnable = true;
     }
+
+    private void SetStoryBoardCheckClick(bool boolean)
+    {
+        _isStoryBoardClickEnable = boolean;
+    }
     
     public void DisableStoryBoardCheckClick()
     {
@@ -69,14 +75,16 @@ public class StoryBoardClickSystem : I_ClickSystem
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D[] hitList = Physics2D.GetRayIntersectionAll(ray);
 
+            Action<RaycastHit2D> checkClickFunc = MakeCheckClickFunc();
+            
             foreach (var hit in hitList)
             {
-                CheckClick(hit);
+                checkClickFunc(hit);
             }
         }
     }
 
-    private void CheckClick(RaycastHit2D hit)
+    private Action<RaycastHit2D> MakeCheckClickFunc()
     {
         Action<RaycastHit2D> tempDelegate = delegate { };
         foreach (var func in _checkClickFuncList)
@@ -84,19 +92,19 @@ public class StoryBoardClickSystem : I_ClickSystem
             tempDelegate += func;
         }
 
-        tempDelegate(hit);
-        
         if (_isStoryBoardClickEnable)
         {
-            StoryBoardCheckClick(hit);
+            tempDelegate += StoryBoardCheckClick;
         }
-        
+
         foreach (var func in _uiCheckClickFuncList)
         {
-            func(hit);
+            tempDelegate += func;
         }
+
+        return tempDelegate;
     }
-    
+
     private void StoryBoardCheckClick(RaycastHit2D hit)
     {
         GameObject dialogueClickZone = GameObject.Find("DialogueClickZone");
