@@ -6,7 +6,10 @@ using UnityEngine;
 
 public enum GameMode
 {
+    ChapterStart,
+    ChapterEnd,
     StoryBoard,
+    StoryBoardR,
     Research,
     Idle
 }
@@ -43,44 +46,66 @@ public class GameModeManager : MonoBehaviour
     [SerializeField] private GameMode nextMode = GameMode.Idle;
     [SerializeField] private string nextId = "";
 
-
-    public void ReturnToResearchFromStoryBoard()
+    public void ChangeGameMode(GameMode beforeMode, GameMode afterMode, string id)
     {
         ClickSystem.GetInstance().DisableClick();
-        StoryBoardSwitchEffectManager.GetInstance().SwitchOffEffect(EndGameModeCallBack);
-    }
-
-    public void ChangeGameMode(GameMode mode,string id)
-    {
-        nextMode = mode;
         nextId = id;
-        
-        ClickSystem.GetInstance().DisableClick();
-        
-        switch (currentMode)
+
+        switch (beforeMode,afterMode)
         {
-            case GameMode.StoryBoard:
-                StoryBoardSwitchEffectManager.GetInstance().SwitchOffEffect(EndGameModeCallBack);
+            case (GameMode.ChapterStart,GameMode.StoryBoard):
+                StoryBoardSwitchEffectManager.GetInstance().SwitchOffEffect(ChapterStart_StoryBoard);
                 break;
             
-            case GameMode.Research:
-                EndGameModeCallBack();
+            case (GameMode.StoryBoard,GameMode.Research):
+                StoryBoardSwitchEffectManager.GetInstance().SwitchOffEffect(StoryBoard_Research);
                 break;
             
-            case GameMode.Idle:
-                // for test
-                StoryBoardSwitchEffectManager.GetInstance().SwitchOffEffect(EndGameModeCallBack);
-                //ChangeGameModeToIdle();
-                break;
+            // case GameMode.Research:
+            //     EndGameModeCallBack();
+            //     break;
+            //
+            // case GameMode.Idle:
+            //     // for test
+            //     StoryBoardSwitchEffectManager.GetInstance().SwitchOffEffect(EndGameModeCallBack);
+            //     //ChangeGameModeToIdle();
+            //     break;
         }
     }
-
-    private void ChangeGameModeToIdle()
+    
+    private void ChapterStart_StoryBoard()
     {
+        Debug.Log("ChapterStart_StoryBoard");
         storyBoardMode.SetActive(false);
         researchMode.SetActive(false);
-        ClickSystem.GetInstance().DisableClick();
+        
+        storyBoardMode.SetActive(true);
+        ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
+        StoryBoardManager.GetInstance().SetNextStoryBoard(nextId);
+        StoryBoardManager.GetInstance().SetStoryBoard();
+        StoryBoardSwitchEffectManager.GetInstance().SwitchOnEffect(ChapterStart_StoryBoardCallBack);
     }
+
+    private void ChapterStart_StoryBoardCallBack()
+    {
+        Debug.Log("StoryBoardSwitchOnCallBack");
+        ClickSystem.GetInstance().EnableClick();
+        ResetNextData();
+    }
+
+    private void StoryBoard_Research()
+    {
+        Debug.Log("StoryBoard_Research");
+        storyBoardMode.SetActive(false);
+        researchMode.SetActive(false);
+        
+        Debug.Log("ChangeGameModeToResearch");
+        researchMode.SetActive(true);
+        ClickSystem.GetInstance().SetClickMode(ClickMode.Research);
+        ResearchManager.GetInstance().SetResearch("R001");
+        ClickSystem.GetInstance().EnableClick();
+    }
+    
     
     private void EndGameModeCallBack()
     {
@@ -91,30 +116,13 @@ public class GameModeManager : MonoBehaviour
         switch (nextMode)
         {
             case GameMode.StoryBoard:
-                ChangeGameModeToStoryBoard();
+                //C//hangeGameModeToStoryBoard();
                 break;
             
             case GameMode.Research:
                 ChangeGameModeToResearch();
                 break;
         }
-    }
-    
-    private void ChangeGameModeToStoryBoard ()
-    {
-        Debug.Log("ChangeGameModeToStoryBoard");
-        storyBoardMode.SetActive(true);
-        ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
-        StoryBoardManager.GetInstance().SetNextStoryBoard(nextId);
-        StoryBoardManager.GetInstance().SetStoryBoard();
-        StoryBoardSwitchEffectManager.GetInstance().SwitchOnEffect(StoryBoardSwitchOnCallBack);
-    }
-    
-    private void StoryBoardSwitchOnCallBack()
-    {
-        Debug.Log("StoryBoardSwitchOnCallBack");
-        ClickSystem.GetInstance().EnableClick();
-        ResetNextData();
     }
 
     private void ChangeGameModeToResearch()
@@ -140,11 +148,11 @@ public class GameModeManager : MonoBehaviour
         //for test
         if (Input.GetKeyDown(KeyCode.V))
         {
-            ChangeGameMode(GameMode.StoryBoard,"S0000");
+            ChangeGameMode(GameMode.ChapterStart,GameMode.StoryBoard,"S0000");
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
-            ChangeGameMode(GameMode.Research, "");
+            //ChangeGameMode(GameMode.Research, "");
         }
     }
     

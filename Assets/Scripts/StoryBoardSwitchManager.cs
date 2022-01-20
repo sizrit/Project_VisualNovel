@@ -35,6 +35,6 @@ public class StoryBoardSwitchManager
 
     public void Switch(string id)
     {
-        GameModeManager.GetInstance().ChangeGameMode(GameMode.Research,_storyBoardToResearchList[id]);
+        GameModeManager.GetInstance().ChangeGameMode(GameMode.StoryBoard,GameMode.Research,_storyBoardToResearchList[id]);
     }
 }
