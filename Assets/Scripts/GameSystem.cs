@@ -39,9 +39,12 @@ public class GameSystem : MonoBehaviour
     }
 
     #endregion
-
+    
+    
     private void Start()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
         LoadAllData();
         Initialize();
         GameSetting();
@@ -79,4 +82,5 @@ public class GameSystem : MonoBehaviour
     {
         ClickSystem.GetInstance().Update();
     }
+    
 }
