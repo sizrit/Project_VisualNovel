@@ -25,6 +25,12 @@
       "color": "White"
     },
     {
+      "storyBoardId": "S0005",
+      "speaker": "",
+      "dialogueText": "",
+      "color": ""
+    },
+    {
       "storyBoardId": "S0006",
       "speaker": "Alice",
       "dialogueText": "일단 여기가 어딘지 알아야겠어...",
@@ -35,6 +41,12 @@
       "speaker": "",
       "dialogueText": "소녀는 몸을 일으켜 세웠다",
       "color": "White"
+    },
+    {
+      "storyBoardId": "S0008",
+      "speaker": "",
+      "dialogueText": "",
+      "color": ""
     }
   ]
 }

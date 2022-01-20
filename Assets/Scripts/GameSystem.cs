@@ -43,11 +43,8 @@ public class GameSystem : MonoBehaviour
     private void Start()
     {
         LoadAllData();
-        MakeList();
         Initialize();
         GameSetting();
-        //GameModeManager.GetInstance().ChangeGameMode(GameMode.Idle,"");
-        //StoryBoardManager.GetInstance().TestRun();
     }
 
     private void LoadAllData()
@@ -61,15 +58,11 @@ public class GameSystem : MonoBehaviour
         StoryBoardImageLoadManager.GetInstance().LoadAllPrefabs();
         StoryBoardSwitchManager.GetInstance().LoadData();
         
+        ClueManager.GetInstance().MakeClueList();
+        
         ResearchObjectSetLoadManger.GetInstance().LoadAllObjectSet();
         ResearchEdgeController.GetInstance().LoadEdgeControlData();
         ResearchEdgeArrowManager.GetInstance().LoadImage();
-    }
-
-    private void MakeList()
-    {
-        ClueManager.GetInstance().MakeClueList();
-        StoryBoardEventManager.GetInstance().MakeEventList();
     }
 
     private void Initialize()
