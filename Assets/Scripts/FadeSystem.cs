@@ -83,11 +83,12 @@ public class FadeSystem : MonoBehaviour
         Color color = _fadeObjectImage.color;
         if (color.a<0.05)
         {
+            Action callback = _callBack;
+            ResetCallBack();
             color.a = 0;
             _fadeObjectImage.color = color;
             _fadeAnimation = delegate {};
-            _callBack();
-            ResetCallBack();
+            callback();
             return;
         }
         color.a -= _fadeSpeed;
@@ -99,11 +100,12 @@ public class FadeSystem : MonoBehaviour
         Color color  = _fadeObjectImage.color;
         if (color.a > 0.95)
         {
+            Action callback = _callBack;
+            ResetCallBack();
             color.a = 1;
             _fadeObjectImage.color = color;
             _fadeAnimation = delegate {};
-            _callBack();
-            ResetCallBack();
+            callback();
             return;
         }
         color.a += _fadeSpeed;

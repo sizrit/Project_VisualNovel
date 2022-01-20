@@ -29,10 +29,6 @@ public class StoryBoardSwitchEffectManager : MonoBehaviour
     }
 
     #endregion
-    
-    [SerializeField] private GameObject object1;
-    [SerializeField] private GameObject object2;
-    [SerializeField] private GameObject object3;
 
     private Action _callBack = delegate { };
     private Action _effect = delegate { };
@@ -40,15 +36,20 @@ public class StoryBoardSwitchEffectManager : MonoBehaviour
     public void SwitchOnEffect(Action func)
     {
         ResetCallBack();
-        _effect = SwitchOnEffectAnimation;
-        _callBack = func;
+        FadeSystem.GetInstance().SetCallBack(func);
+        FadeSystem.GetInstance().CallFadeSystem(FadeMode.FadeIn);
+        // _effect = SwitchOnEffectAnimation;
+        // _callBack = func;
     }
 
     public void SwitchOffEffect(Action func)
     {
         ResetCallBack();
-        _effect = SwitchOffEffectAnimation;
-        _callBack = func;
+        FadeSystem.GetInstance().SetCallBack(func);
+        FadeSystem.GetInstance().CallFadeSystem(FadeMode.FadeOut);
+        
+        // _effect = SwitchOffEffectAnimation;
+        // _callBack = func;
     }
 
     // effect

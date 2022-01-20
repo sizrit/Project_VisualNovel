@@ -99,13 +99,13 @@ public class GameModeManager : MonoBehaviour
         storyBoardMode.SetActive(true);
         ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
         StoryBoardManager.GetInstance().SetNextStoryBoard(nextId);
+        StoryBoardManager.GetInstance().SetStoryBoard();
         StoryBoardSwitchEffectManager.GetInstance().SwitchOnEffect(StoryBoardSwitchOnCallBack);
     }
     
     private void StoryBoardSwitchOnCallBack()
     {
         Debug.Log("StoryBoardSwitchOnCallBack");
-        StoryBoardManager.GetInstance().SetStoryBoard();
         ClickSystem.GetInstance().EnableClick();
         ResetNextData();
     }
