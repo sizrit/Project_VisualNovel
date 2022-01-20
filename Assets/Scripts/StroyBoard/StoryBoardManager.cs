@@ -42,22 +42,35 @@ public class StoryBoardManager
     {
         if (DialogueManager.GetInstance().CheckIsAnimationEnd())
         {
-            if (StoryBoardSwitchManager.GetInstance().CheckSwitch(_currentStoryBoard.storyBoardId))
-            {
-                StoryBoardSwitchManager.GetInstance().Switch(_currentStoryBoard.storyBoardId);
-                return;
-            }
-            
             StoryBoardBgLoadManager.GetInstance().SetBg(_currentStoryBoard.bgId);
             StoryBoardImageLoadManager.GetInstance().SetImage(_currentStoryBoard.imageId);
-            if (StoryBoardEventManager.GetInstance().IsStoryBoardEvent(_currentStoryBoard.storyBoardId))
+            
+            switch (_currentStoryBoard.mode)
             {
-                StoryBoardEventManager.GetInstance().StoryBoardEventOn(_currentStoryBoard.storyBoardId);
-            }
-            else
-            {
-                DialogueManager.GetInstance().SetDialogue(_currentStoryBoard.storyBoardId);
-                SetNextStoryBoard();
+                case StoryBoardMode.Dialogue:
+                    DialogueManager.GetInstance().SetDialogue(_currentStoryBoard.storyBoardId);
+                    SetNextStoryBoard();
+                    break;
+                
+                case StoryBoardMode.Selection:
+                    StoryBoardSelectionEventManager.GetInstance().SetSelectionEvent(_currentStoryBoard.storyBoardId);
+                    break;
+                    
+                case StoryBoardMode.GainClue:
+                    StoryBoardGainClueEventManager.GetInstance().SetGainClueEvent(_currentStoryBoard.storyBoardId);
+                    break;
+                    
+                case StoryBoardMode.GetItem:
+                    
+                    break;
+                
+                case  StoryBoardMode.SwitchToResearch:
+                    StoryBoardSwitchManager.GetInstance().Switch(_currentStoryBoard.storyBoardId);
+                    break;
+                
+                case StoryBoardMode.ReturnToReserch:
+                    
+                    break;
             }
         }
         else
