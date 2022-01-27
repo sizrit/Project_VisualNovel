@@ -6,6 +6,9 @@ TagManager:
   tags:
   - StoryBoard
   - UI_Inventory
+  - StoryBoardNode
+  - StoryBoardNodeInput
+  - StoryBoardNodeOutput
   layers:
   - Default
   - TransparentFX
