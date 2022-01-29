@@ -43,6 +43,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Grid Line
+    uniqueID: 1083730359
+    locked: 0
+  - name: Grid Thick Line
+    uniqueID: 3141471011
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Node
+    uniqueID: 1342654065
     locked: 0

@@ -48,6 +48,11 @@ namespace StoryBoardEditor
             return "N"+nodeIdCount++.ToString("D4");;
         }
 
+        public void SetPosition(Vector3 position)
+        {
+            
+        }
+
         public void DeleteNode(GameObject nodeGameObject)
         {
             foreach (var storyBoardNode in _nodeList.Values.ToList())

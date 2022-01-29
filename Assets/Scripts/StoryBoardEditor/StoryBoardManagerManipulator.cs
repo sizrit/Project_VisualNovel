@@ -20,21 +20,23 @@ namespace StoryBoardEditor
         
         #endregion
             
-        private float _minSize = 1;
-        private float _maxSize = 4;
-        private float _speed = 0.2f;
+        private float _minSize = 4;
+        private float _maxSize = 12;
+        private float _speed = 0.4f;
         private Vector3 _prevPosition = Vector3.zero;
 
         public void Scroll()
         {
-            if (Input.mouseScrollDelta.y > 0 && Camera.main.orthographicSize < _maxSize)
-            {
-                if (Camera.main != null) Camera.main.orthographicSize += _speed;
-            }
-
-            if (Input.mouseScrollDelta.y < 0 && Camera.main.orthographicSize > _minSize)
+            if (Input.mouseScrollDelta.y > 0 && Camera.main.orthographicSize > _minSize)
             {
                 if (Camera.main != null) Camera.main.orthographicSize -= _speed;
+                StoryBoardEditorGridSystem.GetInstance().AdjustGridLine();
+            }
+
+            if (Input.mouseScrollDelta.y < 0 && Camera.main.orthographicSize < _maxSize)
+            {
+                if (Camera.main != null) Camera.main.orthographicSize += _speed;
+                StoryBoardEditorGridSystem.GetInstance().AdjustGridLine();
             }
         }
 

@@ -62,6 +62,8 @@ namespace StoryBoardEditor
             }
         }
 
+        Vector3 _prevPosition =Vector3.zero;
+        
         public void CheckDrag()
         {
             switch (mode)
@@ -72,11 +74,28 @@ namespace StoryBoardEditor
                     break;
                 case ClickMode.Normal:
                     CheckClick();
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        _prevPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        _prevPosition.z = 0;
+                    }
+                    
                     if (Input.GetMouseButton(0) && _currentSelectedNode != null)
                     {
-                        Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                        position.z = 0;
-                        _currentSelectedNode.transform.position = position;
+                        Vector3 currentPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        currentPosition.z = 0;
+                        if (_prevPosition != currentPosition)
+                        {
+                            Vector3 delta = currentPosition - _prevPosition;
+                            _currentSelectedNode.transform.position+= delta;
+                            _prevPosition = currentPosition;
+                        }
+                    }
+
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        _currentSelectedNode.transform.position = StoryBoardEditorGridSystem.GetInstance()
+                            .SetPositionToGrid(_currentSelectedNode.transform.position);
                     }
                     break;
             }
