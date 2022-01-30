@@ -54,7 +54,6 @@ namespace StoryBoardEditor
                     {
                         mode = ClickMode.Normal;
                         _currentSelectedNode = hit.transform.gameObject;
-                        Debug.Log(_currentSelectedNode.name);
                         return;
                     }
                 }

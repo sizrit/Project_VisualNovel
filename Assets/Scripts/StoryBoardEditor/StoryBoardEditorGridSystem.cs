@@ -40,8 +40,15 @@ namespace StoryBoardEditor
         private readonly List<GameObject> _verticalThickLineList = new List<GameObject>();
         private readonly List<GameObject> _horizontalLineList = new List<GameObject>();
         private readonly List<GameObject> _verticalLineList = new List<GameObject>();
+
+        private const int Max = 10;
+        private const int Scale = 1;
+        private const int ThickLineNum = 10 * 4 / Scale + 1;
+        private const int LineNum = (ThickLineNum - 1) * 5 + 1;
         
-        private const int Max =9;
+        private const float ThickLineSize = 1.2f;
+        private const int LineSize = 1;
+        
 
         private bool FloatRemainderOperation(float dividend, float divisor)
         {
@@ -64,56 +71,56 @@ namespace StoryBoardEditor
             {
                 for (int i = 0; i < _horizontalThickLineList.Count; i++)
                 {
-                    int num = -1 * Max + i;
+                    float num = -1 * Max + i / 2f;
                     _horizontalThickLineList[i].transform.localPosition = new Vector3(0, num * size, 0);
-                    _horizontalThickLineList[i].transform.localScale = new Vector3(10000, 2 * size, 1);
+                    _horizontalThickLineList[i].transform.localScale = new Vector3(10000, ThickLineSize * size, 1);
                     _verticalThickLineList[i].transform.localPosition = new Vector3(num * size, 0, 0);
-                    _verticalThickLineList[i].transform.localScale = new Vector3(2 * size, 10000, 1);
+                    _verticalThickLineList[i].transform.localScale = new Vector3(ThickLineSize * size, 10000, 1);
                 }
 
                 for (int i = 0; i < _horizontalLineList.Count; i++)
                 {
-                    float num = -1 * Max + i / 5f;
+                    float num = -1 * Max + i / 10f;
                     ;
                     _horizontalLineList[i].transform.localPosition = new Vector3(0, num * size, 0);
-                    _horizontalLineList[i].transform.localScale = new Vector3(10000, 1 * size, 1);
+                    _horizontalLineList[i].transform.localScale = new Vector3(10000, LineSize * size, 1);
                     _verticalLineList[i].transform.localPosition = new Vector3(num * size, 0, 0);
-                    _verticalLineList[i].transform.localScale = new Vector3(1 * size, 10000, 1);
+                    _verticalLineList[i].transform.localScale = new Vector3(LineSize * size, 10000, 1);
                 }
             }
         }
 
         public void MakeGridLine()
         {
-            for (int i = 0; i < Max*2+1; i++)
+            for (int i = 0; i < ThickLineNum; i++)
             {
-                int num = -1 * Max + i;
+                float num = -1 * Max + i / 2f;
                 GameObject newLineH = Instantiate(thickLine,horizontalThickLineLayer.transform);
                 newLineH.name = "ThickLine_H" + num;
                 newLineH.transform.localPosition = new Vector3(0, num, 0);
-                newLineH.transform.localScale = new Vector3(10000, 2, 1);
+                newLineH.transform.localScale = new Vector3(10000, ThickLineSize, 1);
                 _horizontalThickLineList.Add(newLineH);
                 
                 GameObject newLineR = Instantiate(thickLine,verticalThickLineLayer.transform);
                 newLineR.name = "ThickLine_R" + num;
                 newLineR.transform.localPosition = new Vector3(num, 0, 0);
-                newLineR.transform.localScale = new Vector3(2, 10000, 1);
+                newLineR.transform.localScale = new Vector3(ThickLineSize, 10000, 1);
                 _verticalThickLineList.Add(newLineR);
             }
 
-            for (int i = 0; i < Max*10+1; i++)
+            for (int i = 0; i < LineNum; i++)
             {
                 float num = -1 * Max + i / 5f;
                 GameObject newLineH = Instantiate(line,horizontalLineLayer.transform);
                 newLineH.name = "Line_H" + num;
                 newLineH.transform.localPosition = new Vector3(0, num, 0);
-                newLineH.transform.localScale = new Vector3(10000, 1, 1);
+                newLineH.transform.localScale = new Vector3(10000, LineSize, 1);
                 _horizontalLineList.Add(newLineH);
                 
                 GameObject newLineR = Instantiate(thickLine,verticalLineLayer.transform);
                 newLineR.name = "Line_R" + num;
                 newLineR.transform.localPosition = new Vector3(num, 0, 0);
-                newLineR.transform.localScale = new Vector3(1, 10000, 1);
+                newLineR.transform.localScale = new Vector3(LineSize, 10000, 1);
                 _verticalLineList.Add(newLineR);
             }
         }
