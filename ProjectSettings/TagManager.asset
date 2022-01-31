@@ -55,3 +55,6 @@ TagManager:
   - name: Node
     uniqueID: 1342654065
     locked: 0
+  - name: Node Text
+    uniqueID: 3329953285
+    locked: 0
