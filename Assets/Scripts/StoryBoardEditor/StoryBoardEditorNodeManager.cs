@@ -53,6 +53,11 @@ namespace StoryBoardEditor
             
         }
 
+        public StoryBoardNode GetNodeByName(string nameValue)
+        {
+            return _nodeList[nameValue];
+        }
+
         public void DeleteNode(GameObject nodeGameObject)
         {
             foreach (var storyBoardNode in _nodeList.Values.ToList())

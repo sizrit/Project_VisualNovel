@@ -1,16 +1,19 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace StoryBoardEditor
 {
     public enum ClickMode
     {
-        Input,
-        Output,
-        Normal,
+        UI,
+        NodeInput,
+        NodeOutput,
+        Node,
+        Null
     }
-    
-    public class StoryBoardEditorClickSystem
+
+    public class StoryBoardEditorClickSystem : MonoBehaviour
     {
         #region Singleton
 
@@ -20,7 +23,14 @@ namespace StoryBoardEditor
         {
             if (_instance == null)
             {
-                _instance = new StoryBoardEditorClickSystem();
+                var obj = FindObjectOfType<StoryBoardEditorClickSystem>();
+                if (obj == null)
+                {
+                    Debug.LogError("StoryBoardEditorClickSystem Script is not available!");
+                    return null;
+                }
+
+                _instance = obj;
             }
 
             return _instance;
@@ -28,85 +38,114 @@ namespace StoryBoardEditor
 
         #endregion
 
-        private GameObject _currentSelectedNode = null;
-        private ClickMode mode;
+        [SerializeField] private GameObject currentSelectedNode = null;
+        private Vector3 _prevPosition = Vector3.zero;
+        private Action _checkFunc = delegate { };
 
-        public void CheckClick()
+        public GameObject GetCurrentSelectedNode()
+        {
+            return currentSelectedNode;
+        }
+
+        private ClickMode ClickPriority(RaycastHit2D[] hits)
+        {
+            List<(string, ClickMode)> priorityList = new List<(string, ClickMode)>();
+            priorityList.Add(("StoryBoardEditor_UI", ClickMode.UI));
+            priorityList.Add(("StoryBoardEditor_NodeInput", ClickMode.NodeInput));
+            priorityList.Add(("StoryBoardEditor_NodeOutput", ClickMode.NodeOutput));
+            priorityList.Add(("StoryBoardEditor_Node", ClickMode.Node));
+
+            foreach (var priority in priorityList)
+            {
+                foreach (var hit in hits)
+                {
+                    if (hit.transform.CompareTag(priority.Item1))
+                    {
+                        return priority.Item2;
+                    }
+                }
+            }
+
+            return ClickMode.Null;
+        }
+
+        private GameObject GetNodeFromClick(RaycastHit2D[] hits)
+        {
+            foreach (var hit in hits)
+            {
+                if (hit.transform.CompareTag("StoryBoardEditor_Node"))
+                {
+                    return hit.transform.gameObject;
+                }
+            }
+
+            return null;
+        }
+
+        private void CheckClick()
         {
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D[] hits = Physics2D.GetRayIntersectionAll(ray);
 
-                foreach (var hit in hits)
+                ClickMode mode = ClickPriority(hits);
+
+                switch (mode)
                 {
-                    if (hit.transform.CompareTag("StoryBoardNodeInput"))
-                    {
-                        mode = ClickMode.Input;
-                    }
-                    
-                    if (hit.transform.CompareTag("StoryBoardNodeOutput"))
-                    {
-                        mode = ClickMode.Output;
-                    }
-                    
-                    if (hit.transform.CompareTag("StoryBoardNode"))
-                    {
-                        mode = ClickMode.Normal;
-                        _currentSelectedNode = hit.transform.gameObject;
-                        return;
-                    }
+                    case ClickMode.UI:
+
+                        break;
+
+                    case ClickMode.Node:
+                        currentSelectedNode = GetNodeFromClick(hits);
+                        _prevPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        _checkFunc += DragNode;
+                        break;
+
+                    case ClickMode.Null:
+                        currentSelectedNode = null;
+                        break;
                 }
-                _currentSelectedNode = null;
             }
         }
 
-        Vector3 _prevPosition =Vector3.zero;
-        
-        public void CheckDrag()
+        private void DragNode()
         {
-            switch (mode)
+            Debug.Log("drag");
+            if (Input.GetMouseButton(0) && currentSelectedNode != null)
             {
-                case ClickMode.Input:
-                    break;
-                case ClickMode.Output:
-                    break;
-                case ClickMode.Normal:
-                    CheckClick();
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        _prevPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                        _prevPosition.z = 0;
-                    }
-                    
-                    if (Input.GetMouseButton(0) && _currentSelectedNode != null)
-                    {
-                        Vector3 currentPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                        currentPosition.z = 0;
-                        if (_prevPosition != currentPosition)
-                        {
-                            Vector3 delta = currentPosition - _prevPosition;
-                            _currentSelectedNode.transform.position+= delta;
-                            _prevPosition = currentPosition;
-                        }
-                    }
+                Vector3 currentPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                currentPosition.z = 0;
+                if (_prevPosition != currentPosition)
+                {
+                    Vector3 delta = currentPosition - _prevPosition;
+                    currentSelectedNode.transform.position += delta;
+                    _prevPosition = currentPosition;
+                }
+            }
 
-                    if (Input.GetMouseButtonUp(0))
-                    {
-                        _currentSelectedNode.transform.position = StoryBoardEditorGridSystem.GetInstance()
-                            .SetPositionToGrid(_currentSelectedNode.transform.position);
-                    }
-                    break;
+            if (Input.GetMouseButtonUp(0))
+            {
+                _checkFunc -= DragNode;
+                currentSelectedNode.transform.position = StoryBoardEditorGridSystem.GetInstance()
+                    .SetPositionToGrid(currentSelectedNode.transform.position);
             }
         }
 
         public void DeleteCheck()
         {
-            if (_currentSelectedNode != null)
+            if (currentSelectedNode != null)
             {
-                StoryBoardEditorNodeManager.GetInstance().DeleteNode(_currentSelectedNode);
-                _currentSelectedNode = null;
+                StoryBoardEditorNodeManager.GetInstance().DeleteNode(currentSelectedNode);
+                currentSelectedNode = null;
             }
+        }
+
+        private void Update()
+        {
+            CheckClick();
+            _checkFunc();
         }
     }
 }
