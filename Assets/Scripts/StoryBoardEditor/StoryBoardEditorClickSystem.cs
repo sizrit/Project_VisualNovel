@@ -94,7 +94,7 @@ namespace StoryBoardEditor
                 switch (mode)
                 {
                     case ClickMode.UI:
-
+                        StoryBoardEditorNodeInfoManager.GetInstance().CheckClick(hits);
                         break;
 
                     case ClickMode.Node:
@@ -127,7 +127,7 @@ namespace StoryBoardEditor
 
             if (Input.GetMouseButtonUp(0))
             {
-                _checkFunc -= DragNode;
+                _checkFunc = delegate { };
                 currentSelectedNode.transform.position = StoryBoardEditorGridSystem.GetInstance()
                     .SetPositionToGrid(currentSelectedNode.transform.position);
             }

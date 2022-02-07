@@ -48,7 +48,6 @@ public class UI_GameMenu_ClueInventory : MonoBehaviour
 
     private void ShowClue()
     {
-        int index = 0;
         foreach (var clue in _currentClueList.OrderBy(t=>t))
         {
             GameObject clueIcon = Instantiate(_clueIconPrefabs, this.transform);
