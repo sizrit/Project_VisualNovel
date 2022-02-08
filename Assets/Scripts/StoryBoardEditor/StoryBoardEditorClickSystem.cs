@@ -96,6 +96,10 @@ namespace StoryBoardEditor
                     case ClickMode.UI:
                         StoryBoardEditorNodeInfoManager.GetInstance().CheckClick(hits);
                         break;
+                    
+                    case  ClickMode.NodeOutput:
+                        
+                        break;
 
                     case ClickMode.Node:
                         currentSelectedNode = GetNodeFromClick(hits);
@@ -111,6 +115,11 @@ namespace StoryBoardEditor
                         break;
                 }
             }
+        }
+
+        private void DrawLine()
+        {
+            
         }
 
         private void DragNode()
