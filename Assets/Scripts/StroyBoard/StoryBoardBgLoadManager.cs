@@ -7,7 +7,12 @@ using UnityEngine.UI;
 
 public enum BgId
 {
-    Chapter01Room
+    Chapter01Room,
+    a,
+    aa,
+    aaa,
+    aaaa,
+    aaaaa
 }
 
 public class StoryBoardBgLoadManager : MonoBehaviour

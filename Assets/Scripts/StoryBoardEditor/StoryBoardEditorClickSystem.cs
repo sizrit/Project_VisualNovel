@@ -101,10 +101,13 @@ namespace StoryBoardEditor
                         currentSelectedNode = GetNodeFromClick(hits);
                         _prevPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                         _checkFunc += DragNode;
+                        StoryBoardEditorNodeInfoManager.GetInstance().EnableNodeInfo(StoryBoardEditorNodeManager
+                            .GetInstance().GetNodeByName(currentSelectedNode.name));
                         break;
 
                     case ClickMode.Null:
                         currentSelectedNode = null;
+                        StoryBoardEditorNodeInfoManager.GetInstance().DisableNodeInfo();
                         break;
                 }
             }

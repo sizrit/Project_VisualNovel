@@ -85,7 +85,7 @@ namespace StoryBoardEditor
                 {
                     if (hit.transform == boxColliderLayer.transform.GetChild(i))
                     {
-                        _mainText.transform.GetChild(0).GetComponent<Text>().text = _contentTextList[i];
+                        _mainText.transform.GetComponentInChildren<Text>().text = _contentTextList[i];
                     }
                 }
             }
