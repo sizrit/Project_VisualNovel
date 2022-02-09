@@ -49,11 +49,13 @@ namespace StoryBoardEditor
 
         private ClickMode ClickPriority(RaycastHit2D[] hits)
         {
-            List<(string, ClickMode)> priorityList = new List<(string, ClickMode)>();
-            priorityList.Add(("StoryBoardEditor_UI", ClickMode.UI));
-            priorityList.Add(("StoryBoardEditor_NodeInput", ClickMode.NodeInput));
-            priorityList.Add(("StoryBoardEditor_NodeOutput", ClickMode.NodeOutput));
-            priorityList.Add(("StoryBoardEditor_Node", ClickMode.Node));
+            List<(string, ClickMode)> priorityList = new List<(string, ClickMode)>
+            {
+                ("StoryBoardEditor_UI", ClickMode.UI),
+                ("StoryBoardEditor_NodeInput", ClickMode.NodeInput),
+                ("StoryBoardEditor_NodeOutput", ClickMode.NodeOutput),
+                ("StoryBoardEditor_Node", ClickMode.Node)
+            };
 
             foreach (var priority in priorityList)
             {
@@ -97,14 +99,24 @@ namespace StoryBoardEditor
                         StoryBoardEditorNodeInfoManager.GetInstance().CheckClick(hits);
                         break;
                     
-                    case  ClickMode.NodeOutput:
-                        
+                    case  ClickMode.NodeInput:
+                        currentSelectedNode = GetNodeFromClick(hits);
+                        StoryBoardEditorLineManager.GetInstance().DrawTempLine(StoryBoardEditorNodeManager.GetInstance()
+                            .GetNodeByName(currentSelectedNode.name),LineEdge.Input);
+                        _checkFunc = DragTempLine;
                         break;
-
+                    
+                    case  ClickMode.NodeOutput:
+                        currentSelectedNode = GetNodeFromClick(hits);
+                        StoryBoardEditorLineManager.GetInstance().DrawTempLine(StoryBoardEditorNodeManager.GetInstance()
+                            .GetNodeByName(currentSelectedNode.name),LineEdge.Output);
+                        _checkFunc = DragTempLine;
+                        break;
+                    
                     case ClickMode.Node:
                         currentSelectedNode = GetNodeFromClick(hits);
                         _prevPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                        _checkFunc += DragNode;
+                        _checkFunc = DragNode;
                         StoryBoardEditorNodeInfoManager.GetInstance().EnableNodeInfo(StoryBoardEditorNodeManager
                             .GetInstance().GetNodeByName(currentSelectedNode.name));
                         break;
@@ -117,9 +129,19 @@ namespace StoryBoardEditor
             }
         }
 
-        private void DrawLine()
+        private void DragTempLine()
         {
+            Debug.Log("draw Temp Line");
+            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            pos.z = 0;
+            StoryBoardEditorLineManager.GetInstance().MovePoint2OfTempLine(pos);
             
+            if (Input.GetMouseButtonUp(0))
+            {
+                StoryBoardEditorLineManager.GetInstance().RequestAddLine();
+                StoryBoardEditorLineManager.GetInstance().DeleteTempLine();
+                _checkFunc = delegate { };
+            }
         }
 
         private void DragNode()
@@ -134,6 +156,8 @@ namespace StoryBoardEditor
                     Vector3 delta = currentPosition - _prevPosition;
                     currentSelectedNode.transform.position += delta;
                     _prevPosition = currentPosition;
+                    
+                    StoryBoardEditorLineManager.GetInstance().UpdateLine(currentSelectedNode);
                 }
             }
 
@@ -142,6 +166,7 @@ namespace StoryBoardEditor
                 _checkFunc = delegate { };
                 currentSelectedNode.transform.position = StoryBoardEditorGridSystem.GetInstance()
                     .SetPositionToGrid(currentSelectedNode.transform.position);
+                StoryBoardEditorLineManager.GetInstance().UpdateLine(currentSelectedNode);
             }
         }
 

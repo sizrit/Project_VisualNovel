@@ -11,6 +11,9 @@ namespace StoryBoardEditor
         public StoryBoardNode prevStoryBoardNode;
         public StoryBoardNode nextStoryBoardNode;
 
+        public StoryBoardEditorLine outputLine;
+        public StoryBoardEditorLine inputLine;
+
         public StoryBoardNode(string nodeId, GameObject nodeObject)
         {
             this.nodeId = nodeId;
