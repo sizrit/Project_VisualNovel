@@ -42,11 +42,6 @@ namespace StoryBoardEditor
         private Vector3 _prevPosition = Vector3.zero;
         private Action _checkFunc = delegate { };
 
-        public GameObject GetCurrentSelectedNode()
-        {
-            return currentSelectedNode;
-        }
-
         private ClickMode ClickPriority(RaycastHit2D[] hits)
         {
             List<(string, ClickMode)> priorityList = new List<(string, ClickMode)>
@@ -101,15 +96,17 @@ namespace StoryBoardEditor
                     
                     case  ClickMode.NodeInput:
                         currentSelectedNode = GetNodeFromClick(hits);
-                        StoryBoardEditorLineManager.GetInstance().DrawTempLine(StoryBoardEditorNodeManager.GetInstance()
-                            .GetNodeByName(currentSelectedNode.name),LineEdge.Input);
+                        StoryBoardEditorLineManager.GetInstance().RequestDrawTempLine(
+                            StoryBoardEditorNodeManager.GetInstance().GetNodeByName(currentSelectedNode.name),
+                            LineEdge.Input);
                         _checkFunc = DragTempLine;
                         break;
                     
                     case  ClickMode.NodeOutput:
                         currentSelectedNode = GetNodeFromClick(hits);
-                        StoryBoardEditorLineManager.GetInstance().DrawTempLine(StoryBoardEditorNodeManager.GetInstance()
-                            .GetNodeByName(currentSelectedNode.name),LineEdge.Output);
+                        StoryBoardEditorLineManager.GetInstance().RequestDrawTempLine(
+                            StoryBoardEditorNodeManager.GetInstance().GetNodeByName(currentSelectedNode.name),
+                        LineEdge.Output);
                         _checkFunc = DragTempLine;
                         break;
                     
@@ -131,7 +128,6 @@ namespace StoryBoardEditor
 
         private void DragTempLine()
         {
-            Debug.Log("draw Temp Line");
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             pos.z = 0;
             StoryBoardEditorLineManager.GetInstance().MovePoint2OfTempLine(pos);
@@ -146,7 +142,6 @@ namespace StoryBoardEditor
 
         private void DragNode()
         {
-            Debug.Log("drag");
             if (Input.GetMouseButton(0) && currentSelectedNode != null)
             {
                 Vector3 currentPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);

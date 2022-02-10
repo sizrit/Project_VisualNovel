@@ -31,6 +31,7 @@ namespace StoryBoardEditor
         #endregion
         
         private Dictionary<string,StoryBoardNode> _nodeList = new Dictionary<string, StoryBoardNode>();
+        private Dictionary<GameObject,StoryBoardNode> _nodeGameObjectList = new Dictionary<GameObject, StoryBoardNode>();
         [SerializeField] private GameObject nodePrefab;
         [SerializeField] private int nodeIdCount = 0;
         
@@ -38,9 +39,11 @@ namespace StoryBoardEditor
         {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             position.z = 0;
-            GameObject node = Instantiate(nodePrefab,position,quaternion.identity ,this.transform);
-            node.name = SetNodeId();
-            _nodeList.Add(node.name, new StoryBoardNode(node.name,node));
+            GameObject nodeGameObject = Instantiate(nodePrefab,position,quaternion.identity ,this.transform);
+            nodeGameObject.name = SetNodeId();
+            StoryBoardNode node = new StoryBoardNode(nodeGameObject.name, nodeGameObject);
+            _nodeList.Add(nodeGameObject.name, node);
+            _nodeGameObjectList.Add(nodeGameObject,node);
         }
 
         private string SetNodeId()
@@ -51,6 +54,11 @@ namespace StoryBoardEditor
         public void SetPosition(Vector3 position)
         {
             
+        }
+
+        public StoryBoardNode GetNodeByGameObject(GameObject nodeGameObject)
+        {
+            return _nodeGameObjectList[nodeGameObject];
         }
 
         public StoryBoardNode GetNodeByName(string nameValue)
