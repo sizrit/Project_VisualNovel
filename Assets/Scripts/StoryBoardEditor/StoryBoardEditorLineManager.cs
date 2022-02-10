@@ -56,10 +56,12 @@ namespace StoryBoardEditor
         [SerializeField] private GameObject linePrefab;
         [SerializeField] private GameObject lineLayer;
 
-        [SerializeField] private StoryBoardEditorTempLine tempLine;
+        private StoryBoardEditorTempLine _tempLine;
         
-        List<StoryBoardEditorLine> _lineList = new List<StoryBoardEditorLine>();
-        
+        private readonly List<StoryBoardEditorLine> _lineList = new List<StoryBoardEditorLine>();
+
+        #region TempLine
+
         public void RequestDrawTempLine(StoryBoardNode node, LineEdge edge)
         {
             StoryBoardEditorLine line = node.GetLine(edge);
@@ -69,67 +71,65 @@ namespace StoryBoardEditor
                 {
                     case LineEdge.Output:
                         node = node.GetNextNode();
-                        edge = LineEdge.Input;
                         break;
                     case LineEdge.Input:
                         node = node.GetPrevNode();
-                        edge = LineEdge.Output;
                         break;
                 }
+
+                edge = ReverseEdge(edge);
                 RemoveLine(line);
             }
-            DrawTempLine(node,edge);
+
+            DrawTempLine(node, edge);
         }
         
         private void DrawTempLine(StoryBoardNode node, LineEdge edge)
         {
             GameObject lineObject = Instantiate(linePrefab, lineLayer.transform);
+            LineRenderer lineRenderer = lineObject.GetComponent<LineRenderer>();
+
             Vector3 pos1 = node.nodeObject.transform.Find(edge.ToString()).transform.position;
             pos1.z = 0;
-            LineRenderer lineRenderer = lineObject.GetComponent<LineRenderer>();
             Vector3 pos2 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             pos2.z = 0;
+
             lineRenderer.SetPosition(0, pos1);
             lineRenderer.SetPosition(1, pos2);
-            
-            StoryBoardEditorTempLine newTempLine = new StoryBoardEditorTempLine();
-            newTempLine.node = node;
-            newTempLine.lineObject = lineObject;
-            newTempLine.edge = edge;
-            newTempLine.lineRenderer = lineObject.GetComponent<LineRenderer>();
-            tempLine = newTempLine;
+
+            StoryBoardEditorTempLine newTempLine = new StoryBoardEditorTempLine
+            {
+                node = node,
+                lineObject = lineObject,
+                edge = edge,
+                lineRenderer = lineObject.GetComponent<LineRenderer>()
+            };
+            _tempLine = newTempLine;
         }
 
         public void MovePoint2OfTempLine(Vector3 pos2)
         {
-            if (tempLine == null)
+            if (_tempLine == null)
             {
                 Debug.LogError("TempLine is not Exist");
                 return;
             }
-            tempLine.lineRenderer.SetPosition(1,pos2);
+            _tempLine.lineRenderer.SetPosition(1,pos2);
         }
 
         public void DeleteTempLine()
         {
-            Destroy(tempLine.lineObject);
-            tempLine = null;
+            Destroy(_tempLine.lineObject);
+            _tempLine = null;
         }
+
+        #endregion
+
+        #region CheckMethod
 
         private bool CheckLineDuplicated(StoryBoardNode node)
         {
-            LineEdge edge = tempLine.edge;
-            switch (edge)
-            {
-                case LineEdge.Input:
-                    edge = LineEdge.Output;
-                    break;
-                
-                case LineEdge.Output:
-                    edge = LineEdge.Input;
-                    break;
-            }
-
+            LineEdge edge = ReverseEdge(_tempLine.edge);
             if (node.GetLine(edge) != null)
             {
                 Debug.Log("Line Duplicated");
@@ -168,6 +168,8 @@ namespace StoryBoardEditor
             }
         }
 
+        #endregion
+        
         public void RequestAddLine()
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -205,15 +207,15 @@ namespace StoryBoardEditor
                 return;
             }
 
-            if (targetNode != tempLine.node.nodeObject && targetEdge != tempLine.edge)
+            if (targetNode != _tempLine.node.nodeObject && targetEdge != _tempLine.edge)
             {
                 if (targetEdge == LineEdge.Input)
                 {
-                    AddLine(tempLine.node,StoryBoardEditorNodeManager.GetInstance().GetNodeByName(targetNode.name));
+                    AddLine(_tempLine.node,StoryBoardEditorNodeManager.GetInstance().GetNodeByName(targetNode.name));
                 }
                 else
                 {
-                    AddLine(StoryBoardEditorNodeManager.GetInstance().GetNodeByName(targetNode.name),tempLine.node);
+                    AddLine(StoryBoardEditorNodeManager.GetInstance().GetNodeByName(targetNode.name),_tempLine.node);
                 }
             }
             
@@ -223,7 +225,7 @@ namespace StoryBoardEditor
             }
         }
 
-        public void AddLine(StoryBoardNode node01, StoryBoardNode node02)
+        private void AddLine(StoryBoardNode node01, StoryBoardNode node02)
         {
             GameObject lineObject = Instantiate(linePrefab, lineLayer.transform);
             StoryBoardEditorLine newLine = new StoryBoardEditorLine();
@@ -255,7 +257,7 @@ namespace StoryBoardEditor
             }
         }
 
-        public void RemoveLine(StoryBoardEditorLine line)
+        private void RemoveLine(StoryBoardEditorLine line)
         {
             StoryBoardNode node01 = line.node01;
             StoryBoardNode node02 = line.node02;
@@ -267,11 +269,20 @@ namespace StoryBoardEditor
             Destroy(line.lineObject);
         }
 
-        public void MovingPoint()
+        private LineEdge ReverseEdge(LineEdge edge)
         {
-            
+            switch (edge)
+            {
+                case LineEdge.Input:
+                    edge = LineEdge.Output;
+                    break;
+                
+                case LineEdge.Output:
+                    edge = LineEdge.Input;
+                    break;
+            }
+
+            return edge;
         }
-        
-        
     }
 }
