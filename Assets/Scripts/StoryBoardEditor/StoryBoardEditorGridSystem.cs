@@ -137,7 +137,7 @@ namespace StoryBoardEditor
     
         public Vector3 SetPositionToGrid(Vector3 vec3)
         {
-            return new Vector3((float) Math.Round(vec3.x), (float) Math.Round(vec3.y), 0);
+            return new Vector3((float) Math.Round(vec3.x*5)/5f, (float) Math.Round(vec3.y*5f)/5f, 0);
         }
     }
 }
