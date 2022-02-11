@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 
@@ -28,6 +29,9 @@ namespace StoryBoardEditor
         Output
     }
 
+    [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+    [SuppressMessage("ReSharper", "Unity.PreferNonAllocApi")]
+    
     public class StoryBoardEditorLineManager : MonoBehaviour
     {
         #region Singleton
