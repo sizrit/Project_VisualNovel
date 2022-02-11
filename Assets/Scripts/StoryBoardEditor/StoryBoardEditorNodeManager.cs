@@ -34,6 +34,11 @@ namespace StoryBoardEditor
         private Dictionary<GameObject,StoryBoardNode> _nodeGameObjectList = new Dictionary<GameObject, StoryBoardNode>();
         [SerializeField] private GameObject nodePrefab;
         [SerializeField] private int nodeIdCount = 0;
+
+        public List<GameObject> GetAllNodeGameObject()
+        {
+            return _nodeGameObjectList.Keys.ToList();
+        }
         
         public void AddNode()
         {

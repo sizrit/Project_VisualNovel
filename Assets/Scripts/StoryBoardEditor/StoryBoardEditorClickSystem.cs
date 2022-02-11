@@ -159,6 +159,7 @@ namespace StoryBoardEditor
             if (Input.GetMouseButtonUp(0))
             {
                 _checkFunc = delegate { };
+                StoryBoardEditorNodeCollisionManager.GetInstance().CheckCollision(currentSelectedNode);
                 currentSelectedNode.transform.position = StoryBoardEditorGridSystem.GetInstance()
                     .SetPositionToGrid(currentSelectedNode.transform.position);
                 StoryBoardEditorLineManager.GetInstance().UpdateLine(currentSelectedNode);
