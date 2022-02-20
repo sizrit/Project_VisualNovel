@@ -71,6 +71,11 @@ namespace StoryBoardEditor
 
         public void EnableNodeInfo(StoryBoardNode node)
         {
+            if (!StoryBoardEditorUI_EditButton.GetInstance().GetIsEditModeOn())
+            {
+                DisableNodeInfo();
+                return;
+            }
             _currentSelectedNode = node;
             enableLayer.SetActive(true);
             SetNodeInfo();

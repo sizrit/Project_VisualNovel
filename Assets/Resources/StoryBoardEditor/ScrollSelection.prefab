@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 3169056483745171589}
   m_Layer: 5
   m_Name: Mask
-  m_TagString: StoryBoardEditor_UI
+  m_TagString: StoryBoardEditor_NodeInfo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

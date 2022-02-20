@@ -7,6 +7,7 @@ namespace StoryBoardEditor
     public enum ClickMode
     {
         UI,
+        NodeInfo,
         NodeInput,
         NodeOutput,
         Node,
@@ -47,6 +48,7 @@ namespace StoryBoardEditor
             List<(string, ClickMode)> priorityList = new List<(string, ClickMode)>
             {
                 ("StoryBoardEditor_UI", ClickMode.UI),
+                ("StoryBoardEditor_NodeInfo",ClickMode.NodeInfo),
                 ("StoryBoardEditor_NodeInput", ClickMode.NodeInput),
                 ("StoryBoardEditor_NodeOutput", ClickMode.NodeOutput),
                 ("StoryBoardEditor_Node", ClickMode.Node)
@@ -91,6 +93,10 @@ namespace StoryBoardEditor
                 switch (mode)
                 {
                     case ClickMode.UI:
+                        StoryBoardEditorUI_EditButton.GetInstance().Click();
+                        break;
+                    
+                    case ClickMode.NodeInfo:
                         StoryBoardEditorNodeInfoManager.GetInstance().CheckClick(hits);
                         break;
                     
