@@ -41,6 +41,7 @@ namespace StoryBoardEditor
 
         [SerializeField] private GameObject currentSelectedNode = null;
         private Vector3 _prevPosition = Vector3.zero;
+        private Vector3 _startPosition = Vector3.zero;
         private Action _checkFunc = delegate { };
 
         private ClickMode ClickPriority(RaycastHit2D[] hits)
@@ -119,6 +120,7 @@ namespace StoryBoardEditor
                     case ClickMode.Node:
                         currentSelectedNode = GetNodeFromClick(hits);
                         _prevPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        _startPosition = currentSelectedNode.transform.position;
                         _checkFunc = DragNode;
                         StoryBoardEditorNodeInfoManager.GetInstance().EnableNodeInfo(StoryBoardEditorNodeManager
                             .GetInstance().GetNodeByName(currentSelectedNode.name));
@@ -165,7 +167,7 @@ namespace StoryBoardEditor
             if (Input.GetMouseButtonUp(0))
             {
                 _checkFunc = delegate { };
-                StoryBoardEditorNodeCollisionManager.GetInstance().CheckCollision(currentSelectedNode);
+                StoryBoardEditorNodeCollisionManager.GetInstance().CheckCollision(currentSelectedNode,_startPosition);
                 currentSelectedNode.transform.position = StoryBoardEditorGridSystem.GetInstance()
                     .SetPositionToGrid(currentSelectedNode.transform.position);
                 StoryBoardEditorLineManager.GetInstance().UpdateLine(currentSelectedNode);
