@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace StoryBoardEditor
 {
-    public class StoryBoardEditorGridSystem : MonoBehaviour
+    public class GridSystem : MonoBehaviour
     {
         #region Singleton
 
-        private static StoryBoardEditorGridSystem _instance;
+        private static GridSystem _instance;
 
-        public static StoryBoardEditorGridSystem GetInstance()
+        public static GridSystem GetInstance()
         {
             if (_instance == null)
             {
-                var obj = FindObjectOfType<StoryBoardEditorGridSystem>();
+                var obj = FindObjectOfType<GridSystem>();
                 if (obj == null)
                 {
                     Debug.LogError("StoryBoardEditorGridSystem is not ready");

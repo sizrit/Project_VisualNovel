@@ -8,17 +8,17 @@ using UnityEngine.UI;
 
 namespace StoryBoardEditor
 {
-    public class StoryBoardEditorNodeInfoManager : MonoBehaviour
+    public class NodeInfoManager : MonoBehaviour
     {
         #region Singleton
 
-        private static StoryBoardEditorNodeInfoManager _instance;
+        private static NodeInfoManager _instance;
 
-        public static StoryBoardEditorNodeInfoManager GetInstance()
+        public static NodeInfoManager GetInstance()
         {
             if (_instance == null)
             {
-                var obj = FindObjectOfType<StoryBoardEditorNodeInfoManager>();
+                var obj = FindObjectOfType<NodeInfoManager>();
                 if (obj == null)
                 {
                     Debug.LogError("NodeManager Script is not available!");
@@ -44,7 +44,7 @@ namespace StoryBoardEditor
         private Action<RaycastHit2D[]> _checkSelectionClick = delegate{ };
         private bool _isSelectionModeOn = false;
 
-        private StoryBoardNode _currentSelectedNode = null;
+        private Node _currentSelectedNode = null;
 
         private void OnEnable()
         {
@@ -69,9 +69,9 @@ namespace StoryBoardEditor
             enableLayer.SetActive(false);
         }
 
-        public void EnableNodeInfo(StoryBoardNode node)
+        public void EnableNodeInfo(Node node)
         {
-            if (!StoryBoardEditorUI_EditButton.GetInstance().GetIsEditModeOn())
+            if (!UI_EditButton.GetInstance().GetIsEditModeOn())
             {
                 DisableNodeInfo();
                 return;
@@ -134,7 +134,7 @@ namespace StoryBoardEditor
                 if (hit.transform.gameObject == storyBoardModeObject)
                 {
                     GameObject scroll = Instantiate(scrollSelectionPrefab, selectionLayer.transform);
-                    scroll.transform.GetComponent<StoryBoardEditorNodeInfoScrollSelectionManager>()
+                    scroll.transform.GetComponent<NodeInfoScrollSelectionManager>()
                         .SetScrollSelection(Enum.GetValues(typeof(StoryBoardMode)).Cast<StoryBoardMode>().ToList(),
                             hit.transform.gameObject);
                     scroll.transform.position = hit.transform.position;
@@ -143,7 +143,7 @@ namespace StoryBoardEditor
                 if (hit.transform.gameObject == bgIdObject)
                 {
                     GameObject scroll = Instantiate(scrollSelectionPrefab, selectionLayer.transform);
-                    scroll.transform.GetComponent<StoryBoardEditorNodeInfoScrollSelectionManager>()
+                    scroll.transform.GetComponent<NodeInfoScrollSelectionManager>()
                         .SetScrollSelection(Enum.GetValues(typeof(BgId)).Cast<BgId>().ToList(),
                             hit.transform.gameObject);
                     scroll.transform.position = hit.transform.position;

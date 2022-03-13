@@ -6,17 +6,17 @@ using UnityEngine.UI;
 namespace StoryBoardEditor
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public class StoryBoardEditorUI_EditButton : MonoBehaviour
+    public class UI_EditButton : MonoBehaviour
     {
         #region Singleton
 
-        private static StoryBoardEditorUI_EditButton _instance;
+        private static UI_EditButton _instance;
 
-        public static StoryBoardEditorUI_EditButton GetInstance()
+        public static UI_EditButton GetInstance()
         {
             if (_instance == null)
             {
-                var obj = FindObjectOfType<StoryBoardEditorUI_EditButton>();
+                var obj = FindObjectOfType<UI_EditButton>();
                 if (obj == null)
                 {
                     Debug.LogError("StoryBoardEditorUIEditButton is not ready");
@@ -46,7 +46,7 @@ namespace StoryBoardEditor
             UpdateImage();
             if (!_isEditModeOn)
             {
-                StoryBoardEditorNodeInfoManager.GetInstance().DisableNodeInfo();
+                NodeInfoManager.GetInstance().DisableNodeInfo();
             }
         }
 

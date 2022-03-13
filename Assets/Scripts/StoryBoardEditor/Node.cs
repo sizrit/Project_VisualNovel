@@ -2,19 +2,19 @@ using UnityEngine;
 
 namespace StoryBoardEditor
 {
-    public class StoryBoardNode
+    public class Node
     {
         public string nodeId;
         public GameObject nodeObject;
         private StoryBoard _storyBoard;
 
-        private StoryBoardNode prevStoryBoardNode;
-        private StoryBoardNode nextStoryBoardNode;
+        private Node _prevNode;
+        private Node _nextNode;
 
-        private StoryBoardEditorLine outputLine;
-        private StoryBoardEditorLine inputLine;
+        private Line _outputLine;
+        private Line _inputLine;
 
-        public StoryBoardNode(string nodeId, GameObject nodeObject)
+        public Node(string nodeId, GameObject nodeObject)
         {
             this.nodeId = nodeId;
             this.nodeObject = nodeObject;
@@ -30,48 +30,48 @@ namespace StoryBoardEditor
             return _storyBoard;
         }
 
-        public StoryBoardNode GetPrevNode()
+        public Node GetPrevNode()
         {
-            return prevStoryBoardNode;
+            return _prevNode;
         }
 
-        public void SetPrevNode(StoryBoardNode node)
+        public void SetPrevNode(Node node)
         {
-            prevStoryBoardNode = node;
+            _prevNode = node;
         }
         
-        public StoryBoardNode GetNextNode()
+        public Node GetNextNode()
         {
-            return nextStoryBoardNode;
+            return _nextNode;
         }
 
-        public void SetNextNode(StoryBoardNode node)
+        public void SetNextNode(Node node)
         {
-            nextStoryBoardNode = node;
+            _nextNode = node;
         }
 
-        public void SetLine(LineEdge edge, StoryBoardEditorLine line)
+        public void SetLine(LineEdge edge, Line line)
         {
             switch (edge)
             {
                 case LineEdge.Input:
-                    inputLine = line;
+                    _inputLine = line;
                     break;
                 case LineEdge.Output:
-                    outputLine = line;
+                    _outputLine = line;
                     break;
             }
         }
 
-        public StoryBoardEditorLine GetLine(LineEdge edge)
+        public Line GetLine(LineEdge edge)
         {
             switch (edge)
             {
                 case LineEdge.Input:
-                    return inputLine;
+                    return _inputLine;
                 
                 case LineEdge.Output:
-                    return outputLine;
+                    return _outputLine;
             }
 
             return null;

@@ -6,17 +6,17 @@ using UnityEngine;
 
 namespace StoryBoardEditor
 {
-    public class StoryBoardEditorNodeManager : MonoBehaviour
+    public class NodeManager : MonoBehaviour
     {
         #region Singleton
 
-        private static StoryBoardEditorNodeManager _instance;
+        private static NodeManager _instance;
 
-        public static StoryBoardEditorNodeManager GetInstance()
+        public static NodeManager GetInstance()
         {
             if (_instance == null)
             {
-                var obj = FindObjectOfType<StoryBoardEditorNodeManager>();
+                var obj = FindObjectOfType<NodeManager>();
                 if (obj == null)
                 {
                     Debug.LogError("NodeManager Script is not available!");
@@ -30,8 +30,8 @@ namespace StoryBoardEditor
         
         #endregion
         
-        private Dictionary<string,StoryBoardNode> _nodeList = new Dictionary<string, StoryBoardNode>();
-        private Dictionary<GameObject,StoryBoardNode> _nodeGameObjectList = new Dictionary<GameObject, StoryBoardNode>();
+        private Dictionary<string,Node> _nodeList = new Dictionary<string, Node>();
+        private Dictionary<GameObject,Node> _nodeGameObjectList = new Dictionary<GameObject, Node>();
         [SerializeField] private GameObject nodePrefab;
         [SerializeField] private int nodeIdCount = 0;
 
@@ -46,7 +46,7 @@ namespace StoryBoardEditor
             position.z = 0;
             GameObject nodeGameObject = Instantiate(nodePrefab,position,quaternion.identity ,this.transform);
             nodeGameObject.name = SetNodeId();
-            StoryBoardNode node = new StoryBoardNode(nodeGameObject.name, nodeGameObject);
+            Node node = new Node(nodeGameObject.name, nodeGameObject);
             _nodeList.Add(nodeGameObject.name, node);
             _nodeGameObjectList.Add(nodeGameObject,node);
         }
@@ -61,12 +61,12 @@ namespace StoryBoardEditor
             
         }
 
-        public StoryBoardNode GetNodeByGameObject(GameObject nodeGameObject)
+        public Node GetNodeByGameObject(GameObject nodeGameObject)
         {
             return _nodeGameObjectList[nodeGameObject];
         }
 
-        public StoryBoardNode GetNodeByName(string nameValue)
+        public Node GetNodeByName(string nameValue)
         {
             return _nodeList[nameValue];
         }

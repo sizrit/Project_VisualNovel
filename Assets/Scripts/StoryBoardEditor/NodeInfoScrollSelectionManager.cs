@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace StoryBoardEditor
 {
-    public class StoryBoardEditorNodeInfoScrollSelectionManager : MonoBehaviour
+    public class NodeInfoScrollSelectionManager : MonoBehaviour
     {
         [SerializeField] private GameObject mask;
         [SerializeField] private GameObject contentText;
@@ -32,13 +32,13 @@ namespace StoryBoardEditor
 
         private void EndScrollSelection()
         {
-            StoryBoardEditorNodeInfoManager.GetInstance().SelectionModeOff();
+            NodeInfoManager.GetInstance().SelectionModeOff();
             Destroy(this.gameObject);
         }
 
         public void SetScrollSelection<T>(List<T> contents, GameObject mainText)
         {
-            StoryBoardEditorNodeInfoManager.GetInstance().SelectionModeOn(CheckClick);
+            NodeInfoManager.GetInstance().SelectionModeOn(CheckClick);
             _mainText = mainText;
 
             _contentTextList = new List<string>();

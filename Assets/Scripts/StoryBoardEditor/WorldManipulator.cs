@@ -2,17 +2,17 @@ using UnityEngine;
 
 namespace StoryBoardEditor
 {
-    public class StoryBoardManagerManipulator
+    public class WorldManipulator
     {
         #region Singleton
 
-        private static StoryBoardManagerManipulator _instance;
+        private static WorldManipulator _instance;
 
-        public static StoryBoardManagerManipulator GetInstance()
+        public static WorldManipulator GetInstance()
         {
             if (_instance == null)
             {
-                _instance = new StoryBoardManagerManipulator();
+                _instance = new WorldManipulator();
             }
 
             return _instance;
@@ -30,13 +30,13 @@ namespace StoryBoardEditor
             if (Input.mouseScrollDelta.y > 0 && Camera.main.orthographicSize > _minSize)
             {
                 if (Camera.main != null) Camera.main.orthographicSize -= _speed;
-                StoryBoardEditorGridSystem.GetInstance().AdjustGridLine();
+                GridSystem.GetInstance().AdjustGridLine();
             }
 
             if (Input.mouseScrollDelta.y < 0 && Camera.main.orthographicSize < _maxSize)
             {
                 if (Camera.main != null) Camera.main.orthographicSize += _speed;
-                StoryBoardEditorGridSystem.GetInstance().AdjustGridLine();
+                GridSystem.GetInstance().AdjustGridLine();
             }
         }
 

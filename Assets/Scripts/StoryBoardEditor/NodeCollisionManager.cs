@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace StoryBoardEditor
 {
-    public class StoryBoardEditorNodeCollisionManager
+    public class NodeCollisionManager
     {
         #region Singleton
 
-        private static StoryBoardEditorNodeCollisionManager _instance;
+        private static NodeCollisionManager _instance;
 
-        public static StoryBoardEditorNodeCollisionManager GetInstance()
+        public static NodeCollisionManager GetInstance()
         {
             if (_instance == null)
             {
-                _instance = new StoryBoardEditorNodeCollisionManager();
+                _instance = new NodeCollisionManager();
             }
             return _instance;
         }
@@ -30,7 +30,7 @@ namespace StoryBoardEditor
 
         public void CheckCollision(GameObject nodeGameObject, Vector3 backUpPosition)
         {
-            List<GameObject> nodeList = StoryBoardEditorNodeManager.GetInstance().GetAllNodeGameObject();
+            List<GameObject> nodeList = NodeManager.GetInstance().GetAllNodeGameObject();
             
             List<Vector3> allNodePositionList = new List<Vector3>();
             foreach (var node in nodeList)

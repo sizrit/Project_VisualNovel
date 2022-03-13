@@ -14,17 +14,17 @@ namespace StoryBoardEditor
         Null
     }
 
-    public class StoryBoardEditorClickSystem : MonoBehaviour
+    public class ClickSystem : MonoBehaviour
     {
         #region Singleton
 
-        private static StoryBoardEditorClickSystem _instance;
+        private static ClickSystem _instance;
 
-        public static StoryBoardEditorClickSystem GetInstance()
+        public static ClickSystem GetInstance()
         {
             if (_instance == null)
             {
-                var obj = FindObjectOfType<StoryBoardEditorClickSystem>();
+                var obj = FindObjectOfType<ClickSystem>();
                 if (obj == null)
                 {
                     Debug.LogError("StoryBoardEditorClickSystem Script is not available!");
@@ -94,25 +94,25 @@ namespace StoryBoardEditor
                 switch (mode)
                 {
                     case ClickMode.UI:
-                        StoryBoardEditorUI_EditButton.GetInstance().Click();
+                        UI_EditButton.GetInstance().Click();
                         break;
                     
                     case ClickMode.NodeInfo:
-                        StoryBoardEditorNodeInfoManager.GetInstance().CheckClick(hits);
+                        NodeInfoManager.GetInstance().CheckClick(hits);
                         break;
                     
                     case  ClickMode.NodeInput:
                         currentSelectedNode = GetNodeFromClick(hits);
-                        StoryBoardEditorLineManager.GetInstance().RequestDrawTempLine(
-                            StoryBoardEditorNodeManager.GetInstance().GetNodeByName(currentSelectedNode.name),
+                        LineManager.GetInstance().RequestDrawTempLine(
+                            NodeManager.GetInstance().GetNodeByName(currentSelectedNode.name),
                             LineEdge.Input);
                         _checkFunc = DragTempLine;
                         break;
                     
                     case  ClickMode.NodeOutput:
                         currentSelectedNode = GetNodeFromClick(hits);
-                        StoryBoardEditorLineManager.GetInstance().RequestDrawTempLine(
-                            StoryBoardEditorNodeManager.GetInstance().GetNodeByName(currentSelectedNode.name),
+                        LineManager.GetInstance().RequestDrawTempLine(
+                            NodeManager.GetInstance().GetNodeByName(currentSelectedNode.name),
                         LineEdge.Output);
                         _checkFunc = DragTempLine;
                         break;
@@ -122,13 +122,13 @@ namespace StoryBoardEditor
                         _prevPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                         _startPosition = currentSelectedNode.transform.position;
                         _checkFunc = DragNode;
-                        StoryBoardEditorNodeInfoManager.GetInstance().EnableNodeInfo(StoryBoardEditorNodeManager
+                        NodeInfoManager.GetInstance().EnableNodeInfo(NodeManager
                             .GetInstance().GetNodeByName(currentSelectedNode.name));
                         break;
 
                     case ClickMode.Null:
                         currentSelectedNode = null;
-                        StoryBoardEditorNodeInfoManager.GetInstance().DisableNodeInfo();
+                        NodeInfoManager.GetInstance().DisableNodeInfo();
                         break;
                 }
             }
@@ -138,12 +138,12 @@ namespace StoryBoardEditor
         {
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             pos.z = 0;
-            StoryBoardEditorLineManager.GetInstance().MovePoint2OfTempLine(pos);
+            LineManager.GetInstance().MovePoint2OfTempLine(pos);
             
             if (Input.GetMouseButtonUp(0))
             {
-                StoryBoardEditorLineManager.GetInstance().RequestAddLine();
-                StoryBoardEditorLineManager.GetInstance().DeleteTempLine();
+                LineManager.GetInstance().RequestAddLine();
+                LineManager.GetInstance().DeleteTempLine();
                 _checkFunc = delegate { };
             }
         }
@@ -160,17 +160,17 @@ namespace StoryBoardEditor
                     currentSelectedNode.transform.position += delta;
                     _prevPosition = currentPosition;
                     
-                    StoryBoardEditorLineManager.GetInstance().UpdateLine(currentSelectedNode);
+                    LineManager.GetInstance().UpdateLine(currentSelectedNode);
                 }
             }
 
             if (Input.GetMouseButtonUp(0))
             {
                 _checkFunc = delegate { };
-                StoryBoardEditorNodeCollisionManager.GetInstance().CheckCollision(currentSelectedNode,_startPosition);
-                currentSelectedNode.transform.position = StoryBoardEditorGridSystem.GetInstance()
+                NodeCollisionManager.GetInstance().CheckCollision(currentSelectedNode,_startPosition);
+                currentSelectedNode.transform.position = GridSystem.GetInstance()
                     .SetPositionToGrid(currentSelectedNode.transform.position);
-                StoryBoardEditorLineManager.GetInstance().UpdateLine(currentSelectedNode);
+                LineManager.GetInstance().UpdateLine(currentSelectedNode);
             }
         }
 
@@ -178,7 +178,7 @@ namespace StoryBoardEditor
         {
             if (currentSelectedNode != null)
             {
-                StoryBoardEditorNodeManager.GetInstance().DeleteNode(currentSelectedNode);
+                NodeManager.GetInstance().DeleteNode(currentSelectedNode);
                 currentSelectedNode = null;
             }
         }

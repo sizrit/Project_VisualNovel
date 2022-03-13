@@ -7,17 +7,17 @@ using UnityEngine.Assertions.Must;
 
 namespace StoryBoardEditor
 {
-    public class StoryBoardEditorLine
+    public class Line
     {
-        public StoryBoardNode node01;
-        public StoryBoardNode node02;
+        public Node node01;
+        public Node node02;
         public GameObject lineObject;
         public LineRenderer lineRenderer;
     }
 
-    public class StoryBoardEditorTempLine
+    public class TempLine
     {
-        public StoryBoardNode node;
+        public Node node;
         public GameObject lineObject;
         public LineRenderer lineRenderer;
         public LineEdge edge;
@@ -32,17 +32,17 @@ namespace StoryBoardEditor
     [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
     [SuppressMessage("ReSharper", "Unity.PreferNonAllocApi")]
     
-    public class StoryBoardEditorLineManager : MonoBehaviour
+    public class LineManager : MonoBehaviour
     {
         #region Singleton
 
-        private static StoryBoardEditorLineManager _instance;
+        private static LineManager _instance;
 
-        public static StoryBoardEditorLineManager GetInstance()
+        public static LineManager GetInstance()
         {
             if (_instance == null)
             {
-                var obj = FindObjectOfType<StoryBoardEditorLineManager>();
+                var obj = FindObjectOfType<LineManager>();
                 if (obj == null)
                 {
                     Debug.LogError("StoryBoardEditorLineManager Script is not available!");
@@ -60,15 +60,15 @@ namespace StoryBoardEditor
         [SerializeField] private GameObject linePrefab;
         [SerializeField] private GameObject lineLayer;
 
-        private StoryBoardEditorTempLine _tempLine;
+        private TempLine _tempLine;
         
-        private readonly List<StoryBoardEditorLine> _lineList = new List<StoryBoardEditorLine>();
+        private readonly List<Line> _lineList = new List<Line>();
 
         #region TempLine
 
-        public void RequestDrawTempLine(StoryBoardNode node, LineEdge edge)
+        public void RequestDrawTempLine(Node node, LineEdge edge)
         {
-            StoryBoardEditorLine line = node.GetLine(edge);
+            Line line = node.GetLine(edge);
             if (line != null)
             {
                 switch (edge)
@@ -88,7 +88,7 @@ namespace StoryBoardEditor
             DrawTempLine(node, edge);
         }
         
-        private void DrawTempLine(StoryBoardNode node, LineEdge edge)
+        private void DrawTempLine(Node node, LineEdge edge)
         {
             GameObject lineObject = Instantiate(linePrefab, lineLayer.transform);
             LineRenderer lineRenderer = lineObject.GetComponent<LineRenderer>();
@@ -101,7 +101,7 @@ namespace StoryBoardEditor
             lineRenderer.SetPosition(0, pos1);
             lineRenderer.SetPosition(1, pos2);
 
-            StoryBoardEditorTempLine newTempLine = new StoryBoardEditorTempLine
+            TempLine newTempLine = new TempLine
             {
                 node = node,
                 lineObject = lineObject,
@@ -131,7 +131,7 @@ namespace StoryBoardEditor
 
         #region CheckMethod
 
-        private bool CheckLineDuplicated(StoryBoardNode node)
+        private bool CheckLineDuplicated(Node node)
         {
             LineEdge edge = ReverseEdge(_tempLine.edge);
             if (node.GetLine(edge) != null)
@@ -143,10 +143,10 @@ namespace StoryBoardEditor
             return false;
         }
 
-        private bool CheckLineLoop(StoryBoardNode node)
+        private bool CheckLineLoop(Node node)
         {
-            StoryBoardNode targetNode = node;
-            StoryBoardNode currentNode = node;
+            Node targetNode = node;
+            Node currentNode = node;
 
             int n = 0;
             while (true)
@@ -204,7 +204,7 @@ namespace StoryBoardEditor
                 return;
             }
 
-            StoryBoardNode node = StoryBoardEditorNodeManager.GetInstance().GetNodeByName(targetNode.name);
+            Node node = NodeManager.GetInstance().GetNodeByName(targetNode.name);
 
             if (CheckLineDuplicated(node))
             {
@@ -215,11 +215,11 @@ namespace StoryBoardEditor
             {
                 if (targetEdge == LineEdge.Input)
                 {
-                    AddLine(_tempLine.node,StoryBoardEditorNodeManager.GetInstance().GetNodeByName(targetNode.name));
+                    AddLine(_tempLine.node,NodeManager.GetInstance().GetNodeByName(targetNode.name));
                 }
                 else
                 {
-                    AddLine(StoryBoardEditorNodeManager.GetInstance().GetNodeByName(targetNode.name),_tempLine.node);
+                    AddLine(NodeManager.GetInstance().GetNodeByName(targetNode.name),_tempLine.node);
                 }
             }
             
@@ -229,10 +229,10 @@ namespace StoryBoardEditor
             }
         }
 
-        private void AddLine(StoryBoardNode node01, StoryBoardNode node02)
+        private void AddLine(Node node01, Node node02)
         {
             GameObject lineObject = Instantiate(linePrefab, lineLayer.transform);
-            StoryBoardEditorLine newLine = new StoryBoardEditorLine();
+            Line newLine = new Line();
             newLine.node01 = node01;
             newLine.node02 = node02;
             newLine.lineObject = lineObject;
@@ -249,7 +249,7 @@ namespace StoryBoardEditor
 
         public void UpdateLine(GameObject nodeGameObject)
         {
-            StoryBoardNode node = StoryBoardEditorNodeManager.GetInstance().GetNodeByName(nodeGameObject.name);
+            Node node = NodeManager.GetInstance().GetNodeByName(nodeGameObject.name);
             if (node.GetLine(LineEdge.Input) != null)
             {
                 node.GetLine(LineEdge.Input).lineRenderer.SetPosition(1,node.nodeObject.transform.Find("Input").position);
@@ -261,10 +261,10 @@ namespace StoryBoardEditor
             }
         }
 
-        private void RemoveLine(StoryBoardEditorLine line)
+        private void RemoveLine(Line line)
         {
-            StoryBoardNode node01 = line.node01;
-            StoryBoardNode node02 = line.node02;
+            Node node01 = line.node01;
+            Node node02 = line.node02;
             node01.SetNextNode(null);
             node02.SetPrevNode(null);
             node01.SetLine(LineEdge.Output,null);
