@@ -8,13 +8,7 @@ namespace StoryBoardEditor
         {
             WorldManipulator.GetInstance().Scroll();
             WorldManipulator.GetInstance().CameraMove();
-            
 
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                ClickSystem.GetInstance().DeleteCheck();
-            }
-            
             if (Input.GetKeyDown(KeyCode.A))
             {
                 NodeManager.GetInstance().AddNode();

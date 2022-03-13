@@ -38,10 +38,7 @@ namespace StoryBoardEditor
         }
 
         #endregion
-
-        [SerializeField] private GameObject currentSelectedNode = null;
-        private Vector3 _prevPosition = Vector3.zero;
-        private Vector3 _startPosition = Vector3.zero;
+        
         private Action _checkFunc = delegate { };
 
         private ClickMode ClickPriority(RaycastHit2D[] hits)
@@ -102,84 +99,22 @@ namespace StoryBoardEditor
                         break;
                     
                     case  ClickMode.NodeInput:
-                        currentSelectedNode = GetNodeFromClick(hits);
-                        LineManager.GetInstance().RequestDrawTempLine(
-                            NodeManager.GetInstance().GetNodeByName(currentSelectedNode.name),
-                            LineEdge.Input);
-                        _checkFunc = DragTempLine;
+                        NodeManipulator.GetInstance().ClickNodeInput(GetNodeFromClick(hits));
                         break;
                     
                     case  ClickMode.NodeOutput:
-                        currentSelectedNode = GetNodeFromClick(hits);
-                        LineManager.GetInstance().RequestDrawTempLine(
-                            NodeManager.GetInstance().GetNodeByName(currentSelectedNode.name),
-                        LineEdge.Output);
-                        _checkFunc = DragTempLine;
+                        NodeManipulator.GetInstance().ClickNodeOutput(GetNodeFromClick(hits));
                         break;
                     
                     case ClickMode.Node:
-                        currentSelectedNode = GetNodeFromClick(hits);
-                        _prevPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                        _startPosition = currentSelectedNode.transform.position;
-                        _checkFunc = DragNode;
-                        NodeInfoManager.GetInstance().EnableNodeInfo(NodeManager
-                            .GetInstance().GetNodeByName(currentSelectedNode.name));
+                        NodeManipulator.GetInstance().LeftClickNode(GetNodeFromClick(hits));
+                        NodeInfoManager.GetInstance().EnableNodeInfo(NodeManipulator.GetInstance().GetSelectedNode());
                         break;
 
                     case ClickMode.Null:
-                        currentSelectedNode = null;
                         NodeInfoManager.GetInstance().DisableNodeInfo();
                         break;
                 }
-            }
-        }
-
-        private void DragTempLine()
-        {
-            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            pos.z = 0;
-            LineManager.GetInstance().MovePoint2OfTempLine(pos);
-            
-            if (Input.GetMouseButtonUp(0))
-            {
-                LineManager.GetInstance().RequestAddLine();
-                LineManager.GetInstance().DeleteTempLine();
-                _checkFunc = delegate { };
-            }
-        }
-
-        private void DragNode()
-        {
-            if (Input.GetMouseButton(0) && currentSelectedNode != null)
-            {
-                Vector3 currentPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                currentPosition.z = 0;
-                if (_prevPosition != currentPosition)
-                {
-                    Vector3 delta = currentPosition - _prevPosition;
-                    currentSelectedNode.transform.position += delta;
-                    _prevPosition = currentPosition;
-                    
-                    LineManager.GetInstance().UpdateLine(currentSelectedNode);
-                }
-            }
-
-            if (Input.GetMouseButtonUp(0))
-            {
-                _checkFunc = delegate { };
-                NodeCollisionManager.GetInstance().CheckCollision(currentSelectedNode,_startPosition);
-                currentSelectedNode.transform.position = GridSystem.GetInstance()
-                    .SetPositionToGrid(currentSelectedNode.transform.position);
-                LineManager.GetInstance().UpdateLine(currentSelectedNode);
-            }
-        }
-
-        public void DeleteCheck()
-        {
-            if (currentSelectedNode != null)
-            {
-                NodeManager.GetInstance().DeleteNode(currentSelectedNode);
-                currentSelectedNode = null;
             }
         }
 

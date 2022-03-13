@@ -247,9 +247,8 @@ namespace StoryBoardEditor
             node02.SetPrevNode(node01);
         }
 
-        public void UpdateLine(GameObject nodeGameObject)
+        public void UpdateLine(Node node)
         {
-            Node node = NodeManager.GetInstance().GetNodeByName(nodeGameObject.name);
             if (node.GetLine(LineEdge.Input) != null)
             {
                 node.GetLine(LineEdge.Input).lineRenderer.SetPosition(1,node.nodeObject.transform.Find("Input").position);
