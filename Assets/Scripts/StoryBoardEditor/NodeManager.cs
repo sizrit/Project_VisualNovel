@@ -51,7 +51,7 @@ namespace StoryBoardEditor
             position.z = 0;
             GameObject nodeGameObject = Instantiate(nodePrefab,position,quaternion.identity ,this.transform);
             nodeGameObject.name = SetNodeId();
-            Node node = new Node {nodeId = nodeGameObject.name, gameObject = nodeGameObject};
+            Node node = new Node {id = nodeGameObject.name, gameObject = nodeGameObject};
             node.input = node.gameObject.transform.Find("Input").gameObject;
             node.output = node.gameObject.transform.Find("Output").gameObject;
             _nodeList.Add(nodeGameObject.name, node);
@@ -64,11 +64,11 @@ namespace StoryBoardEditor
             GameObject nodeGameObject = Instantiate(nodePrefab,position,quaternion.identity ,this.transform);
             nodeGameObject.name = nodeData.nodeId;
 
-            Node newNode = new Node {nodeId = nodeData.nodeId, gameObject = nodeGameObject};
+            Node newNode = new Node {id = nodeData.nodeId, gameObject = nodeGameObject};
             newNode.input = newNode.gameObject.transform.Find("Input").gameObject;
             newNode.output = newNode.gameObject.transform.Find("Output").gameObject;
             
-            _nodeList.Add(newNode.nodeId,newNode);
+            _nodeList.Add(newNode.id,newNode);
             _nodeGameObjectList.Add(nodeGameObject, newNode);
         }
 
@@ -125,7 +125,7 @@ namespace StoryBoardEditor
                 if (storyBoardNode.gameObject == nodeGameObject)
                 {
                     Destroy(nodeGameObject);
-                    _nodeList.Remove(storyBoardNode.nodeId);
+                    _nodeList.Remove(storyBoardNode.id);
                 }
             }
         }

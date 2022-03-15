@@ -12,7 +12,7 @@ namespace StoryBoardEditor
         public string id;
         public Node node01;
         public Node node02;
-        public GameObject lineObject;
+        public GameObject gameObject;
         public LineRenderer lineRenderer;
     }
 
@@ -239,8 +239,8 @@ namespace StoryBoardEditor
         private void AddLine(Node node01, Node node02)
         {
             GameObject lineObject = Instantiate(linePrefab, lineLayer.transform);
-            Line newLine = new Line {id = SetLineId(), node01 = node01, node02 = node02, lineObject = lineObject};
-            newLine.lineRenderer = newLine.lineObject.GetComponent<LineRenderer>();
+            Line newLine = new Line {id = SetLineId(), node01 = node01, node02 = node02, gameObject = lineObject};
+            newLine.lineRenderer = newLine.gameObject.GetComponent<LineRenderer>();
             newLine.lineRenderer.SetPosition(0, node01.output.transform.position);
             newLine.lineRenderer.SetPosition(1, node02.input.transform.position);
             _lineList.Add(newLine);
@@ -267,15 +267,15 @@ namespace StoryBoardEditor
             node01.outputLine =null;
             node02.inputLine =null;
             _lineList.Remove(line);
-            Destroy(line.lineObject);
+            Destroy(line.gameObject);
         }
 
         public void MakeLineFromLoadData(LineData lineData)
         {
             Line newLine = new Line();
             newLine.id = lineData.lineId;
-            newLine.lineObject = Instantiate(linePrefab,lineLayer.transform);
-            newLine.lineRenderer = newLine.lineObject.GetComponent<LineRenderer>();
+            newLine.gameObject = Instantiate(linePrefab,lineLayer.transform);
+            newLine.lineRenderer = newLine.gameObject.GetComponent<LineRenderer>();
             _lineList.Add(newLine);
         }
 
@@ -301,7 +301,7 @@ namespace StoryBoardEditor
         {
             foreach (var line in _lineList)
             {
-                Destroy(line.lineObject);
+                Destroy(line.gameObject);
             }
             _lineList.Clear();
         }

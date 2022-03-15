@@ -4,7 +4,7 @@ namespace StoryBoardEditor
 {
     public class Node
     {
-        public string nodeId;
+        public string id;
         public GameObject gameObject;
         public GameObject input;
         public GameObject output;

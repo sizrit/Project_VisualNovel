@@ -67,10 +67,10 @@ namespace StoryBoardEditor
                 var position = node.gameObject.transform.position;
                 NodeData newNodeData = new NodeData
                 {
-                    nodeId = node.nodeId,
+                    nodeId = node.id,
                     storyBoardId = "",
-                    nextNodeId = node.nextNode?.nodeId,
-                    prevNodeId = node.prevNode?.nodeId,
+                    nextNodeId = node.nextNode?.id,
+                    prevNodeId = node.prevNode?.id,
                     inputLineId = node.inputLine?.id,
                     outputLineId = node.outputLine?.id,
                     x = position.x,
@@ -91,7 +91,7 @@ namespace StoryBoardEditor
             {
                 LineData newLineData = new LineData
                 {
-                    lineId = line.id, node01Id = line.node01.nodeId, node02Id = line.node02.nodeId
+                    lineId = line.id, node01Id = line.node01.id, node02Id = line.node02.id
                 };
                 linDataList.Add(newLineData);
             }
