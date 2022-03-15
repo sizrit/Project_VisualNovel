@@ -40,7 +40,7 @@ namespace StoryBoardEditor
         {
             selectedNode = NodeManager.GetInstance().GetNodeByGameObject(node);
             _prevPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            _startPosition = selectedNode.nodeObject.transform.position;
+            _startPosition = selectedNode.gameObject.transform.position;
             _updateFunc = DragNode;
         }
 
@@ -53,7 +53,7 @@ namespace StoryBoardEditor
                 if (_prevPosition != currentPosition)
                 {
                     Vector3 delta = currentPosition - _prevPosition;
-                    selectedNode.nodeObject.transform.position += delta;
+                    selectedNode.gameObject.transform.position += delta;
                     _prevPosition = currentPosition;
                     
                     LineManager.GetInstance().UpdateLine(selectedNode);
@@ -63,9 +63,9 @@ namespace StoryBoardEditor
             if (Input.GetMouseButtonUp(0))
             {
                 _updateFunc = delegate { };
-                NodeCollisionManager.GetInstance().CheckCollision(selectedNode.nodeObject,_startPosition);
-                selectedNode.nodeObject.transform.position = GridSystem.GetInstance()
-                    .SetPositionToGrid(selectedNode.nodeObject.transform.position);
+                NodeCollisionManager.GetInstance().CheckCollision(selectedNode.gameObject,_startPosition);
+                selectedNode.gameObject.transform.position = GridSystem.GetInstance()
+                    .SetPositionToGrid(selectedNode.gameObject.transform.position);
                 LineManager.GetInstance().UpdateLine(selectedNode);
             }
         }

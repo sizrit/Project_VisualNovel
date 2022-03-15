@@ -83,10 +83,10 @@ namespace StoryBoardEditor
 
         private void SetNodeInfo()
         {
-            storyBoardModeObject.GetComponentInChildren<Text>().text = _currentSelectedNode.GetStoryBoard().mode.ToString();
-            bgIdObject.GetComponentInChildren<Text>().text = _currentSelectedNode.GetStoryBoard().bgId.ToString();
-            imageIdObject.GetComponentInChildren<Text>().text = _currentSelectedNode.GetStoryBoard().imageId;
-            imageIdObject.GetComponent<InputField>().text = _currentSelectedNode.GetStoryBoard().imageId;
+            storyBoardModeObject.GetComponentInChildren<Text>().text = _currentSelectedNode.storyBoard.mode.ToString();
+            bgIdObject.GetComponentInChildren<Text>().text = _currentSelectedNode.storyBoard.bgId.ToString();
+            imageIdObject.GetComponentInChildren<Text>().text = _currentSelectedNode.storyBoard.imageId;
+            imageIdObject.GetComponent<InputField>().text = _currentSelectedNode.storyBoard.imageId;
         }
 
         private T StringToEnum<T>(string stringValue)
@@ -121,14 +121,14 @@ namespace StoryBoardEditor
                     StoryBoardMode mode = StringToEnum<StoryBoardMode>(storyBoardModeObject.GetComponentInChildren<Text>().text);
                     BgId bgId = StringToEnum<BgId>(bgIdObject.GetComponentInChildren<Text>().text);
 
-                    _currentSelectedNode.nodeObject.transform.GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshPro>().text =
+                    _currentSelectedNode.gameObject.transform.GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshPro>().text =
                         mode.ToString();
-                    _currentSelectedNode.nodeObject.transform.GetChild(1).GetChild(1).gameObject.GetComponent<TextMeshPro>().text =
+                    _currentSelectedNode.gameObject.transform.GetChild(1).GetChild(1).gameObject.GetComponent<TextMeshPro>().text =
                         bgId.ToString();
-                    _currentSelectedNode.nodeObject.transform.GetChild(1).GetChild(2).gameObject.GetComponent<TextMeshPro>().text =
+                    _currentSelectedNode.gameObject.transform.GetChild(1).GetChild(2).gameObject.GetComponent<TextMeshPro>().text =
                         imageId;
-                    
-                    _currentSelectedNode.SetStoryBoard(new StoryBoard("",mode,bgId,imageId,""));
+
+                    _currentSelectedNode.storyBoard = new StoryBoard("", mode, bgId, imageId, "");
                 }
                 
                 if (hit.transform.gameObject == storyBoardModeObject)
