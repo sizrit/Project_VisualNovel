@@ -1,0 +1,22 @@
+[
+  {
+    "lineId": "L0000",
+    "node01Id": "N0000",
+    "node02Id": "N0001"
+  },
+  {
+    "lineId": "L0001",
+    "node01Id": "N0001",
+    "node02Id": "N0002"
+  },
+  {
+    "lineId": "L0003",
+    "node01Id": "N0002",
+    "node02Id": "N0004"
+  },
+  {
+    "lineId": "L0005",
+    "node01Id": "N0004",
+    "node02Id": "N0006"
+  }
+]

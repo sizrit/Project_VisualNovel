@@ -1,0 +1,52 @@
+[
+  {
+    "nodeId": "N0000",
+    "prevNodeId": null,
+    "nextNodeId": "N0001",
+    "inputLineId": null,
+    "outputLineId": "L0000",
+    "storyBoardId": "",
+    "x": -4.4,
+    "y": 2.0
+  },
+  {
+    "nodeId": "N0001",
+    "prevNodeId": null,
+    "nextNodeId": "N0000",
+    "inputLineId": "L0000",
+    "outputLineId": "L0001",
+    "storyBoardId": "",
+    "x": -0.4,
+    "y": 1.2
+  },
+  {
+    "nodeId": "N0002",
+    "prevNodeId": null,
+    "nextNodeId": "N0004",
+    "inputLineId": "L0001",
+    "outputLineId": "L0003",
+    "storyBoardId": "",
+    "x": 2.8,
+    "y": 1.2
+  },
+  {
+    "nodeId": "N0004",
+    "prevNodeId": null,
+    "nextNodeId": "N0006",
+    "inputLineId": "L0003",
+    "outputLineId": "L0005",
+    "storyBoardId": "",
+    "x": 5.703704,
+    "y": -2.26666665
+  },
+  {
+    "nodeId": "N0006",
+    "prevNodeId": "N0004",
+    "nextNodeId": null,
+    "inputLineId": "L0005",
+    "outputLineId": null,
+    "storyBoardId": "",
+    "x": -1.13333344,
+    "y": -1.81481481
+  }
+]
