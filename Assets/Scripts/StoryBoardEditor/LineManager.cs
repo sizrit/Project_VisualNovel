@@ -9,6 +9,7 @@ namespace StoryBoardEditor
 {
     public class Line
     {
+        public string id;
         public Node node01;
         public Node node02;
         public GameObject lineObject;
@@ -64,6 +65,8 @@ namespace StoryBoardEditor
         
         private readonly List<Line> _lineList = new List<Line>();
 
+        [SerializeField] public int lineCount = 0;
+
         #region TempLine
 
         public void RequestDrawTempLine(Node node, LineEdge edge)
@@ -74,10 +77,10 @@ namespace StoryBoardEditor
                 switch (edge)
                 {
                     case LineEdge.Output:
-                        node = node.GetNextNode();
+                        node = node.nextNode;
                         break;
                     case LineEdge.Input:
-                        node = node.GetPrevNode();
+                        node = node.prevNode;
                         break;
                 }
 
@@ -93,7 +96,7 @@ namespace StoryBoardEditor
             GameObject lineObject = Instantiate(linePrefab, lineLayer.transform);
             LineRenderer lineRenderer = lineObject.GetComponent<LineRenderer>();
 
-            Vector3 pos1 = node.nodeObject.transform.Find(edge.ToString()).transform.position;
+            Vector3 pos1 = node.gameObject.transform.Find(edge.ToString()).transform.position;
             pos1.z = 0;
             Vector3 pos2 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             pos2.z = 0;
@@ -139,7 +142,6 @@ namespace StoryBoardEditor
                 Debug.Log("Line Duplicated");
                 return true;
             }
-
             return false;
         }
 
@@ -158,7 +160,7 @@ namespace StoryBoardEditor
                     return false;
                 }
                 
-                currentNode = currentNode.GetNextNode();
+                currentNode = currentNode.nextNode;
                 if (currentNode == null)
                 {
                     return false;
@@ -173,6 +175,11 @@ namespace StoryBoardEditor
         }
 
         #endregion
+
+        private string SetLineId()
+        {
+            return "L"+lineCount++.ToString("D4");;
+        }
         
         public void RequestAddLine()
         {
@@ -211,7 +218,7 @@ namespace StoryBoardEditor
                 return;
             }
 
-            if (targetNode != _tempLine.node.nodeObject && targetEdge != _tempLine.edge)
+            if (targetNode != _tempLine.node.gameObject && targetEdge != _tempLine.edge)
             {
                 if (targetEdge == LineEdge.Input)
                 {
@@ -232,44 +239,71 @@ namespace StoryBoardEditor
         private void AddLine(Node node01, Node node02)
         {
             GameObject lineObject = Instantiate(linePrefab, lineLayer.transform);
-            Line newLine = new Line();
-            newLine.node01 = node01;
-            newLine.node02 = node02;
-            newLine.lineObject = lineObject;
+            Line newLine = new Line {id = SetLineId(), node01 = node01, node02 = node02, lineObject = lineObject};
             newLine.lineRenderer = newLine.lineObject.GetComponent<LineRenderer>();
-            newLine.lineRenderer.SetPosition(0,node01.nodeObject.transform.Find("Output").position);
-            newLine.lineRenderer.SetPosition(1,node02.nodeObject.transform.Find("Input").position);
+            newLine.lineRenderer.SetPosition(0, node01.output.transform.position);
+            newLine.lineRenderer.SetPosition(1, node02.input.transform.position);
             _lineList.Add(newLine);
 
-            node01.SetLine(LineEdge.Output, newLine);
-            node02.SetLine(LineEdge.Input,newLine);
-            node01.SetNextNode(node02);
-            node02.SetPrevNode(node01);
+            node01.outputLine = newLine;
+            node02.inputLine = newLine;
+            node01.nextNode = node02;
+            node02.prevNode = node01;
         }
 
         public void UpdateLine(Node node)
         {
-            if (node.GetLine(LineEdge.Input) != null)
-            {
-                node.GetLine(LineEdge.Input).lineRenderer.SetPosition(1,node.nodeObject.transform.Find("Input").position);
-            }
+            node.inputLine?.lineRenderer.SetPosition(1,node.input.transform.position);
 
-            if (node.GetLine(LineEdge.Output) != null)
-            {
-                node.GetLine(LineEdge.Output).lineRenderer.SetPosition(0,node.nodeObject.transform.Find("Output").position);
-            }
+            node.outputLine?.lineRenderer.SetPosition(0,node.output.transform.position);
         }
 
         private void RemoveLine(Line line)
         {
             Node node01 = line.node01;
             Node node02 = line.node02;
-            node01.SetNextNode(null);
-            node02.SetPrevNode(null);
-            node01.SetLine(LineEdge.Output,null);
-            node02.SetLine(LineEdge.Input,null);
+            node01.nextNode =null;
+            node02.prevNode =null;
+            node01.outputLine =null;
+            node02.inputLine =null;
             _lineList.Remove(line);
             Destroy(line.lineObject);
+        }
+
+        public void MakeLineFromLoadData(LineData lineData)
+        {
+            Line newLine = new Line();
+            newLine.id = lineData.lineId;
+            newLine.lineObject = Instantiate(linePrefab,lineLayer.transform);
+            newLine.lineRenderer = newLine.lineObject.GetComponent<LineRenderer>();
+            _lineList.Add(newLine);
+        }
+
+        public void SetLineFromLoadData(LineData lineData)
+        {
+            Line targetLine = new Line();
+            foreach (var line in _lineList)
+            {
+                if (line.id == lineData.lineId)
+                {
+                    targetLine = line;
+                }
+            }
+
+            targetLine.node01 = NodeManager.GetInstance().GetNodeByName(lineData.node01Id);
+            targetLine.node02 = NodeManager.GetInstance().GetNodeByName(lineData.node02Id);
+            
+            targetLine.lineRenderer.SetPosition(0,targetLine.node01.output.transform.position);
+            targetLine.lineRenderer.SetPosition(1,targetLine.node02.input.transform.position);
+        }
+
+        public void ClearAllLine()
+        {
+            foreach (var line in _lineList)
+            {
+                Destroy(line.lineObject);
+            }
+            _lineList.Clear();
         }
 
         private LineEdge ReverseEdge(LineEdge edge)
@@ -286,6 +320,24 @@ namespace StoryBoardEditor
             }
 
             return edge;
+        }
+
+        public Line GetLine(string lineId)
+        {
+            foreach (var line in _lineList)
+            {
+                if (lineId == line.id)
+                {
+                    return line;
+                }
+            }
+
+            return null;
+        }
+
+        public List<Line> GetAllLine()
+        {
+            return _lineList;
         }
     }
 }

@@ -33,11 +33,16 @@ namespace StoryBoardEditor
         private Dictionary<string,Node> _nodeList = new Dictionary<string, Node>();
         private Dictionary<GameObject,Node> _nodeGameObjectList = new Dictionary<GameObject, Node>();
         [SerializeField] private GameObject nodePrefab;
-        [SerializeField] private int nodeIdCount = 0;
+        [SerializeField] public int nodeIdCount = 0;
 
         public List<GameObject> GetAllNodeGameObject()
         {
             return _nodeGameObjectList.Keys.ToList();
+        }
+
+        public List<Node> GetAllNode()
+        {
+            return _nodeList.Values.ToList();
         }
         
         public void AddNode()
@@ -46,19 +51,61 @@ namespace StoryBoardEditor
             position.z = 0;
             GameObject nodeGameObject = Instantiate(nodePrefab,position,quaternion.identity ,this.transform);
             nodeGameObject.name = SetNodeId();
-            Node node = new Node(nodeGameObject.name, nodeGameObject);
+            Node node = new Node {nodeId = nodeGameObject.name, gameObject = nodeGameObject};
+            node.input = node.gameObject.transform.Find("Input").gameObject;
+            node.output = node.gameObject.transform.Find("Output").gameObject;
             _nodeList.Add(nodeGameObject.name, node);
             _nodeGameObjectList.Add(nodeGameObject,node);
+        }
+
+        public void MakeNodeFromLoadData(NodeData nodeData)
+        {
+            Vector3 position = new Vector3(nodeData.x, nodeData.y, 0);
+            GameObject nodeGameObject = Instantiate(nodePrefab,position,quaternion.identity ,this.transform);
+            nodeGameObject.name = nodeData.nodeId;
+
+            Node newNode = new Node {nodeId = nodeData.nodeId, gameObject = nodeGameObject};
+            newNode.input = newNode.gameObject.transform.Find("Input").gameObject;
+            newNode.output = newNode.gameObject.transform.Find("Output").gameObject;
+            
+            _nodeList.Add(newNode.nodeId,newNode);
+            _nodeGameObjectList.Add(nodeGameObject, newNode);
+        }
+
+        public void SetNodeFromLoadData(NodeData nodeData)
+        {
+            Node node = _nodeList[nodeData.nodeId];
+            if (nodeData.nextNodeId != null)
+            {
+                node.nextNode = _nodeList[nodeData.nextNodeId];
+            }
+            if (nodeData.prevNodeId != null)
+            {
+                node.nextNode = _nodeList[nodeData.prevNodeId];
+            }
+            if (nodeData.inputLineId != null)
+            {
+                node.inputLine = LineManager.GetInstance().GetLine(nodeData.inputLineId);
+            }
+            if (nodeData.outputLineId != null)
+            {
+                node.outputLine = LineManager.GetInstance().GetLine(nodeData.outputLineId);
+            }
+        }
+
+        public void ClearAllNode()
+        {
+            foreach (var node in _nodeList)
+            {
+                Destroy(node.Value.gameObject);
+            }
+            _nodeList.Clear();
+            _nodeGameObjectList.Clear();
         }
 
         private string SetNodeId()
         {
             return "N"+nodeIdCount++.ToString("D4");;
-        }
-
-        public void SetPosition(Vector3 position)
-        {
-            
         }
 
         public Node GetNodeByGameObject(GameObject nodeGameObject)
@@ -75,7 +122,7 @@ namespace StoryBoardEditor
         {
             foreach (var storyBoardNode in _nodeList.Values.ToList())
             {
-                if (storyBoardNode.nodeObject == nodeGameObject)
+                if (storyBoardNode.gameObject == nodeGameObject)
                 {
                     Destroy(nodeGameObject);
                     _nodeList.Remove(storyBoardNode.nodeId);
