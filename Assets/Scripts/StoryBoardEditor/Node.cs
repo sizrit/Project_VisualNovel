@@ -5,73 +5,27 @@ namespace StoryBoardEditor
     public class Node
     {
         public string nodeId;
-        public GameObject nodeObject;
-        private StoryBoard _storyBoard;
-
-        private Node _prevNode;
-        private Node _nextNode;
-
-        private Line _outputLine;
-        private Line _inputLine;
-
-        public Node(string nodeId, GameObject nodeObject)
-        {
-            this.nodeId = nodeId;
-            this.nodeObject = nodeObject;
-        }
-
-        public void SetStoryBoard(StoryBoard storyBoard)
-        {
-            this._storyBoard = storyBoard;
-        }
-
-        public StoryBoard GetStoryBoard()
-        {
-            return _storyBoard;
-        }
-
-        public Node GetPrevNode()
-        {
-            return _prevNode;
-        }
-
-        public void SetPrevNode(Node node)
-        {
-            _prevNode = node;
-        }
+        public GameObject gameObject;
+        public GameObject input;
+        public GameObject output;
         
-        public Node GetNextNode()
-        {
-            return _nextNode;
-        }
+        public StoryBoard storyBoard;
 
-        public void SetNextNode(Node node)
-        {
-            _nextNode = node;
-        }
+        public Node prevNode;
+        public Node nextNode;
 
-        public void SetLine(LineEdge edge, Line line)
-        {
-            switch (edge)
-            {
-                case LineEdge.Input:
-                    _inputLine = line;
-                    break;
-                case LineEdge.Output:
-                    _outputLine = line;
-                    break;
-            }
-        }
+        public Line outputLine;
+        public Line inputLine;
 
         public Line GetLine(LineEdge edge)
         {
             switch (edge)
             {
                 case LineEdge.Input:
-                    return _inputLine;
+                    return inputLine;
                 
                 case LineEdge.Output:
-                    return _outputLine;
+                    return outputLine;
             }
 
             return null;
