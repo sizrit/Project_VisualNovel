@@ -110,7 +110,8 @@ namespace StoryBoardEditor
         private void Click(RaycastHit2D[] hits)
         {
             ClickMode mode = ClickPriority(hits);
-
+            
+            UI_ButtonManager.GetInstance().DisableUI_Button(UI_Button.Delete);
             switch (mode)
             {
                 case ClickMode.UI:
@@ -133,6 +134,7 @@ namespace StoryBoardEditor
                 case ClickMode.Node:
                     NodeManipulator.GetInstance().LeftClickNode(GetNodeFromClick(hits));
                     NodeInfoManager.GetInstance().EnableNodeInfo(NodeManipulator.GetInstance().GetSelectedNode());
+                    UI_ButtonManager.GetInstance().EnableUI_Button(UI_Button.Delete);
                     break;
 
                 case ClickMode.Null:
