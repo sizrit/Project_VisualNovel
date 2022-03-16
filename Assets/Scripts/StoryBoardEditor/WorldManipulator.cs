@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace StoryBoardEditor
 {
-    public class WorldManipulator
+    public class WorldManipulator : MonoBehaviour
     {
         #region Singleton
 
@@ -12,9 +13,15 @@ namespace StoryBoardEditor
         {
             if (_instance == null)
             {
-                _instance = new WorldManipulator();
-            }
+                var obj = FindObjectOfType<WorldManipulator>();
+                if (obj == null)
+                {
+                    Debug.LogError("WorldManipulator Script is not available!");
+                    return null;
+                }
 
+                _instance = obj;
+            }
             return _instance;
         }
         
@@ -25,7 +32,7 @@ namespace StoryBoardEditor
         private float _speed = 0.4f;
         private Vector3 _prevPosition = Vector3.zero;
 
-        public void Scroll()
+        private void Scroll()
         {
             if (Input.mouseScrollDelta.y > 0 && Camera.main.orthographicSize > _minSize)
             {
@@ -40,7 +47,7 @@ namespace StoryBoardEditor
             }
         }
 
-        public void CameraMove()
+        private void CameraMove()
         {
             if (Input.GetMouseButtonDown(1))
             {
@@ -57,6 +64,12 @@ namespace StoryBoardEditor
                     _prevPosition = currentPosition;
                 }
             }
+        }
+
+        private void Update()
+        {
+            Scroll();
+            CameraMove();
         }
     }
 }
