@@ -258,7 +258,7 @@ namespace StoryBoardEditor
             node.outputLine?.lineRenderer.SetPosition(0,node.output.transform.position);
         }
 
-        private void RemoveLine(Line line)
+        public void RemoveLine(Line line)
         {
             Node node01 = line.node01;
             Node node02 = line.node02;
