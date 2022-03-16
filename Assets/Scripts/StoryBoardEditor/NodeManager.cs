@@ -45,10 +45,8 @@ namespace StoryBoardEditor
             return _nodeList.Values.ToList();
         }
         
-        public void AddNode()
+        public void AddNode(Vector3 position)
         {
-            Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            position.z = 0;
             GameObject nodeGameObject = Instantiate(nodePrefab,position,quaternion.identity ,this.transform);
             nodeGameObject.name = SetNodeId();
             Node node = new Node {id = nodeGameObject.name, gameObject = nodeGameObject};
@@ -118,16 +116,21 @@ namespace StoryBoardEditor
             return _nodeList[nameValue];
         }
 
-        public void DeleteNode(GameObject nodeGameObject)
+        public void RemoveNode(Node node)
         {
-            foreach (var storyBoardNode in _nodeList.Values.ToList())
+            if (node.inputLine != null)
             {
-                if (storyBoardNode.gameObject == nodeGameObject)
-                {
-                    Destroy(nodeGameObject);
-                    _nodeList.Remove(storyBoardNode.id);
-                }
+                LineManager.GetInstance().RemoveLine(node.inputLine);
             }
+
+            if (node.outputLine != null)
+            {
+                LineManager.GetInstance().RemoveLine(node.outputLine);
+            }
+            
+            Destroy(node.gameObject);
+            _nodeList.Remove(node.id);
+            _nodeGameObjectList.Remove(node.gameObject);
         }
     }
 }
