@@ -88,7 +88,7 @@ namespace StoryBoardEditor
             return ClickMode.Null;
         }
 
-        private GameObject GetNodeFromClick(RaycastHit2D[] hits)
+        public GameObject GetNodeFromClick(RaycastHit2D[] hits)
         {
             foreach (var hit in hits)
             {
