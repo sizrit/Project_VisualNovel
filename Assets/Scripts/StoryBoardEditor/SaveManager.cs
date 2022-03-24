@@ -11,10 +11,8 @@ namespace StoryBoardEditor
     public class NodeData
     {
         public string nodeId;
-        public string prevNodeId;
-        public string nextNodeId;
-        public string inputLineId;
-        public string outputLineId;
+        public List<string> inputLineIdList;
+        public List<string> outputLineIdList;
         public string storyBoardId;
         public float x;
         public float y;
@@ -69,13 +67,15 @@ namespace StoryBoardEditor
                 {
                     nodeId = node.id,
                     storyBoardId = "",
-                    nextNodeId = node.nextNode?.id,
-                    prevNodeId = node.prevNode?.id,
-                    inputLineId = node.inputLine?.id,
-                    outputLineId = node.outputLine?.id,
                     x = position.x,
                     y = position.y
                 };
+                
+                foreach (var inputLine in node.inputLineList)
+                {
+                    newNodeData.inputLineIdList.Add(inputLine.id);
+                }
+                    
                 nodeDataList.Add(newNodeData);
             }
 

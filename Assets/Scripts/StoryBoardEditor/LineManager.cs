@@ -21,10 +21,10 @@ namespace StoryBoardEditor
         public Node node;
         public GameObject lineObject;
         public LineRenderer lineRenderer;
-        public LineEdge edge;
+        public NodeEdge startEdge;
     }
 
-    public enum LineEdge
+    public enum NodeEdge
     {
         Input,
         Output
@@ -46,7 +46,7 @@ namespace StoryBoardEditor
                 var obj = FindObjectOfType<LineManager>();
                 if (obj == null)
                 {
-                    Debug.LogError("StoryBoardEditorLineManager Script is not available!");
+                    Debug.LogError("LineManager Script is not available!");
                     return null;
                 }
 
@@ -68,35 +68,40 @@ namespace StoryBoardEditor
         [SerializeField] public int lineCount = 0;
 
         #region TempLine
+        
 
-        public void RequestDrawTempLine(Node node, LineEdge edge)
+        public void RequestDrawTempLine(Node node, NodeEdge edge)
         {
-            Line line = node.GetLine(edge);
-            if (line != null)
-            {
-                switch (edge)
-                {
-                    case LineEdge.Output:
-                        node = node.nextNode;
-                        break;
-                    case LineEdge.Input:
-                        node = node.prevNode;
-                        break;
-                }
-
-                edge = ReverseEdge(edge);
-                RemoveLine(line);
-            }
+            // NodeType 이 selection 이 아닌데 OutPut 을 여러개 만들려고 하는경우
+            // if (node.type != NodeType.Selection && node.outputLineList.Count!=0 && edge==NodeEdge.Output)
+            // { 
+            //     _tempLine = null;
+            //     return;
+            // }
 
             DrawTempLine(node, edge);
         }
+
+        public void K(Node node, NodeEdge edge)
+        {
+            
+        }
         
-        private void DrawTempLine(Node node, LineEdge edge)
+        private void DrawTempLine(Node node, NodeEdge edge)
         {
             GameObject lineObject = Instantiate(linePrefab, lineLayer.transform);
             LineRenderer lineRenderer = lineObject.GetComponent<LineRenderer>();
 
-            Vector3 pos1 = node.gameObject.transform.Find(edge.ToString()).transform.position;
+            Vector3 pos1 = Vector3.zero;
+            switch (edge)
+            {
+                case NodeEdge.Output:
+                    pos1 = node.output.transform.position;
+                    break;
+                case  NodeEdge.Input:
+                    pos1 = node.input.transform.position;
+                    break;
+            }
             pos1.z = 0;
             Vector3 pos2 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             pos2.z = 0;
@@ -108,7 +113,7 @@ namespace StoryBoardEditor
             {
                 node = node,
                 lineObject = lineObject,
-                edge = edge,
+                startEdge = edge,
                 lineRenderer = lineObject.GetComponent<LineRenderer>()
             };
             _tempLine = newTempLine;
@@ -132,50 +137,6 @@ namespace StoryBoardEditor
 
         #endregion
 
-        #region CheckMethod
-
-        private bool CheckLineDuplicated(Node node)
-        {
-            LineEdge edge = ReverseEdge(_tempLine.edge);
-            if (node.GetLine(edge) != null)
-            {
-                Debug.Log("Line Duplicated");
-                return true;
-            }
-            return false;
-        }
-
-        private bool CheckLineLoop(Node node)
-        {
-            Node targetNode = node;
-            Node currentNode = node;
-
-            int n = 0;
-            while (true)
-            {
-                n++;
-                if (n > 10)
-                {
-                    Debug.LogError("Infinite Loop");
-                    return false;
-                }
-                
-                currentNode = currentNode.nextNode;
-                if (currentNode == null)
-                {
-                    return false;
-                }
-
-                if (currentNode == targetNode)
-                {
-                    Debug.Log("Line Loop");
-                    return true;
-                }
-            }
-        }
-
-        #endregion
-
         private string SetLineId()
         {
             return "L"+lineCount++.ToString("D4");;
@@ -186,53 +147,55 @@ namespace StoryBoardEditor
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D[] hits = Physics2D.GetRayIntersectionAll(ray);
 
-            GameObject targetNode = null;
-            LineEdge targetEdge = LineEdge.Output;
-            foreach (var hit in hits)
-            {
-                if (hit.transform.CompareTag("StoryBoardEditor_Node"))
-                {
-                    targetNode = hit.transform.gameObject;
-                }
-
-                if (hit.transform.CompareTag("StoryBoardEditor_NodeInput"))
-                {
-                    targetEdge = LineEdge.Input;
-                }
-
-                if (hit.transform.CompareTag("StoryBoardEditor_NodeOutput"))
-                {
-                    targetEdge = LineEdge.Output;
-                }
-            }
-
+            GameObject targetNode = ClickSystem.GetInstance().GetNodeFromClick(hits);
+            
             if (targetNode == null)
             {
                 return;
             }
-
+            
             Node node = NodeManager.GetInstance().GetNodeByName(targetNode.name);
+            NodeEdge startEdge = _tempLine.startEdge;
+            
+            // Check Duplicated
+            switch (startEdge)
+            {
+                case NodeEdge.Output:
+                    foreach (var line in node.outputLineList)
+                    {
+                        if (line.node01 == _tempLine.node && line.node02 == node)
+                        {
+                            return;
+                        }
+                    }
+                    break;
+                
+                case NodeEdge.Input:
+                    foreach (var line in node.inputLineList)
+                    {
+                        if (line.node02 == _tempLine.node && line.node01 == node)
+                        {
+                            return;
+                        }
+                    }
+                    break;
+            }
 
-            if (CheckLineDuplicated(node))
+            // 같은 Node 의 input output 연결 방지
+            if (node == _tempLine.node)
             {
                 return;
             }
 
-            if (targetNode != _tempLine.node.gameObject && targetEdge != _tempLine.edge)
+            switch (startEdge)
             {
-                if (targetEdge == LineEdge.Input)
-                {
-                    AddLine(_tempLine.node,NodeManager.GetInstance().GetNodeByName(targetNode.name));
-                }
-                else
-                {
-                    AddLine(NodeManager.GetInstance().GetNodeByName(targetNode.name),_tempLine.node);
-                }
-            }
-            
-            if (CheckLineLoop(node))
-            {
-                RemoveLine(_lineList[_lineList.Count-1]);
+                case NodeEdge.Output:
+                    AddLine(_tempLine.node,node);
+                    break;
+                
+                case NodeEdge.Input:
+                    AddLine(node,_tempLine.node);
+                    break;
             }
         }
 
@@ -243,29 +206,35 @@ namespace StoryBoardEditor
             newLine.lineRenderer = newLine.gameObject.GetComponent<LineRenderer>();
             newLine.lineRenderer.SetPosition(0, node01.output.transform.position);
             newLine.lineRenderer.SetPosition(1, node02.input.transform.position);
+
+            LineManipulator.GetInstance().SetMeshCollider(newLine);
+            
+            lineObject.name = newLine.id;
             _lineList.Add(newLine);
 
-            node01.outputLine = newLine;
-            node02.inputLine = newLine;
-            node01.nextNode = node02;
-            node02.prevNode = node01;
+            node01.outputLineList.Add(newLine);
+            node02.inputLineList.Add(newLine);
         }
 
         public void UpdateLine(Node node)
         {
-            node.inputLine?.lineRenderer.SetPosition(1,node.input.transform.position);
-
-            node.outputLine?.lineRenderer.SetPosition(0,node.output.transform.position);
+            foreach (var outputLine in node.outputLineList)
+            {
+                outputLine.lineRenderer.SetPosition(0,node.output.transform.position);
+            }
+            
+            foreach (var inputLine in node.inputLineList)
+            {
+                inputLine.lineRenderer.SetPosition(1,node.input.transform.position);
+            }
         }
 
         public void RemoveLine(Line line)
         {
             Node node01 = line.node01;
             Node node02 = line.node02;
-            node01.nextNode =null;
-            node02.prevNode =null;
-            node01.outputLine =null;
-            node02.inputLine =null;
+            node01.outputLineList.Remove(line);
+            node02.inputLineList.Remove(line);
             _lineList.Remove(line);
             Destroy(line.gameObject);
         }
@@ -306,27 +275,24 @@ namespace StoryBoardEditor
             _lineList.Clear();
         }
 
-        private LineEdge ReverseEdge(LineEdge edge)
-        {
-            switch (edge)
-            {
-                case LineEdge.Input:
-                    edge = LineEdge.Output;
-                    break;
-                
-                case LineEdge.Output:
-                    edge = LineEdge.Input;
-                    break;
-            }
-
-            return edge;
-        }
-
         public Line GetLine(string lineId)
         {
             foreach (var line in _lineList)
             {
                 if (lineId == line.id)
+                {
+                    return line;
+                }
+            }
+
+            return null;
+        }
+        
+        public Line GetLine(GameObject lineGameObject)
+        {
+            foreach (var line in _lineList)
+            {
+                if (lineGameObject == line.gameObject)
                 {
                     return line;
                 }

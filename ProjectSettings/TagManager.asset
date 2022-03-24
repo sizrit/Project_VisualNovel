@@ -12,6 +12,7 @@ TagManager:
   - StoryBoardEditor_Node
   - StoryBoardEditor_UI
   - StoryBoardEditor_NodeInfo
+  - StoryBoardEditor_Line
   layers:
   - Default
   - TransparentFX

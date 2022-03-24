@@ -32,7 +32,9 @@ namespace StoryBoardEditor
         
         private Dictionary<string,Node> _nodeList = new Dictionary<string, Node>();
         private Dictionary<GameObject,Node> _nodeGameObjectList = new Dictionary<GameObject, Node>();
-        [SerializeField] private GameObject nodePrefab;
+        [SerializeField] private GameObject dialogueNodePrefab;
+        [SerializeField] private GameObject selectionNodePrefab;
+        [SerializeField] private GameObject gainClueNodePrefab;
         [SerializeField] public int nodeIdCount = 0;
 
         public List<GameObject> GetAllNodeGameObject()
@@ -45,13 +47,33 @@ namespace StoryBoardEditor
             return _nodeList.Values.ToList();
         }
         
-        public void AddNode(Vector3 position)
+        public void AddNode(Vector3 position, NodeType type)
         {
-            GameObject nodeGameObject = Instantiate(nodePrefab,position,quaternion.identity ,this.transform);
+            GameObject nodeGameObject = null;
+            switch (type)
+            {
+                case NodeType.Dialogue:
+                    nodeGameObject = Instantiate(dialogueNodePrefab,position,quaternion.identity ,this.transform);
+                    break;
+                
+                case  NodeType.Selection:
+                    nodeGameObject = Instantiate(selectionNodePrefab,position,quaternion.identity ,this.transform);
+                    break;
+                
+                case NodeType.GainClue:
+                    nodeGameObject = Instantiate(gainClueNodePrefab,position,quaternion.identity ,this.transform);
+                    break;
+                
+                default:
+                    nodeGameObject = Instantiate(dialogueNodePrefab,position,quaternion.identity ,this.transform);
+                    break;
+            }
+            
             nodeGameObject.name = SetNodeId();
-            Node node = new Node {id = nodeGameObject.name, gameObject = nodeGameObject};
+            Node node = new Node {type = type, id = nodeGameObject.name, gameObject = nodeGameObject};
             node.input = node.gameObject.transform.Find("Input").gameObject;
             node.output = node.gameObject.transform.Find("Output").gameObject;
+            
             _nodeList.Add(nodeGameObject.name, node);
             _nodeGameObjectList.Add(nodeGameObject,node);
         }
@@ -59,7 +81,7 @@ namespace StoryBoardEditor
         public void MakeNodeFromLoadData(NodeData nodeData)
         {
             Vector3 position = new Vector3(nodeData.x, nodeData.y, 0);
-            GameObject nodeGameObject = Instantiate(nodePrefab,position,quaternion.identity ,this.transform);
+            GameObject nodeGameObject = Instantiate(dialogueNodePrefab,position,quaternion.identity ,this.transform);
             nodeGameObject.name = nodeData.nodeId;
 
             Node newNode = new Node {id = nodeData.nodeId, gameObject = nodeGameObject};
@@ -73,21 +95,14 @@ namespace StoryBoardEditor
         public void SetNodeFromLoadData(NodeData nodeData)
         {
             Node node = _nodeList[nodeData.nodeId];
-            if (nodeData.nextNodeId != null)
+            foreach (var inputLine in nodeData.inputLineIdList)
             {
-                node.nextNode = _nodeList[nodeData.nextNodeId];
+                node.inputLineList.Add(LineManager.GetInstance().GetLine(inputLine));
             }
-            if (nodeData.prevNodeId != null)
+
+            foreach (var outputLine in nodeData.outputLineIdList)
             {
-                node.nextNode = _nodeList[nodeData.prevNodeId];
-            }
-            if (nodeData.inputLineId != null)
-            {
-                node.inputLine = LineManager.GetInstance().GetLine(nodeData.inputLineId);
-            }
-            if (nodeData.outputLineId != null)
-            {
-                node.outputLine = LineManager.GetInstance().GetLine(nodeData.outputLineId);
+                node.inputLineList.Add(LineManager.GetInstance().GetLine(outputLine));
             }
         }
 
@@ -118,16 +133,15 @@ namespace StoryBoardEditor
 
         public void RemoveNode(Node node)
         {
-            if (node.inputLine != null)
+            List<Line> connectedLineList = new List<Line>();
+            connectedLineList.AddRange(node.inputLineList);
+            connectedLineList.AddRange(node.outputLineList);
+
+            foreach (var line in connectedLineList)
             {
-                LineManager.GetInstance().RemoveLine(node.inputLine);
+                LineManager.GetInstance().RemoveLine(line);
             }
 
-            if (node.outputLine != null)
-            {
-                LineManager.GetInstance().RemoveLine(node.outputLine);
-            }
-            
             Destroy(node.gameObject);
             _nodeList.Remove(node.id);
             _nodeGameObjectList.Remove(node.gameObject);

@@ -38,7 +38,7 @@ namespace StoryBoardEditor
 
         public void LeftClickNode(GameObject node)
         {
-            selectedNode = NodeManager.GetInstance().GetNodeByGameObject(node);
+            SetSelectedNode(NodeManager.GetInstance().GetNodeByGameObject(node));
             _prevPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             _startPosition = selectedNode.gameObject.transform.position;
             _updateFunc = DragNode;
@@ -73,17 +73,53 @@ namespace StoryBoardEditor
         public void ClickNodeInput(GameObject node)
         {
             selectedNode = NodeManager.GetInstance().GetNodeByGameObject(node);
-            LineManager.GetInstance().RequestDrawTempLine(selectedNode, LineEdge.Input);
+            Line line = LineManipulator.GetInstance().GetSelectedLine();
+            
+            if (line != null)
+            {
+                foreach (var inputLine in selectedNode.inputLineList)
+                {
+                    if (inputLine == line)
+                    {
+                        LineManipulator.GetInstance().ClearSelectedLine();
+                        LineManager.GetInstance().RemoveLine(line);
+                        LineManager.GetInstance().RequestDrawTempLine(inputLine.node01, NodeEdge.Output);
+                        _updateFunc = DragTempLine;
+                        return;
+                    }
+                }
+            }
+            
+            LineManager.GetInstance().RequestDrawTempLine(selectedNode, NodeEdge.Input);
             _updateFunc = DragTempLine;
         }
 
         public void ClickNodeOutput(GameObject node)
         {
             selectedNode = NodeManager.GetInstance().GetNodeByGameObject(node);
-            LineManager.GetInstance().RequestDrawTempLine(selectedNode, LineEdge.Output);
+            
+            Line line = LineManipulator.GetInstance().GetSelectedLine();
+            
+            if (line != null)
+            {
+                foreach (var outputLine in selectedNode.outputLineList)
+                {
+                    if (outputLine == line)
+                    {
+                        LineManipulator.GetInstance().ClearSelectedLine();
+                        LineManager.GetInstance().RemoveLine(line);
+                        LineManager.GetInstance().RequestDrawTempLine(inputLine.node01, NodeEdge.Output);
+                        _updateFunc = DragTempLine;
+                        return;
+                    }
+                }
+            }
+            
+            LineManager.GetInstance().RequestDrawTempLine(selectedNode, NodeEdge.Input);
             _updateFunc = DragTempLine;
+            
         }
-        
+
         private void DragTempLine()
         {
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -101,6 +137,18 @@ namespace StoryBoardEditor
         public Node GetSelectedNode()
         {
             return selectedNode;
+        }
+
+        public void SetSelectedNode(Node node)
+        {
+            selectedNode = node;         
+            UI_ButtonManager.GetInstance().EnableUI_Button(UI_Button.Delete);
+        }
+        
+        public void ClearSelectedNode()
+        {
+            selectedNode = null;
+            UI_ButtonManager.GetInstance().DisableUI_Button(UI_Button.Delete);
         }
 
         private void Update()

@@ -31,18 +31,20 @@ namespace StoryBoardEditor
         #endregion
         
         [SerializeField] private GameObject shadowNode;
-
+        [SerializeField] private GameObject dialogueNodeButton;
+        [SerializeField] private GameObject selectionNodeButton;
+        [SerializeField] private GameObject nodeTypePanel;
+        private NodeType _type = NodeType.Dialogue;
+        
         Action _updateFunc =delegate { };
     
         public void Click()
         {
             ClickSystem.GetInstance().DisableClick();
-            ClickSystem.GetInstance().SubscribeCustomClick(AddNode);
+            ClickSystem.GetInstance().SubscribeCustomClick(SelectNodeType);
             
             UI_ButtonManager.GetInstance().DisableAllUI_Button();
-            
-            shadowNode.SetActive(true);
-            _updateFunc += ShadowNodeEffect;
+            EnableNodeTypePanel();
         }
 
         private void ShadowNodeEffect()
@@ -52,11 +54,61 @@ namespace StoryBoardEditor
             shadowNode.transform.position = position;
         }
 
-        private void AddNode(RaycastHit2D[] hits)
+        private void EnableNodeTypePanel()
+        {
+            dialogueNodeButton.SetActive(true);
+            selectionNodeButton.SetActive(true);
+        }
+
+        private void DisableNodeTypePanel()
+        {
+            dialogueNodeButton.SetActive(false);
+            selectionNodeButton.SetActive(false);
+        }
+
+        private void SelectNodeType(RaycastHit2D[] hits ,RaycastHit[] none)
+        {
+            foreach (var hit in hits)
+            {
+                if (hit.transform.gameObject == dialogueNodeButton)
+                {
+                    _type = NodeType.Dialogue;
+                    ClickSystem.GetInstance().UnsubscribeCustomClick(SelectNodeType);
+                    ClickSystem.GetInstance().SubscribeCustomClick(AddNode);
+                    
+                    DisableNodeTypePanel();
+                    
+                    shadowNode.SetActive(true);
+                    _updateFunc += ShadowNodeEffect;
+                    return;
+                }
+
+                if (hit.transform.gameObject == selectionNodeButton)
+                {
+                    _type = NodeType.Selection;
+                    ClickSystem.GetInstance().UnsubscribeCustomClick(SelectNodeType);
+                    ClickSystem.GetInstance().SubscribeCustomClick(AddNode);
+                    
+                    DisableNodeTypePanel();
+                    
+                    shadowNode.SetActive(true);
+                    _updateFunc += ShadowNodeEffect;
+                    return;
+                }
+            }
+            
+            ClickSystem.GetInstance().UnsubscribeCustomClick(SelectNodeType);
+            ClickSystem.GetInstance().EnableClick();
+            
+            UI_ButtonManager.GetInstance().EnableAllUI_Button();
+            DisableNodeTypePanel();
+        }
+
+        private void AddNode(RaycastHit2D[] hits, RaycastHit[] none)
         {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             position.z = 0;
-            NodeManager.GetInstance().AddNode(position);
+            NodeManager.GetInstance().AddNode(position, _type);
             shadowNode.SetActive(false);
             
             ClickSystem.GetInstance().UnsubscribeCustomClick(AddNode);
@@ -67,7 +119,7 @@ namespace StoryBoardEditor
     
         void Start()
         {
-        
+            DisableNodeTypePanel();
         }
 
         // Update is called once per frame

@@ -13,6 +13,7 @@ namespace StoryBoardEditor
         NodeInput,
         NodeOutput,
         Node,
+        Line,
         Null
     }
 
@@ -43,12 +44,13 @@ namespace StoryBoardEditor
 
         #endregion
 
-        readonly List<Action<RaycastHit2D[]>> _customClickList = new List<Action<RaycastHit2D[]>>();
+        private readonly List<Action<RaycastHit2D[], RaycastHit[]>> _customClickList =
+            new List<Action<RaycastHit2D[], RaycastHit[]>>();
         private bool _isClickEnable = true;
 
-        private Action<RaycastHit2D[]> MakeClick()
+        private Action<RaycastHit2D[],RaycastHit[]> MakeClick()
         {
-            Action<RaycastHit2D[]> click = delegate { };
+            Action<RaycastHit2D[],RaycastHit[]> click = delegate { };
 
             if (_isClickEnable)
             {
@@ -63,7 +65,7 @@ namespace StoryBoardEditor
             return click;
         }
 
-        private ClickMode ClickPriority(RaycastHit2D[] hits)
+        private ClickMode ClickPriority(RaycastHit2D[] hits2D, RaycastHit[] hits)
         {
             List<(string, ClickMode)> priorityList = new List<(string, ClickMode)>
             {
@@ -71,11 +73,20 @@ namespace StoryBoardEditor
                 ("StoryBoardEditor_NodeInfo", ClickMode.NodeInfo),
                 ("StoryBoardEditor_NodeInput", ClickMode.NodeInput),
                 ("StoryBoardEditor_NodeOutput", ClickMode.NodeOutput),
-                ("StoryBoardEditor_Node", ClickMode.Node)
+                ("StoryBoardEditor_Node", ClickMode.Node),
+                ("StoryBoardEditor_Line",ClickMode.Line)
             };
 
             foreach (var priority in priorityList)
             {
+                foreach (var hit2D in hits2D)
+                {
+                    if (hit2D.transform.CompareTag(priority.Item1))
+                    {
+                        return priority.Item2;
+                    }
+                }
+
                 foreach (var hit in hits)
                 {
                     if (hit.transform.CompareTag(priority.Item1))
@@ -107,37 +118,57 @@ namespace StoryBoardEditor
             return null;
         }
 
-        private void Click(RaycastHit2D[] hits)
+        public GameObject GetLineFromClick(RaycastHit[] hits)
         {
-            ClickMode mode = ClickPriority(hits);
+            foreach (var hit in hits)
+            {
+                if (hit.transform.CompareTag("StoryBoardEditor_Line"))
+                {
+                    return hit.transform.gameObject;
+                }
+            }
+
+            return null;
+        }
+
+        private void Click(RaycastHit2D[] hits2D, RaycastHit[] hits)
+        {
+            ClickMode mode = ClickPriority(hits2D, hits);
             
             UI_ButtonManager.GetInstance().DisableUI_Button(UI_Button.Delete);
             switch (mode)
             {
                 case ClickMode.UI:
-                    UI_ButtonManager.GetInstance().UI_Click(hits);
+                    UI_ButtonManager.GetInstance().UI_Click(hits2D);
                     //UI_EditButton.GetInstance().Click();
                     break;
 
                 case ClickMode.NodeInfo:
-                    NodeInfoManager.GetInstance().CheckClick(hits);
+                    NodeInfoManager.GetInstance().CheckClick(hits2D);
                     break;
 
                 case ClickMode.NodeInput:
-                    NodeManipulator.GetInstance().ClickNodeInput(GetNodeFromClick(hits));
+                    NodeManipulator.GetInstance().ClickNodeInput(GetNodeFromClick(hits2D));
                     break;
 
                 case ClickMode.NodeOutput:
-                    NodeManipulator.GetInstance().ClickNodeOutput(GetNodeFromClick(hits));
+                    NodeManipulator.GetInstance().ClickNodeOutput(GetNodeFromClick(hits2D));
                     break;
 
                 case ClickMode.Node:
-                    NodeManipulator.GetInstance().LeftClickNode(GetNodeFromClick(hits));
+                    NodeManipulator.GetInstance().LeftClickNode(GetNodeFromClick(hits2D));
                     NodeInfoManager.GetInstance().EnableNodeInfo(NodeManipulator.GetInstance().GetSelectedNode());
-                    UI_ButtonManager.GetInstance().EnableUI_Button(UI_Button.Delete);
+                    break;
+                
+                case ClickMode.Line:
+                    LineManipulator.GetInstance().SetSelectedLine(GetLineFromClick(hits));
+                    Debug.Log(LineManipulator.GetInstance().GetSelectedLine().id);
+                    
                     break;
 
                 case ClickMode.Null:
+                    NodeManipulator.GetInstance().ClearSelectedNode();
+                    LineManipulator.GetInstance().ClearSelectedLine();
                     NodeInfoManager.GetInstance().DisableNodeInfo();
                     break;
             }
@@ -148,10 +179,11 @@ namespace StoryBoardEditor
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit2D[] hits = Physics2D.GetRayIntersectionAll(ray);
+                RaycastHit2D[] hits2D = Physics2D.GetRayIntersectionAll(ray);
+                RaycastHit[] hits = Physics.RaycastAll(ray);
 
-                Action<RaycastHit2D[]> click = MakeClick();
-                click(hits);
+                Action<RaycastHit2D[], RaycastHit[]> click = MakeClick();
+                click(hits2D, hits);
             }
         }
 
@@ -160,7 +192,7 @@ namespace StoryBoardEditor
             CheckClick();
         }
         
-        public void SubscribeCustomClick(Action<RaycastHit2D[]> click)
+        public void SubscribeCustomClick(Action<RaycastHit2D[],RaycastHit[]> click)
         {
             if (!_customClickList.Contains(click))
             {
@@ -168,7 +200,7 @@ namespace StoryBoardEditor
             }
         }
 
-        public void UnsubscribeCustomClick(Action<RaycastHit2D[]> click)
+        public void UnsubscribeCustomClick(Action<RaycastHit2D[],RaycastHit[]> click)
         {
             if (_customClickList.Contains(click))
             {
