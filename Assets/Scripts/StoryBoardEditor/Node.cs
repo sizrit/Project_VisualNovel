@@ -1,9 +1,20 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace StoryBoardEditor
 {
+    public enum NodeType
+    {
+        Dialogue,
+        Selection,
+        GainClue,
+        
+    }
+    
     public class Node
     {
+        public NodeType type;
+        
         public string id;
         public GameObject gameObject;
         public GameObject input;
@@ -11,24 +22,8 @@ namespace StoryBoardEditor
         
         public StoryBoard storyBoard;
 
-        public Node prevNode;
-        public Node nextNode;
+        public readonly List<Line> outputLineList = new List<Line>();
+        public readonly List<Line> inputLineList =new List<Line>();
 
-        public Line outputLine;
-        public Line inputLine;
-
-        public Line GetLine(LineEdge edge)
-        {
-            switch (edge)
-            {
-                case LineEdge.Input:
-                    return inputLine;
-                
-                case LineEdge.Output:
-                    return outputLine;
-            }
-
-            return null;
-        }
     }
 }
