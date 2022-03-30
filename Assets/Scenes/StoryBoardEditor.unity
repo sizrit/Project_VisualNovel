@@ -3020,6 +3020,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1988341107}
+  - component: {fileID: 1988341108}
   m_Layer: 0
   m_Name: EffectLayer
   m_TagString: Untagged
@@ -3041,6 +3042,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1988341108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988341106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c55cc2cdda58f403ea8f644e047486ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPrefab: {fileID: 2008514169912226788, guid: a52a4cfb532fc481bb4d46650fcb30ac, type: 3}
+  effectGameObject: {fileID: 0}
 --- !u!1001 &1996204069
 PrefabInstance:
   m_ObjectHideFlags: 0
