@@ -140,6 +140,7 @@ namespace StoryBoardEditor
             {
                 case ClickMode.UI:
                     UI_ButtonManager.GetInstance().UI_Click(hits2D);
+                    NodeManipulator.GetInstance().ClearSelectedNode();
                     //UI_EditButton.GetInstance().Click();
                     break;
 
@@ -149,10 +150,12 @@ namespace StoryBoardEditor
 
                 case ClickMode.NodeInput:
                     NodeManipulator.GetInstance().ClickNodePort(GetNodeFromClick(hits2D), NodeEdge.Input);
+                    NodeManipulator.GetInstance().ClearSelectedNode();
                     break;
 
                 case ClickMode.NodeOutput:
                     NodeManipulator.GetInstance().ClickNodePort(GetNodeFromClick(hits2D), NodeEdge.Output);
+                    NodeManipulator.GetInstance().ClearSelectedNode();
                     break;
 
                 case ClickMode.Node:
@@ -162,8 +165,8 @@ namespace StoryBoardEditor
                 
                 case ClickMode.Line:
                     LineManipulator.GetInstance().SetSelectedLine(GetLineFromClick(hits));
+                    NodeManipulator.GetInstance().ClearSelectedNode();
                     Debug.Log(LineManipulator.GetInstance().GetSelectedLine().id);
-                    
                     break;
 
                 case ClickMode.Null:

@@ -74,10 +74,10 @@ namespace StoryBoardEditor
             LineManager.GetInstance().UpdateLine(selectedNode);
         }
 
-        public void ClickNodePort(GameObject node, NodeEdge edge)
+        public void ClickNodePort(GameObject nodeGameObject, NodeEdge edge)
         {
-            selectedNode = NodeManager.GetInstance().GetNodeByGameObject(node);
-            if (TempLineManager.GetInstance().RequestDrawTempLine(selectedNode, edge))
+            Node node = NodeManager.GetInstance().GetNodeByGameObject(nodeGameObject);
+            if (TempLineManager.GetInstance().RequestDrawTempLine(node, edge))
             {
                 _updateFunc = DragTempLine;
             }
