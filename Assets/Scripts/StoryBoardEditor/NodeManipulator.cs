@@ -53,10 +53,8 @@ namespace StoryBoardEditor
                 if (_prevPosition != currentPosition)
                 {
                     Vector3 delta = currentPosition - _prevPosition;
-                    selectedNode.gameObject.transform.position += delta;
+                    MoveNodePosition(selectedNode, selectedNode.gameObject.transform.position + delta);
                     _prevPosition = currentPosition;
-                    
-                    LineManager.GetInstance().UpdateLine(selectedNode);
                 }
             }
 
@@ -64,10 +62,16 @@ namespace StoryBoardEditor
             {
                 _updateFunc = delegate { };
                 NodeCollisionManager.GetInstance().CheckCollision(selectedNode.gameObject,_startPosition);
-                selectedNode.gameObject.transform.position = GridSystem.GetInstance()
-                    .SetPositionToGrid(selectedNode.gameObject.transform.position);
-                LineManager.GetInstance().UpdateLine(selectedNode);
+                MoveNodePosition(selectedNode,GridSystem.GetInstance()
+                    .SetPositionToGrid(selectedNode.gameObject.transform.position));
             }
+        }
+
+        public void MoveNodePosition(Node node, Vector3 position)
+        {
+            node.gameObject.transform.position = position;
+            NodeSelectEffectManager.GetInstance().MoveEffect(position);
+            LineManager.GetInstance().UpdateLine(selectedNode);
         }
 
         public void ClickNodePort(GameObject node, NodeEdge edge)
@@ -100,13 +104,15 @@ namespace StoryBoardEditor
 
         public void SetSelectedNode(Node node)
         {
-            selectedNode = node;         
+            selectedNode = node;
+            NodeSelectEffectManager.GetInstance().ShowEffect(selectedNode);
             UI_ButtonManager.GetInstance().EnableUI_Button(UI_Button.Delete);
         }
         
         public void ClearSelectedNode()
         {
             selectedNode = null;
+            NodeSelectEffectManager.GetInstance().RemoveEffect();
             UI_ButtonManager.GetInstance().DisableUI_Button(UI_Button.Delete);
         }
 

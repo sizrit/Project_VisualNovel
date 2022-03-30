@@ -68,7 +68,8 @@ namespace StoryBoardEditor
 
             if (collisionPositionList.Count > 2)
             {
-                nodeGameObject.transform.position = backUpPosition;
+                NodeManipulator.GetInstance()
+                    .MoveNodePosition(NodeManager.GetInstance().GetNodeByGameObject(nodeGameObject), backUpPosition);
             }
 
             collisionPositionList.Clear();
@@ -89,7 +90,8 @@ namespace StoryBoardEditor
             
             if (collisionPositionList.Count>0)
             {
-                nodeGameObject.transform.position = backUpPosition;
+                NodeManipulator.GetInstance()
+                    .MoveNodePosition(NodeManager.GetInstance().GetNodeByGameObject(nodeGameObject), backUpPosition);
             }
         }
 
@@ -116,18 +118,22 @@ namespace StoryBoardEditor
             float collisionNode01VerticalScalar = Height + Delta - dy1;
             float collisionNode02HorizontalScalar = Width + Delta - dx2;
             float collisionNode02VerticalScalar = Height + Delta - dy2;
+            
+            Vector3 newPosition = Vector3.zero;
 
             if (dx1Sign != dx2Sign && dy1Sign == dy2Sign)
             {
                 if (collisionNode01VerticalScalar > collisionNode02VerticalScalar)
                 {
-                    targetNode.transform.position +=
+                    newPosition =
+                        targetNode.transform.position +
                         new Vector3(collisionNode01HorizontalScalar * (dx1Sign ? 1 : -1),
                             collisionNode02VerticalScalar * (dy2Sign ? 1 : -1), 0);
                 }
                 else
                 {
-                    targetNode.transform.position +=
+                    newPosition =
+                    targetNode.transform.position +
                         new Vector3(collisionNode02HorizontalScalar * (dx2Sign ? 1 : -1),
                             collisionNode01VerticalScalar * (dy1Sign ? 1 : -1), 0);
                 }
@@ -137,13 +143,15 @@ namespace StoryBoardEditor
             {
                 if (collisionNode01HorizontalScalar > collisionNode02HorizontalScalar)
                 {
-                    targetNode.transform.position +=
+                    newPosition =
+                    targetNode.transform.position +
                         new Vector3(collisionNode02HorizontalScalar * (dx2Sign ? 1 : -1),
                             collisionNode01VerticalScalar * (dy1Sign ? 1 : -1), 0);
                 }
                 else
                 {
-                    targetNode.transform.position +=
+                    newPosition =
+                    targetNode.transform.position +
                         new Vector3(collisionNode01HorizontalScalar * (dx1Sign ? 1 : -1),
                             collisionNode02VerticalScalar * (dy2Sign ? 1 : -1), 0);
                 }
@@ -156,16 +164,21 @@ namespace StoryBoardEditor
 
                 if (set1 > set2)
                 {
-                    targetNode.transform.position +=
+                    newPosition =
+                    targetNode.transform.position +
                         new Vector3(collisionNode02HorizontalScalar * (dx2Sign ? 1 : -1),
                             collisionNode01VerticalScalar * (dy1Sign ? 1 : -1), 0);
                 }
                 else
                 {
-                    targetNode.transform.position +=
+                    newPosition =
+                    targetNode.transform.position +
                         new Vector3(collisionNode01HorizontalScalar * (dx1Sign ? 1 : -1),
                             collisionNode02VerticalScalar * (dy2Sign ? 1 : -1), 0);
                 }
+                
+                NodeManipulator.GetInstance()
+                    .MoveNodePosition(NodeManager.GetInstance().GetNodeByGameObject(targetNode), newPosition);
             }
         }
         
@@ -198,7 +211,9 @@ namespace StoryBoardEditor
                 }
                 newPosition.x = targetNode.transform.position.x;
             }
-            targetNode.transform.position = newPosition;
+
+            NodeManipulator.GetInstance()
+                .MoveNodePosition(NodeManager.GetInstance().GetNodeByGameObject(targetNode), newPosition);
         }
         
     }
