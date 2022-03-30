@@ -148,11 +148,11 @@ namespace StoryBoardEditor
                     break;
 
                 case ClickMode.NodeInput:
-                    NodeManipulator.GetInstance().ClickNodeInput(GetNodeFromClick(hits2D));
+                    NodeManipulator.GetInstance().ClickNodePort(GetNodeFromClick(hits2D), NodeEdge.Input);
                     break;
 
                 case ClickMode.NodeOutput:
-                    NodeManipulator.GetInstance().ClickNodeOutput(GetNodeFromClick(hits2D));
+                    NodeManipulator.GetInstance().ClickNodePort(GetNodeFromClick(hits2D), NodeEdge.Output);
                     break;
 
                 case ClickMode.Node:

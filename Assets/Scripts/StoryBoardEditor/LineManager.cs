@@ -61,82 +61,10 @@ namespace StoryBoardEditor
         [SerializeField] private GameObject linePrefab;
         [SerializeField] private GameObject lineLayer;
 
-        private TempLine _tempLine;
-        
         private readonly List<Line> _lineList = new List<Line>();
 
         [SerializeField] public int lineCount = 0;
-
-        #region TempLine
         
-
-        public void RequestDrawTempLine(Node node, NodeEdge edge)
-        {
-            // NodeType 이 selection 이 아닌데 OutPut 을 여러개 만들려고 하는경우
-            // if (node.type != NodeType.Selection && node.outputLineList.Count!=0 && edge==NodeEdge.Output)
-            // { 
-            //     _tempLine = null;
-            //     return;
-            // }
-
-            DrawTempLine(node, edge);
-        }
-
-        public void K(Node node, NodeEdge edge)
-        {
-            
-        }
-        
-        private void DrawTempLine(Node node, NodeEdge edge)
-        {
-            GameObject lineObject = Instantiate(linePrefab, lineLayer.transform);
-            LineRenderer lineRenderer = lineObject.GetComponent<LineRenderer>();
-
-            Vector3 pos1 = Vector3.zero;
-            switch (edge)
-            {
-                case NodeEdge.Output:
-                    pos1 = node.output.transform.position;
-                    break;
-                case  NodeEdge.Input:
-                    pos1 = node.input.transform.position;
-                    break;
-            }
-            pos1.z = 0;
-            Vector3 pos2 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            pos2.z = 0;
-
-            lineRenderer.SetPosition(0, pos1);
-            lineRenderer.SetPosition(1, pos2);
-
-            TempLine newTempLine = new TempLine
-            {
-                node = node,
-                lineObject = lineObject,
-                startEdge = edge,
-                lineRenderer = lineObject.GetComponent<LineRenderer>()
-            };
-            _tempLine = newTempLine;
-        }
-
-        public void MovePoint2OfTempLine(Vector3 pos2)
-        {
-            if (_tempLine == null)
-            {
-                Debug.LogError("TempLine is not Exist");
-                return;
-            }
-            _tempLine.lineRenderer.SetPosition(1,pos2);
-        }
-
-        public void DeleteTempLine()
-        {
-            Destroy(_tempLine.lineObject);
-            _tempLine = null;
-        }
-
-        #endregion
-
         private string SetLineId()
         {
             return "L"+lineCount++.ToString("D4");;
@@ -144,6 +72,7 @@ namespace StoryBoardEditor
         
         public void RequestAddLine()
         {
+            TempLine tempLine = TempLineManager.GetInstance().GetTempLine();
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D[] hits = Physics2D.GetRayIntersectionAll(ray);
 
@@ -151,11 +80,12 @@ namespace StoryBoardEditor
             
             if (targetNode == null)
             {
+                LineManipulator.GetInstance().ClearSelectedLine();
                 return;
             }
             
             Node node = NodeManager.GetInstance().GetNodeByName(targetNode.name);
-            NodeEdge startEdge = _tempLine.startEdge;
+            NodeEdge startEdge = tempLine.startEdge;
             
             // Check Duplicated
             switch (startEdge)
@@ -163,8 +93,9 @@ namespace StoryBoardEditor
                 case NodeEdge.Output:
                     foreach (var line in node.outputLineList)
                     {
-                        if (line.node01 == _tempLine.node && line.node02 == node)
+                        if (line.node01 == tempLine.node && line.node02 == node)
                         {
+                            LineManipulator.GetInstance().ClearSelectedLine();
                             return;
                         }
                     }
@@ -173,8 +104,9 @@ namespace StoryBoardEditor
                 case NodeEdge.Input:
                     foreach (var line in node.inputLineList)
                     {
-                        if (line.node02 == _tempLine.node && line.node01 == node)
+                        if (line.node02 == tempLine.node && line.node01 == node)
                         {
+                            LineManipulator.GetInstance().ClearSelectedLine();
                             return;
                         }
                     }
@@ -182,19 +114,20 @@ namespace StoryBoardEditor
             }
 
             // 같은 Node 의 input output 연결 방지
-            if (node == _tempLine.node)
+            if (node == tempLine.node)
             {
+                LineManipulator.GetInstance().ClearSelectedLine();
                 return;
             }
 
             switch (startEdge)
             {
                 case NodeEdge.Output:
-                    AddLine(_tempLine.node,node);
+                    AddLine(tempLine.node,node);
                     break;
                 
                 case NodeEdge.Input:
-                    AddLine(node,_tempLine.node);
+                    AddLine(node,tempLine.node);
                     break;
             }
         }
