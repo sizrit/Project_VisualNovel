@@ -3,6 +3,14 @@ using UnityEngine;
 
 namespace StoryBoardEditor
 {
+    public class TempLine
+    {
+        public Node node;
+        public GameObject lineObject;
+        public LineRenderer lineRenderer;
+        public NodeEdge startEdge;
+    }
+    
     [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
     public class TempLineManager : MonoBehaviour
     {

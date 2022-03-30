@@ -16,14 +16,6 @@ namespace StoryBoardEditor
         public LineRenderer lineRenderer;
     }
 
-    public class TempLine
-    {
-        public Node node;
-        public GameObject lineObject;
-        public LineRenderer lineRenderer;
-        public NodeEdge startEdge;
-    }
-
     public enum NodeEdge
     {
         Input,
