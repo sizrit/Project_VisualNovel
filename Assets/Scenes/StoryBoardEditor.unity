@@ -3021,6 +3021,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1988341107}
   - component: {fileID: 1988341108}
+  - component: {fileID: 1988341109}
   m_Layer: 0
   m_Name: EffectLayer
   m_TagString: Untagged
@@ -3055,6 +3056,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectPrefab: {fileID: 2008514169912226788, guid: a52a4cfb532fc481bb4d46650fcb30ac, type: 3}
+  effectGameObject: {fileID: 0}
+--- !u!114 &1988341109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988341106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec00a65fe80ac4167b0e2f8ddb96cd9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPrefab: {fileID: 2875257823895288848, guid: 3d9fab1d61caf4553b34e1a1ae51c72e, type: 3}
   effectGameObject: {fileID: 0}
 --- !u!1001 &1996204069
 PrefabInstance:
