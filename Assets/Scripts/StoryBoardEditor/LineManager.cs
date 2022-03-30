@@ -132,7 +132,7 @@ namespace StoryBoardEditor
             newLine.lineRenderer.SetPosition(0, node01.output.transform.position);
             newLine.lineRenderer.SetPosition(1, node02.input.transform.position);
 
-            LineManipulator.GetInstance().SetMeshCollider(newLine);
+            LineManipulator.GetInstance().UpdateMeshCollider(newLine);
             
             lineObject.name = newLine.id;
             _lineList.Add(newLine);
@@ -146,11 +146,13 @@ namespace StoryBoardEditor
             foreach (var outputLine in node.outputLineList)
             {
                 outputLine.lineRenderer.SetPosition(0,node.output.transform.position);
+                LineManipulator.GetInstance().UpdateMeshCollider(outputLine);
             }
             
             foreach (var inputLine in node.inputLineList)
             {
                 inputLine.lineRenderer.SetPosition(1,node.input.transform.position);
+                LineManipulator.GetInstance().UpdateMeshCollider(inputLine);
             }
         }
 
