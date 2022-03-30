@@ -56,6 +56,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: LineSelectEffect
+    uniqueID: 560062537
+    locked: 0
   - name: NodeSelectEffect
     uniqueID: 80853153
     locked: 0

@@ -32,11 +32,13 @@ namespace StoryBoardEditor
         public void SetSelectedLine(GameObject lineGameObject)
         {
             selectedLine = LineManager.GetInstance().GetLine(lineGameObject);
+            LineSelectEffectManager.GetInstance().ShowEffect(selectedLine);
         }
         
         public void ClearSelectedLine()
         {
             selectedLine = null;
+            LineSelectEffectManager.GetInstance().RemoveEffect();
         }
 
         public Line GetSelectedLine()
@@ -44,17 +46,11 @@ namespace StoryBoardEditor
             return selectedLine;
         }
 
-        public void SetMeshCollider(Line line)
+        public void UpdateMeshCollider(Line line)
         {
             Mesh newMesh = new Mesh();
             line.lineRenderer.BakeMesh(newMesh);
             line.gameObject.GetComponent<MeshCollider>().sharedMesh = newMesh;
         }
-        
-        public void UpdateMeshCollider(Line line)
-        {
-            
-        }
-        
     }
 }
