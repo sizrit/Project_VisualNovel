@@ -32,13 +32,13 @@ namespace StoryBoardEditor
 
         private void EndScrollSelection()
         {
-            NodeInfoManager.GetInstance().SelectionModeOff();
+            //NodeInfoManager.GetInstance().SelectionModeOff();
             Destroy(this.gameObject);
         }
 
         public void SetScrollSelection<T>(List<T> contents, GameObject mainText)
         {
-            NodeInfoManager.GetInstance().SelectionModeOn(CheckClick);
+            //NodeInfoManager.GetInstance().SelectionModeOn(CheckClick);
             _mainText = mainText;
 
             _contentTextList = new List<string>();
