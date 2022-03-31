@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 namespace StoryBoardEditor
@@ -11,9 +12,13 @@ namespace StoryBoardEditor
         
     }
     
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class Node
     {
         public NodeType type;
+        
+        public bool isUseStaticStoryBoardId = false;
+        public string storyBoardId;
         
         public string id;
         public GameObject gameObject;
