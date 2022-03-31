@@ -2,20 +2,20 @@ using UnityEngine;
 
 namespace StoryBoardEditor
 {
-    public class LineSelectEffectManager : MonoBehaviour
+    public class TempLineSelectEffectManager : MonoBehaviour
     {
         #region Singleton
 
-        private static LineSelectEffectManager _instance;
+        private static TempLineSelectEffectManager _instance;
 
-        public static LineSelectEffectManager GetInstance()
+        public static TempLineSelectEffectManager GetInstance()
         {
             if (_instance == null)
             {
-                var obj = FindObjectOfType<LineSelectEffectManager>();
+                var obj = FindObjectOfType<TempLineSelectEffectManager>();
                 if (obj == null)
                 {
-                    Debug.LogError("LineSelectEffectManager Script is not available!");
+                    Debug.LogError("TempLineSelectEffectManager Script is not available!");
                     return null;
                 }
 
@@ -30,7 +30,7 @@ namespace StoryBoardEditor
         [SerializeField] private GameObject effectPrefab;
         [SerializeField] private GameObject effectGameObject;
 
-        public void ShowEffect(Line line)
+        public void ShowEffect(TempLine line)
         {
             if (effectGameObject == null)
             {
@@ -40,7 +40,7 @@ namespace StoryBoardEditor
             }
         }
         
-        public void MoveEffect(Line line)
+        public void MoveEffect(TempLine line)
         {
             effectGameObject.GetComponent<LineRenderer>().SetPosition(0,line.lineRenderer.GetPosition(0));
             effectGameObject.GetComponent<LineRenderer>().SetPosition(1,line.lineRenderer.GetPosition(1));
@@ -52,6 +52,5 @@ namespace StoryBoardEditor
             Destroy(effectGameObject);
             effectGameObject = null;
         }
-
     }
 }

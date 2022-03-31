@@ -114,6 +114,8 @@ namespace StoryBoardEditor
                 lineRenderer = lineObject.GetComponent<LineRenderer>()
             };
             _tempLine = newTempLine;
+            
+            TempLineSelectEffectManager.GetInstance().ShowEffect(_tempLine);
         }
 
         public void MovePoint2OfTempLine(Vector3 pos2)
@@ -124,12 +126,14 @@ namespace StoryBoardEditor
                 return;
             }
             _tempLine.lineRenderer.SetPosition(1,pos2);
+            TempLineSelectEffectManager.GetInstance().MoveEffect(_tempLine);
         }
 
         public void DeleteTempLine()
         {
             Destroy(_tempLine.lineObject);
             _tempLine = null;
+            TempLineSelectEffectManager.GetInstance().RemoveEffect();
         }
 
         public TempLine GetTempLine()
