@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2875257823895288850}
   - component: {fileID: 2875257823895288849}
-  - component: {fileID: 5935245566442273600}
   m_Layer: 0
   m_Name: LineSelectEffect
   m_TagString: StoryBoardEditor_Line
@@ -69,8 +68,8 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 560062537
-  m_SortingLayer: 1
+  m_SortingLayerID: 1736133173
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
@@ -82,8 +81,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.008296967
-        value: 0.20526123
+        time: 0.012685325
+        value: 0.16198495
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -130,17 +129,3 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!64 &5935245566442273600
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2875257823895288848}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
