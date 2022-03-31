@@ -46,7 +46,7 @@ namespace StoryBoardEditor
             UpdateImage();
             if (!_isEditModeOn)
             {
-                NodeInfoManager.GetInstance().DisableNodeInfo();
+                //NodeInfoManager.GetInstance().DisableNodeInfo();
             }
         }
 
