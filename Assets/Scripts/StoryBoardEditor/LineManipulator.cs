@@ -27,7 +27,7 @@ namespace StoryBoardEditor
 
         #endregion
 
-        [SerializeField] private Line selectedLine;
+        private Line selectedLine;
 
         public void SetSelectedLine(GameObject lineGameObject)
         {

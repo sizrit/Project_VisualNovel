@@ -28,8 +28,8 @@ namespace StoryBoardEditor
         }
         
         #endregion
-
-        [SerializeField] private Node selectedNode;
+        
+        private Node selectedNode;
 
         private Vector3 _prevPosition = Vector3.zero;
         private Vector3 _startPosition = Vector3.zero;

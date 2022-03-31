@@ -141,29 +141,35 @@ namespace StoryBoardEditor
                 case ClickMode.UI:
                     UI_ButtonManager.GetInstance().UI_Click(hits2D);
                     NodeManipulator.GetInstance().ClearSelectedNode();
+                    LineManipulator.GetInstance().ClearSelectedLine();
                     //UI_EditButton.GetInstance().Click();
                     break;
 
                 case ClickMode.NodeInfo:
                     NodeInfoManager.GetInstance().CheckClick(hits2D);
+                    LineManipulator.GetInstance().ClearSelectedLine();
                     break;
 
                 case ClickMode.NodeInput:
                     NodeManipulator.GetInstance().ClickNodePort(GetNodeFromClick(hits2D), NodeEdge.Input);
                     NodeManipulator.GetInstance().ClearSelectedNode();
+                    LineManipulator.GetInstance().ClearSelectedLine();
                     break;
 
                 case ClickMode.NodeOutput:
                     NodeManipulator.GetInstance().ClickNodePort(GetNodeFromClick(hits2D), NodeEdge.Output);
                     NodeManipulator.GetInstance().ClearSelectedNode();
+                    LineManipulator.GetInstance().ClearSelectedLine();
                     break;
 
                 case ClickMode.Node:
                     NodeManipulator.GetInstance().LeftClickNode(GetNodeFromClick(hits2D));
                     NodeInfoManager.GetInstance().EnableNodeInfo(NodeManipulator.GetInstance().GetSelectedNode());
+                    LineManipulator.GetInstance().ClearSelectedLine();
                     break;
                 
                 case ClickMode.Line:
+                    LineManipulator.GetInstance().ClearSelectedLine();
                     LineManipulator.GetInstance().SetSelectedLine(GetLineFromClick(hits));
                     NodeManipulator.GetInstance().ClearSelectedNode();
                     Debug.Log(LineManipulator.GetInstance().GetSelectedLine().id);
