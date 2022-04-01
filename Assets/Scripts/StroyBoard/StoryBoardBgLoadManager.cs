@@ -66,8 +66,8 @@ public class StoryBoardBgLoadManager : MonoBehaviour
     {
         bg.GetComponent<Image>().sprite = _bgList[bgId];
     }
-
-    public BgId ConvertToBgId(string stringValue)
+    
+    public static BgId ConvertToBgId(string stringValue)
     {
         List<BgId> bgIdList = Enum.GetValues(typeof(BgId)).Cast<BgId>().ToList();
 
