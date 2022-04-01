@@ -7,8 +7,9 @@ using UnityEngine.UI;
 
 public enum BgId
 {
-    Chapter01Room,
     Null,
+    Chapter01Room,
+    
     
     a,
     aa,
