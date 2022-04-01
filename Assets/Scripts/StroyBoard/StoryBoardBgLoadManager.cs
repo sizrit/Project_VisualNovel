@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public enum BgId
 {
     Chapter01Room,
+    Null,
+    
     a,
     aa,
     aaa,
@@ -63,5 +65,20 @@ public class StoryBoardBgLoadManager : MonoBehaviour
     public void SetBg(BgId bgId)
     {
         bg.GetComponent<Image>().sprite = _bgList[bgId];
+    }
+
+    public BgId ConvertToBgId(string stringValue)
+    {
+        List<BgId> bgIdList = Enum.GetValues(typeof(BgId)).Cast<BgId>().ToList();
+
+        foreach (var bgId in bgIdList)
+        {
+            if (stringValue == bgId.ToString())
+            {
+                return bgId;
+            }
+        }
+
+        return BgId.Null;
     }
 }
