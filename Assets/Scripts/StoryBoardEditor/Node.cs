@@ -18,7 +18,7 @@ namespace StoryBoardEditor
         public NodeType type;
         
         public bool isUseStaticStoryBoardId = false;
-        public string storyBoardId;
+        public string staticStoryBoardId;
         
         public string id;
         public GameObject gameObject;
@@ -30,5 +30,10 @@ namespace StoryBoardEditor
         public readonly List<Line> outputLineList = new List<Line>();
         public readonly List<Line> inputLineList =new List<Line>();
 
+        public string dialogueText;
+        public string speaker;
+
+        public bool isUseTextEffect =false;
+        public DialogueTextEffectId dialogueTextEffectId;
     }
 }
