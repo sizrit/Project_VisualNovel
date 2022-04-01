@@ -6,6 +6,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
+public enum DialogueTextEffectId
+{
+    A,
+    Null
+}
+
 public class DialogueTextEffectManager : MonoBehaviour
 {
     #region Singleton
@@ -75,5 +81,21 @@ public class DialogueTextEffectManager : MonoBehaviour
     public void Update()
     {
         _effectDelegate();
+    }
+
+    public static DialogueTextEffectId ConvertStringToDialogueTextEffectId(string stringValue)
+    {
+        List<DialogueTextEffectId> idList = Enum.GetValues(typeof(DialogueTextEffectId)).Cast<DialogueTextEffectId>()
+            .ToList();
+
+        foreach (var id in idList)
+        {
+            if (stringValue == id.ToString())
+            {
+                return id;
+            }
+        }
+
+        return DialogueTextEffectId.Null;
     }
 }
