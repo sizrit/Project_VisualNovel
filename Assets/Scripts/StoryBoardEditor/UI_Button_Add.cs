@@ -57,14 +57,12 @@ namespace StoryBoardEditor
 
         private void EnableNodeTypePanel()
         {
-            dialogueNodeButton.SetActive(true);
-            selectionNodeButton.SetActive(true);
+            nodeTypePanel.SetActive(true);
         }
 
         private void DisableNodeTypePanel()
         {
-            dialogueNodeButton.SetActive(false);
-            selectionNodeButton.SetActive(false);
+            nodeTypePanel.SetActive(false);
         }
 
         private void SelectNodeType(RaycastHit2D[] hits ,RaycastHit[] none)
