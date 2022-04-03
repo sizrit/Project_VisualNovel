@@ -33,6 +33,7 @@ namespace StoryBoardEditor
         [SerializeField] private GameObject shadowNode;
         [SerializeField] private GameObject dialogueNodeButton;
         [SerializeField] private GameObject selectionNodeButton;
+        [SerializeField] private GameObject selectionTextNodeButton;
         [SerializeField] private GameObject nodeTypePanel;
         private NodeType _type = NodeType.Dialogue;
         
@@ -73,30 +74,27 @@ namespace StoryBoardEditor
                 if (hit.transform.gameObject == dialogueNodeButton)
                 {
                     _type = NodeType.Dialogue;
-                    ClickSystem.GetInstance().UnsubscribeCustomClick(SelectNodeType);
-                    ClickSystem.GetInstance().SubscribeCustomClick(AddNode);
-                    
-                    DisableNodeTypePanel();
-                    
-                    shadowNode.SetActive(true);
-                    _updateFunc += ShadowNodeEffect;
-                    return;
                 }
 
                 if (hit.transform.gameObject == selectionNodeButton)
                 {
                     _type = NodeType.Selection;
-                    ClickSystem.GetInstance().UnsubscribeCustomClick(SelectNodeType);
-                    ClickSystem.GetInstance().SubscribeCustomClick(AddNode);
-                    
-                    DisableNodeTypePanel();
-                    
-                    shadowNode.SetActive(true);
-                    _updateFunc += ShadowNodeEffect;
-                    return;
                 }
+
+                if (hit.transform.gameObject == selectionTextNodeButton)
+                {
+                    _type = NodeType.SelectionText;
+                }
+
+                ClickSystem.GetInstance().UnsubscribeCustomClick(SelectNodeType);
+                ClickSystem.GetInstance().SubscribeCustomClick(AddNode);
+
+                DisableNodeTypePanel();
+
+                shadowNode.SetActive(true);
+                _updateFunc += ShadowNodeEffect;
             }
-            
+
             ClickSystem.GetInstance().UnsubscribeCustomClick(SelectNodeType);
             ClickSystem.GetInstance().EnableClick();
             
@@ -121,8 +119,7 @@ namespace StoryBoardEditor
         {
             DisableNodeTypePanel();
         }
-
-        // Update is called once per frame
+        
         void Update()
         {
             _updateFunc();

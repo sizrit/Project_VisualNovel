@@ -67,16 +67,65 @@ namespace StoryBoardEditor
             TempLine tempLine = TempLineManager.GetInstance().GetTempLine();
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D[] hits = Physics2D.GetRayIntersectionAll(ray);
-
-            GameObject targetNode = ClickSystem.GetInstance().GetNodeFromClick(hits);
             
-            if (targetNode == null)
+            GameObject targetNodeGameObject = ClickSystem.GetInstance().GetNodeFromClick(hits);
+            Node targetNode = NodeManager.GetInstance().GetNodeByGameObject(targetNodeGameObject);
+            
+            if (targetNodeGameObject == null)
             {
                 LineManipulator.GetInstance().ClearSelectedLine();
                 return;
             }
+
             
-            Node node = NodeManager.GetInstance().GetNodeByName(targetNode.name);
+            if (tempLine.startEdge == NodeEdge.Output)
+            {
+                if (tempLine.node.type == NodeType.Selection)
+                {
+                    if (targetNode.type != NodeType.SelectionText)
+                    {
+                        Debug.LogError("Selection Node Output Must Connect with Selection Text Node");
+                        LineManipulator.GetInstance().ClearSelectedLine();
+                        return;
+                    }
+                }
+                else
+                {
+                    if (targetNode.type == NodeType.SelectionText)
+                    {
+                        Debug.LogError("Selection Node Output Must Connect with Selection Text Node");
+                        LineManipulator.GetInstance().ClearSelectedLine();
+                        return;
+                    }
+                }
+            }
+
+            if (tempLine.startEdge == NodeEdge.Input)
+            {
+                if (tempLine.node.type == NodeType.SelectionText)
+                {
+                    if (targetNode.type != NodeType.Selection)
+                    {
+                        Debug.LogError("SelectionText Node Input can not Connect with Selection Node");
+                        LineManipulator.GetInstance().ClearSelectedLine();
+                        return;
+                    }
+                }
+                else
+                {
+                    if (targetNode.type == NodeType.Selection)
+                    {
+                        Debug.LogError("Selection Node Output Must Connect with Selection Text Node");
+                        LineManipulator.GetInstance().ClearSelectedLine();
+                        return;
+                    }
+                }
+            }
+            
+            
+            
+            
+            Node node = NodeManager.GetInstance().GetNodeByName(targetNodeGameObject.name);
             NodeEdge startEdge = tempLine.startEdge;
             
             // Check Duplicated

@@ -34,6 +34,7 @@ namespace StoryBoardEditor
         private Dictionary<GameObject,Node> _nodeGameObjectList = new Dictionary<GameObject, Node>();
         [SerializeField] private GameObject dialogueNodePrefab;
         [SerializeField] private GameObject selectionNodePrefab;
+        [SerializeField] private GameObject selectionTextNodePrefab;
         [SerializeField] private GameObject gainClueNodePrefab;
         [SerializeField] public int nodeIdCount = 0;
 
@@ -58,6 +59,10 @@ namespace StoryBoardEditor
                 
                 case  NodeType.Selection:
                     nodeGameObject = Instantiate(selectionNodePrefab,position,quaternion.identity ,this.transform);
+                    break;
+                
+                case NodeType.SelectionText:
+                    nodeGameObject = Instantiate(selectionTextNodePrefab,position,quaternion.identity ,this.transform);
                     break;
                 
                 case NodeType.GainClue:

@@ -42,6 +42,8 @@ namespace StoryBoardEditor
                 case NodeType.Dialogue:
                     nodeInfoGameObject = Instantiate(dialogueNodeInfoPrefab, this.transform);
                     break;
+                default:
+                    return;
             }
             
             nodeInfoGameObject.GetComponent<INodeInfo>().SetNodeInfo(node);
