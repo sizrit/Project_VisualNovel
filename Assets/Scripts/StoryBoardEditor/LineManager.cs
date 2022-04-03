@@ -69,13 +69,14 @@ namespace StoryBoardEditor
             RaycastHit2D[] hits = Physics2D.GetRayIntersectionAll(ray);
             
             GameObject targetNodeGameObject = ClickSystem.GetInstance().GetNodeFromClick(hits);
-            Node targetNode = NodeManager.GetInstance().GetNodeByGameObject(targetNodeGameObject);
             
             if (targetNodeGameObject == null)
             {
                 LineManipulator.GetInstance().ClearSelectedLine();
                 return;
             }
+            
+            Node targetNode = NodeManager.GetInstance().GetNodeByGameObject(targetNodeGameObject);
 
             
             if (tempLine.startEdge == NodeEdge.Output)
