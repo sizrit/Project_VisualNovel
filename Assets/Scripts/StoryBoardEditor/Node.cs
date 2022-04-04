@@ -9,8 +9,9 @@ namespace StoryBoardEditor
         Dialogue,
         Selection,
         SelectionText,
-        GainClue,
-        
+        GetClue,
+        GetItem,
+        Event
     }
     
     [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -36,5 +37,15 @@ namespace StoryBoardEditor
 
         public bool isUseTextEffect =false;
         public DialogueTextEffectId dialogueTextEffectId;
+
+        public string selectionId;
+
+        public string selectionText;
+        
+        public Clue clueId;
+
+        public Item itemId;
+
+        public string eventId;
     }
 }

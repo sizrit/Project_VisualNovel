@@ -35,7 +35,9 @@ namespace StoryBoardEditor
         [SerializeField] private GameObject dialogueNodePrefab;
         [SerializeField] private GameObject selectionNodePrefab;
         [SerializeField] private GameObject selectionTextNodePrefab;
-        [SerializeField] private GameObject gainClueNodePrefab;
+        [SerializeField] private GameObject getClueNodePrefab;
+        [SerializeField] private GameObject getItemNodePrefab;
+        [SerializeField] private GameObject eventNodePrefab;
         [SerializeField] public int nodeIdCount = 0;
 
         public List<GameObject> GetAllNodeGameObject()
@@ -65,8 +67,16 @@ namespace StoryBoardEditor
                     nodeGameObject = Instantiate(selectionTextNodePrefab,position,quaternion.identity ,this.transform);
                     break;
                 
-                case NodeType.GainClue:
-                    nodeGameObject = Instantiate(gainClueNodePrefab,position,quaternion.identity ,this.transform);
+                case NodeType.GetClue:
+                    nodeGameObject = Instantiate(getClueNodePrefab,position,quaternion.identity ,this.transform);
+                    break;
+                
+                case NodeType.GetItem:
+                    nodeGameObject = Instantiate(getItemNodePrefab,position,quaternion.identity ,this.transform);
+                    break;
+                
+                case  NodeType.Event:
+                    nodeGameObject = Instantiate(eventNodePrefab,position,quaternion.identity ,this.transform);
                     break;
                 
                 default:

@@ -142,7 +142,7 @@ namespace StoryBoardEditor
                     UI_ButtonManager.GetInstance().UI_Click(hits2D);
                     NodeManipulator.GetInstance().ClearSelectedNode();
                     LineManipulator.GetInstance().ClearSelectedLine();
-                    UI_EditButton.GetInstance().Click();
+                    //UI_EditButton.GetInstance().Click();
                     break;
 
                 case ClickMode.NodeInfo:

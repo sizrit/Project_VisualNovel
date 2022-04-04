@@ -34,6 +34,9 @@ namespace StoryBoardEditor
         [SerializeField] private GameObject dialogueNodeButton;
         [SerializeField] private GameObject selectionNodeButton;
         [SerializeField] private GameObject selectionTextNodeButton;
+        [SerializeField] private GameObject getClueNodeButton;
+        [SerializeField] private GameObject getItemNodeButton;
+        [SerializeField] private GameObject eventNodeButton;
         [SerializeField] private GameObject nodeTypePanel;
         private NodeType _type = NodeType.Dialogue;
         
@@ -83,7 +86,22 @@ namespace StoryBoardEditor
                 {
                     _type = NodeType.SelectionText;
                 }
+                
+                if (hit.transform.gameObject == getClueNodeButton)
+                {
+                    _type = NodeType.GetClue;
+                }
 
+                if (hit.transform.gameObject == getItemNodeButton)
+                {
+                    _type = NodeType.GetItem;
+                }
+                
+                if (hit.transform.gameObject == eventNodeButton)
+                {
+                    _type = NodeType.Event;
+                }
+                
                 ClickSystem.GetInstance().UnsubscribeCustomClick(SelectNodeType);
                 ClickSystem.GetInstance().SubscribeCustomClick(AddNode);
 
