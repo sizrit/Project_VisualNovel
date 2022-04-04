@@ -6,6 +6,7 @@ using UnityEngine;
 
 public enum Clue
 {
+    Null,
     Clue01,
     Clue02
 }
@@ -71,5 +72,19 @@ public class ClueManager
     public void MakeClueList()
     {
         _gainClueStoryBoardEvent.Add("S0005",new ClueEventData("S0005","S0006",Clue.Clue01));
+    }
+
+    public static Clue ConvertToClue(string stringValue)
+    {
+        List<Clue> clueList = Enum.GetValues(typeof(Clue)).Cast<Clue>().ToList();
+        foreach (var clue in clueList)
+        {
+            if (stringValue == clue.ToString())
+            {
+                return clue;
+            }
+        }
+
+        return Clue.Null;
     }
 }
