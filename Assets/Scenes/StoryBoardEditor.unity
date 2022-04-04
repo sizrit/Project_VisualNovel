@@ -923,6 +923,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueNodeInfoPrefab: {fileID: 8785120387324055655, guid: 0443c1d58edd7e74883c64b334268ac0, type: 3}
+  selectionInfoPrefab: {fileID: 8785120387324055655, guid: a58556713cfa24fdba75068173fb01e4, type: 3}
+  selectionTextInfoPrefab: {fileID: 0}
+  getClueNodeInfoPrefab: {fileID: 0}
+  getItemNodeInfoPrefab: {fileID: 0}
+  eventNodeInfoPrefab: {fileID: 0}
   nodeInfoGameObject: {fileID: 0}
 --- !u!222 &647379408
 CanvasRenderer:
@@ -939,7 +944,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 647379405}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1001,7 +1006,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 753585553}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0

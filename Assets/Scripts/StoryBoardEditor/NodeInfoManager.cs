@@ -33,6 +33,11 @@ namespace StoryBoardEditor
         #endregion
 
         [SerializeField] private GameObject dialogueNodeInfoPrefab;
+        [SerializeField] private GameObject selectionInfoPrefab;
+        [SerializeField] private GameObject selectionTextInfoPrefab;
+        [SerializeField] private GameObject getClueNodeInfoPrefab;
+        [SerializeField] private GameObject getItemNodeInfoPrefab;
+        [SerializeField] private GameObject eventNodeInfoPrefab;
         [SerializeField] private GameObject nodeInfoGameObject;
 
         public void ShowNodeInfo(Node node)
@@ -42,8 +47,26 @@ namespace StoryBoardEditor
                 case NodeType.Dialogue:
                     nodeInfoGameObject = Instantiate(dialogueNodeInfoPrefab, this.transform);
                     break;
-                default:
-                    return;
+                
+                case NodeType.Selection:
+                    nodeInfoGameObject = Instantiate(selectionInfoPrefab, this.transform);
+                    break;
+                
+                case NodeType.SelectionText:
+                    nodeInfoGameObject = Instantiate(selectionTextInfoPrefab, this.transform);
+                    break;
+                
+                case NodeType.GetClue:
+                    nodeInfoGameObject = Instantiate(getClueNodeInfoPrefab, this.transform);
+                    break;
+                
+                case NodeType.GetItem:
+                    nodeInfoGameObject = Instantiate(getItemNodeInfoPrefab, this.transform);
+                    break;
+                
+                case NodeType.Event:
+                    nodeInfoGameObject = Instantiate(eventNodeInfoPrefab, this.transform);
+                    break;
             }
             
             nodeInfoGameObject.GetComponent<INodeInfo>().SetNodeInfo(node);
