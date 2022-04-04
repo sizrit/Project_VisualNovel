@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace StoryBoardEditor
+namespace StoryBoardEditor.NodeInfo
 {
     public interface INodeInfo
     {

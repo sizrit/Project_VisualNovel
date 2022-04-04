@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace StoryBoardEditor
+namespace StoryBoardEditor.NodeInfo
 {
     public class SelectionNodeInfo : MonoBehaviour, INodeInfo
     {

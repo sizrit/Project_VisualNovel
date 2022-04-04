@@ -1,8 +1,7 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace StoryBoardEditor
+namespace StoryBoardEditor.NodeInfo
 {
     public class DialogueNodeInfo : MonoBehaviour, INodeInfo
     {
