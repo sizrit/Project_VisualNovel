@@ -924,8 +924,8 @@ MonoBehaviour:
   selectionInfoPrefab: {fileID: 8785120387324055655, guid: a58556713cfa24fdba75068173fb01e4, type: 3}
   selectionTextInfoPrefab: {fileID: 8785120387324055655, guid: ce56ffa37fc53b046b20018b1b978b88, type: 3}
   getClueNodeInfoPrefab: {fileID: 8785120387324055655, guid: b2126c63a73c18a43842d544e74420e0, type: 3}
-  getItemNodeInfoPrefab: {fileID: 0}
-  eventNodeInfoPrefab: {fileID: 0}
+  getItemNodeInfoPrefab: {fileID: 8785120387324055655, guid: ad798843b20f14cd3b65d6d7bae3427e, type: 3}
+  eventNodeInfoPrefab: {fileID: 8785120387324055655, guid: b4fdcb18547e643f084c3e8e04b8faac, type: 3}
   nodeInfoGameObject: {fileID: 0}
 --- !u!222 &647379408
 CanvasRenderer:

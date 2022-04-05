@@ -6,10 +6,10 @@ using UnityEngine;
 
 public enum Item
 {
+    Null,
     Item01,
     Item02,
     Item03,
-    Null
 }
 
 public class ItemManager
@@ -61,5 +61,20 @@ public class ItemManager
     public IEnumerable<Item> GetCurrentItemList()
     {
         return _currentItemList;
+    }
+
+    public static Item ConvertToItem(string stringValue)
+    {
+        List<Item> itemList = Enum.GetValues(typeof(Item)).Cast<Item>().ToList();
+
+        foreach (var item in itemList)
+        {
+            if (stringValue == item.ToString())
+            {
+                return item;
+            }
+        }
+
+        return Item.Null;
     }
 }

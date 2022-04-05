@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 367014568083805290}
   - component: {fileID: 8748784817871090131}
   m_Layer: 5
-  m_Name: Text (SelectionId)
+  m_Name: Text (EventId)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Selection ID
+  m_Text: Event ID
 --- !u!1 &987244498468506210
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,7 +231,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5622516921461396889}
   m_Layer: 5
-  m_Name: SelectionId
+  m_Name: EventId
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 1692858584003060768}
   - component: {fileID: 1155781031544309788}
   m_Layer: 5
-  m_Name: InputField (SelectionId)
+  m_Name: InputField (EventId)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1005,10 +1005,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8785120387324055654}
-  - component: {fileID: 8283707284311654989}
-  - component: {fileID: 4029719082252587440}
+  - component: {fileID: 6898428349591139984}
+  - component: {fileID: 5963396217927266400}
   m_Layer: 5
-  m_Name: SelectionNodeInfo
+  m_Name: EventNodeInfo
   m_TagString: StoryBoardEditor_NodeInfo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1038,7 +1038,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8283707284311654989
+--- !u!114 &6898428349591139984
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1047,7 +1047,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8785120387324055655}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c2f683d067854e949902bffa6e55148, type: 3}
+  m_Script: {fileID: 11500000, guid: 6ca77067f911a45ed89a6051d302297a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   storyBoardIdCheckBox: {fileID: 8785120386659225865}
@@ -1055,9 +1055,9 @@ MonoBehaviour:
   checkOnImage: {fileID: 21300000, guid: ca8f917eb5ad66d47815f0f692da01d3, type: 3}
   checkOffImage: {fileID: 21300000, guid: 822eb36e3b4467e41a4c17537a05c5a4, type: 3}
   storyBoardIdInputField: {fileID: 987244498468506210}
-  selectionIdInputField: {fileID: 3003526174913004312}
+  eventInputField: {fileID: 3003526174913004312}
   apply: {fileID: 8785120386261638839}
---- !u!61 &4029719082252587440
+--- !u!61 &5963396217927266400
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
