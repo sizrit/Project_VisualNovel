@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -77,10 +78,25 @@ namespace StoryBoardEditor.NodeInfo
             Debug.Log("apply");
             
             Node node = NodeManipulator.GetInstance().GetSelectedNode();
-            
-            node.staticStoryBoardId = node.isUseStaticStoryBoardId ? storyBoardIdInputField.GetComponent<InputField>().text : null;
 
+            if (node.isUseStaticStoryBoardId)
+            {
+                node.staticStoryBoardId = storyBoardIdInputField.GetComponent<InputField>().text;
+                node.gameObject.transform.Find("Member01").Find("InputText").GetComponent<TMP_Text>().text =
+                    node.staticStoryBoardId;
+                node.gameObject.transform.Find("Member01").Find("InputText").Find("TextBox").GetComponent<SpriteRenderer>().color =Color.white;
+                node.gameObject.transform.Find("Member01").Find("CheckBox").GetComponent<SpriteRenderer>().sprite = checkOnImage;
+            }
+            else
+            {
+                node.staticStoryBoardId = "";
+                node.gameObject.transform.Find("Member01").Find("InputText").GetComponent<TMP_Text>().text = "";
+                node.gameObject.transform.Find("Member01").Find("InputText").Find("TextBox").GetComponent<SpriteRenderer>().color =Color.gray;
+                node.gameObject.transform.Find("Member01").Find("CheckBox").GetComponent<SpriteRenderer>().sprite = checkOffImage;
+            }
+            
             node.selectionId = selectionIdInputField.GetComponent<InputField>().text;
+            node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text = node.selectionId;
         }
     }
 }

@@ -68,6 +68,15 @@ TagManager:
   - name: Node Line
     uniqueID: 1736133173
     locked: 0
-  - name: Node Text
+  - name: NodePort
+    uniqueID: 1403198017
+    locked: 0
+  - name: Node Image01
+    uniqueID: 1700869819
+    locked: 0
+  - name: Node Image02
     uniqueID: 3329953285
+    locked: 0
+  - name: NodeText
+    uniqueID: 2750140399
     locked: 0
