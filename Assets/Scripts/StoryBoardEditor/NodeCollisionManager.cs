@@ -21,42 +21,18 @@ namespace StoryBoardEditor
 
         #endregion
         
-        private const float Offset = 0.1f;
-        private const float Width = 2f;
-        private const float Height = 2.5f;
-        private const float Delta = 0.2f;
+        private float offset = 0.1f;
+        // private float width = 2f;
+        // private float height = 2.5f;
+        private float delta = 0.2f;
         
         private Vector3 _savedPosition =Vector3.zero;
 
         public void CheckCollision(GameObject nodeGameObject, Vector3 backUpPosition)
         {
-            List<GameObject> nodeList = NodeManager.GetInstance().GetAllNodeGameObject();
-            
-            List<Vector3> allNodePositionList = new List<Vector3>();
-            foreach (var node in nodeList)
-            {
-                if (nodeGameObject != node)
-                {
-                    allNodePositionList.Add(node.transform.position);
-                }
-            }
+            List<GameObject> collisionNodeList = GetCollisionNodeList(nodeGameObject);
 
-            Vector3 currentPosition = nodeGameObject.transform.position;
-            float dx1 = currentPosition.x - Width - Offset;
-            float dx2 = currentPosition.x + Width + Offset;
-            float dy1 = currentPosition.y - Height - Offset;
-            float dy2 = currentPosition.y + Height + Offset;
-            
-            List<Vector3> collisionPositionList = new List<Vector3>();
-            foreach (var position in allNodePositionList)
-            {
-                if (dx1 < position.x && position.x < dx2 && dy1 < position.y && position.y < dy2)
-                {
-                    collisionPositionList.Add(position);
-                }
-            }
-
-            if (collisionPositionList.Count == 1)
+            if (collisionNodeList.Count == 1)
             {
                 AdjustNodePosition(nodeGameObject, collisionPositionList[0]);
             }
@@ -74,11 +50,11 @@ namespace StoryBoardEditor
 
             collisionPositionList.Clear();
             
-            Vector3 newPosition = nodeGameObject.transform.position;
-            dx1 = newPosition.x - Width - Offset;
-            dx2 = newPosition.x + Width + Offset;
-            dy1 = newPosition.y - Height - Offset;
-            dy2 = newPosition.y + Height + Offset;
+            // Vector3 newPosition = nodeGameObject.transform.position;
+            // dx1 = newPosition.x - width - offset;
+            // dx2 = newPosition.x + width + offset;
+            // dy1 = newPosition.y - height - offset;
+            // dy2 = newPosition.y + height + offset;
             
             foreach (var position in allNodePositionList)
             {
@@ -93,6 +69,37 @@ namespace StoryBoardEditor
                 NodeManipulator.GetInstance()
                     .MoveNodePosition(NodeManager.GetInstance().GetNodeByGameObject(nodeGameObject), backUpPosition);
             }
+        }
+
+        private List<GameObject> GetCollisionNodeList(GameObject nodeGameObject)
+        {
+            List<GameObject> collisionNodeGameObjects = new List<GameObject>();
+            
+            List<GameObject> nodeList = NodeManager.GetInstance().GetAllNodeGameObject();
+
+            foreach (var node in nodeList)
+            {
+                float width01 = nodeGameObject.GetComponent<BoxCollider2D>().size.x;
+                float height01 = nodeGameObject.GetComponent<BoxCollider2D>().size.y;
+                
+                if (nodeGameObject != node)
+                {
+                    float width02 = nodeGameObject.GetComponent<BoxCollider2D>().size.x;
+                    float height02 = nodeGameObject.GetComponent<BoxCollider2D>().size.y;
+
+                    var position01 = nodeGameObject.transform.position;
+                    var position02 = node.transform.position;
+                    float dx = Mathf.Abs(position01.x - position02.x);
+                    float dy = Mathf.Abs(position01.y - position02.y);
+
+                    if (2 * dx < width01 + width02 && 2 * dy < height01 + height02)
+                    {
+                        collisionNodeGameObjects.Add(node);
+                    }
+                }
+            }
+
+            return collisionNodeGameObjects;
         }
 
         private void AdjustNodePosition2(GameObject targetNode, Vector3 collisionNode01, Vector3 collisionNode02)
@@ -114,10 +121,10 @@ namespace StoryBoardEditor
             dx2 = Math.Abs(dx2);
             dy2 = Math.Abs(dy2);
             
-            float collisionNode01HorizontalScalar = Width + Delta - dx1;
-            float collisionNode01VerticalScalar = Height + Delta - dy1;
-            float collisionNode02HorizontalScalar = Width + Delta - dx2;
-            float collisionNode02VerticalScalar = Height + Delta - dy2;
+            float collisionNode01HorizontalScalar = width + delta - dx1;
+            float collisionNode01VerticalScalar = height + delta - dy1;
+            float collisionNode02HorizontalScalar = width + delta - dx2;
+            float collisionNode02VerticalScalar = height + delta - dy2;
             
             Vector3 newPosition = Vector3.zero;
 
@@ -182,20 +189,20 @@ namespace StoryBoardEditor
             }
         }
         
-        private void AdjustNodePosition(GameObject targetNode, Vector3 benchmark)
+        private void AdjustNodePosition(GameObject targetNode, GameObject collisionNode)
         {
             Vector3 newPosition = Vector3.zero;
             Vector3 delta = targetNode.transform.position - benchmark;
 
-            if (Width - Mathf.Abs(delta.x) < Height - Mathf.Abs(delta.y))
+            if (width - Mathf.Abs(delta.x) < height - Mathf.Abs(delta.y))
             {
                 if (delta.x > 0)
                 {
-                    newPosition.x = benchmark.x + Width + Delta;
+                    newPosition.x = benchmark.x + width + this.delta;
                 }
                 else
                 {
-                    newPosition.x = benchmark.x - Width - Delta;
+                    newPosition.x = benchmark.x - width - this.delta;
                 }
                 newPosition.y = targetNode.transform.position.y;
             }
@@ -203,11 +210,11 @@ namespace StoryBoardEditor
             {
                 if (delta.y> 0)
                 {
-                    newPosition.y = benchmark.y + Height + Delta;
+                    newPosition.y = benchmark.y + height + this.delta;
                 }
                 else
                 {
-                    newPosition.y = benchmark.y - Height - Delta;
+                    newPosition.y = benchmark.y - height - this.delta;
                 }
                 newPosition.x = targetNode.transform.position.x;
             }
