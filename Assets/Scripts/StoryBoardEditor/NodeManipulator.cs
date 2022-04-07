@@ -32,15 +32,13 @@ namespace StoryBoardEditor
         private Node selectedNode;
 
         private Vector3 _prevPosition = Vector3.zero;
-        private Vector3 _startPosition = Vector3.zero;
-        
+
         Action _updateFunc = delegate { };
 
         public void LeftClickNode(GameObject node)
         {
             SetSelectedNode(NodeManager.GetInstance().GetNodeByGameObject(node));
             _prevPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            _startPosition = selectedNode.gameObject.transform.position;
             _updateFunc = DragNode;
         }
 
@@ -61,9 +59,9 @@ namespace StoryBoardEditor
             if (Input.GetMouseButtonUp(0))
             {
                 _updateFunc = delegate { };
-                NodeCollisionManager.GetInstance().CheckCollision(selectedNode.gameObject,_startPosition);
-                MoveNodePosition(selectedNode,GridSystem.GetInstance()
-                    .SetPositionToGrid(selectedNode.gameObject.transform.position));
+                NodeCollisionManager.GetInstance().CheckCollision(selectedNode.gameObject);
+                // MoveNodePosition(selectedNode,GridSystem.GetInstance()
+                //     .SetPositionToGrid(selectedNode.gameObject.transform.position));
             }
         }
 

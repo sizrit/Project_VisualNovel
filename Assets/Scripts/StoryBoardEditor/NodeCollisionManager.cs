@@ -16,17 +16,15 @@ namespace StoryBoardEditor
             {
                 _instance = new NodeCollisionManager();
             }
+
             return _instance;
         }
 
         #endregion
-        
-        private float offset = 0.1f;
-        private float delta = 0.2f;
-        
-        private Vector3 _savedPosition =Vector3.zero;
 
-        public void CheckCollision(GameObject nodeGameObject, Vector3 backUpPosition)
+        private float delta = 0.2f;
+
+        public void CheckCollision(GameObject nodeGameObject)
         {
             List<GameObject> collisionNodeList = GetCollisionNodeList(nodeGameObject);
 
@@ -37,34 +35,31 @@ namespace StoryBoardEditor
 
             if (collisionNodeList.Count == 2)
             {
-                AdjustNodePosition(nodeGameObject, collisionNodeList[0],collisionNodeList[1]);
+                AdjustNodePosition(nodeGameObject, collisionNodeList[0], collisionNodeList[1]);
             }
 
             if (collisionNodeList.Count > 2)
             {
-                NodeManipulator.GetInstance()
-                    .MoveNodePosition(NodeManager.GetInstance().GetNodeByGameObject(nodeGameObject), backUpPosition);
+                SearchPosition(nodeGameObject);
             }
-
             
-            // if (GetCollisionNodeList(nodeGameObject).Count>0)
-            // {
-            //     NodeManipulator.GetInstance()
-            //         .MoveNodePosition(NodeManager.GetInstance().GetNodeByGameObject(nodeGameObject), backUpPosition);
-            // }
+            if (GetCollisionNodeList(nodeGameObject).Count>0)
+            {
+                SearchPosition(nodeGameObject);
+            }
         }
 
         private List<GameObject> GetCollisionNodeList(GameObject nodeGameObject)
         {
             List<GameObject> collisionNodeGameObjects = new List<GameObject>();
-            
+
             List<GameObject> nodeList = NodeManager.GetInstance().GetAllNodeGameObject();
 
             foreach (var node in nodeList)
             {
                 float width01 = nodeGameObject.GetComponent<BoxCollider2D>().size.x;
                 float height01 = nodeGameObject.GetComponent<BoxCollider2D>().size.y;
-                
+
                 if (nodeGameObject != node)
                 {
                     float width02 = node.GetComponent<BoxCollider2D>().size.x;
@@ -88,7 +83,7 @@ namespace StoryBoardEditor
         private void AdjustNodePosition(GameObject targetNode, GameObject collisionNode01)
         {
             Vector3 targetNodePosition = targetNode.transform.position;
-            
+
             float width = targetNode.GetComponent<BoxCollider2D>().size.x;
             float height = targetNode.GetComponent<BoxCollider2D>().size.y;
 
@@ -96,11 +91,11 @@ namespace StoryBoardEditor
             float height01 = collisionNode01.GetComponent<BoxCollider2D>().size.y;
 
             var position = collisionNode01.transform.position;
-            float dx = width + width01 - Mathf.Abs(targetNodePosition.x - position.x);
+            float dx = (width + width01) / 2f - Mathf.Abs(targetNodePosition.x - position.x);
             bool signX = position.x - targetNodePosition.x > 0;
-            float dy = width + width01 - Mathf.Abs(targetNodePosition.x - position.x);
+            float dy = (height + height01) / 2f - Mathf.Abs(targetNodePosition.y - position.y);
             bool signY = position.y - targetNodePosition.y > 0;
-            
+
             if (dx > dy)
             {
                 targetNodePosition.y = signY ? targetNodePosition.y - dy - delta : targetNodePosition.y + dy + delta;
@@ -109,11 +104,11 @@ namespace StoryBoardEditor
             {
                 targetNodePosition.x = signX ? targetNodePosition.x - dx - delta : targetNodePosition.x + dx + delta;
             }
-            
+
             NodeManipulator.GetInstance()
                 .MoveNodePosition(NodeManager.GetInstance().GetNodeByGameObject(targetNode), targetNodePosition);
         }
-        
+
         private void AdjustNodePosition(GameObject targetNode, GameObject collisionNode01, GameObject collisionNode02)
         {
             float width = targetNode.GetComponent<BoxCollider2D>().size.x;
@@ -162,29 +157,35 @@ namespace StoryBoardEditor
 
         private void SearchPosition(GameObject targetNode)
         {
-            Vector3 targetPosition = targetNode.transform.position;
-            
+            Vector3 originalPosition = targetNode.transform.position;
+
             int count = 0;
             while (true)
             {
                 if (count > 50)
                 {
+                    Debug.LogError("Can not find optimal Node Position");
                     return;
                 }
 
-                for (int x = -count; x < count; x++)
+                for (int x = -count; x < count + 1; x++)
                 {
-                    for (int y = -count; y < count; y++)
+                    for (int y = -count; y < count + 1; y++)
                     {
                         if (x == -count || x == count || y == -count || y == count)
                         {
-                            targetNode.transform.position = new Vector3(targetPosition.x + x / 10f,
-                                targetPosition.y + y / 10f, 0);
+                            Vector3 newPosition = originalPosition;
+                            newPosition.x +=  x / 10f;
+                            newPosition.y +=  y / 10f;
+                            targetNode.transform.position = newPosition;
                             List<GameObject> collisionList = GetCollisionNodeList(targetNode);
                             if (collisionList.Count == 0)
                             {
+                                newPosition.x += Mathf.Sign(x) * delta;
+                                newPosition.y += Mathf.Sign(y) * delta;
                                 NodeManipulator.GetInstance()
-                                    .MoveNodePosition(NodeManager.GetInstance().GetNodeByGameObject(targetNode), targetPosition);
+                                    .MoveNodePosition(NodeManager.GetInstance().GetNodeByGameObject(targetNode),
+                                        newPosition);
                                 return;
                             }
                         }
