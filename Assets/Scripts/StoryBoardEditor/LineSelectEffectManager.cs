@@ -27,31 +27,17 @@ namespace StoryBoardEditor
 
         #endregion
         
-        [SerializeField] private GameObject effectPrefab;
-        [SerializeField] private GameObject effectGameObject;
-
+        [SerializeField] private Material selectEffect;
+        [SerializeField] private Material normal;
+        
         public void ShowEffect(Line line)
         {
-            if (effectGameObject == null)
-            {
-                effectGameObject = Instantiate(effectPrefab, this.transform);
-                effectGameObject.GetComponent<LineRenderer>().SetPosition(0,line.lineRenderer.GetPosition(0));
-                effectGameObject.GetComponent<LineRenderer>().SetPosition(1,line.lineRenderer.GetPosition(1));
-            }
-        }
-        
-        public void MoveEffect(Line line)
-        {
-            effectGameObject.GetComponent<LineRenderer>().SetPosition(0,line.lineRenderer.GetPosition(0));
-            effectGameObject.GetComponent<LineRenderer>().SetPosition(1,line.lineRenderer.GetPosition(1));
+            line.lineRenderer.material = selectEffect;
         }
 
-        public void RemoveEffect()
+        public void RemoveEffect(Line line)
         {
-            if (effectGameObject == null) return;
-            Destroy(effectGameObject);
-            effectGameObject = null;
+            line.lineRenderer.material = normal;
         }
-
     }
 }

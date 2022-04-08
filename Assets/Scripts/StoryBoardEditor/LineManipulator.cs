@@ -37,8 +37,11 @@ namespace StoryBoardEditor
         
         public void ClearSelectedLine()
         {
+            if (selectedLine != null)
+            {
+                LineSelectEffectManager.GetInstance().RemoveEffect(selectedLine);
+            }
             selectedLine = null;
-            LineSelectEffectManager.GetInstance().RemoveEffect();
         }
 
         public Line GetSelectedLine()

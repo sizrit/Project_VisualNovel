@@ -32,11 +32,11 @@ namespace StoryBoardEditor
 
         public void ShowEffect(Node node)
         {
-            if (effectGameObject == null)
-            {
-                effectGameObject = Instantiate(effectPrefab, this.transform);
-                effectGameObject.transform.position = node.gameObject.transform.position;
-            }
+            RemoveEffect();
+            effectGameObject = Instantiate(effectPrefab, this.transform);
+            effectGameObject.transform.localScale =
+                node.gameObject.transform.Find("NodeBg").localScale + new Vector3(1, 1, 0);
+            effectGameObject.transform.position = node.gameObject.transform.position;
         }
 
         public void MoveEffect(Vector3 position)

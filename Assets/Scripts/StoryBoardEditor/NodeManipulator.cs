@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace StoryBoardEditor
 {
@@ -37,6 +38,7 @@ namespace StoryBoardEditor
 
         public void LeftClickNode(GameObject node)
         {
+            ClearSelectedNode();
             SetSelectedNode(NodeManager.GetInstance().GetNodeByGameObject(node));
             _prevPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             _updateFunc = DragNode;
@@ -47,10 +49,10 @@ namespace StoryBoardEditor
             if (Input.GetMouseButton(0))
             {
                 Vector3 currentPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                currentPosition.z = 0;
                 if (_prevPosition != currentPosition)
                 {
                     Vector3 delta = currentPosition - _prevPosition;
+                    delta.z = 0;
                     MoveNodePosition(selectedNode, selectedNode.gameObject.transform.position + delta);
                     _prevPosition = currentPosition;
                 }
@@ -103,12 +105,17 @@ namespace StoryBoardEditor
         public void SetSelectedNode(Node node)
         {
             selectedNode = node;
+            selectedNode.gameObject.GetComponent<SortingGroup>().enabled = true;
             NodeSelectEffectManager.GetInstance().ShowEffect(selectedNode);
             UI_ButtonManager.GetInstance().EnableUI_Button(UI_Button.Delete);
         }
         
         public void ClearSelectedNode()
         {
+            if (selectedNode != null)
+            {
+                selectedNode.gameObject.GetComponent<SortingGroup>().enabled = false;
+            }
             selectedNode = null;
             NodeSelectEffectManager.GetInstance().RemoveEffect();
             UI_ButtonManager.GetInstance().DisableUI_Button(UI_Button.Delete);

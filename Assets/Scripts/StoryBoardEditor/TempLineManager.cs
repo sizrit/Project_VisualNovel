@@ -126,14 +126,17 @@ namespace StoryBoardEditor
                 return;
             }
             _tempLine.lineRenderer.SetPosition(1,pos2);
-            TempLineSelectEffectManager.GetInstance().MoveEffect(_tempLine);
         }
 
         public void DeleteTempLine()
         {
-            Destroy(_tempLine.lineObject);
+            if (_tempLine != null)
+            {
+                TempLineSelectEffectManager.GetInstance().RemoveEffect(_tempLine);
+                Destroy(_tempLine.lineObject);
+            }
             _tempLine = null;
-            TempLineSelectEffectManager.GetInstance().RemoveEffect();
+            
         }
 
         public TempLine GetTempLine()

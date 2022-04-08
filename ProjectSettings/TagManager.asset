@@ -59,14 +59,8 @@ TagManager:
   - name: LineSelectEffect
     uniqueID: 560062537
     locked: 0
-  - name: NodeSelectEffect
-    uniqueID: 80853153
-    locked: 0
   - name: Node
     uniqueID: 1342654065
-    locked: 0
-  - name: Node Line
-    uniqueID: 1736133173
     locked: 0
   - name: NodePort
     uniqueID: 1403198017
@@ -79,4 +73,16 @@ TagManager:
     locked: 0
   - name: NodeText
     uniqueID: 2750140399
+    locked: 0
+  - name: Node Line
+    uniqueID: 1736133173
+    locked: 0
+  - name: Node Select Effect
+    uniqueID: 3261723909
+    locked: 0
+  - name: Node Select
+    uniqueID: 853718647
+    locked: 0
+  - name: UI
+    uniqueID: 3127972439
     locked: 0

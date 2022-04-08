@@ -26,6 +26,7 @@ namespace StoryBoardEditor
 
         public void CheckCollision(GameObject nodeGameObject)
         {
+            return;
             List<GameObject> collisionNodeList = GetCollisionNodeList(nodeGameObject);
 
             if (collisionNodeList.Count == 1)

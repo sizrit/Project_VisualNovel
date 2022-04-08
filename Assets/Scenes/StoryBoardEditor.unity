@@ -1552,7 +1552,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
+  m_SortingLayerID: -1166994857
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1480277683
@@ -2460,8 +2460,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec00a65fe80ac4167b0e2f8ddb96cd9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectPrefab: {fileID: 2875257823895288848, guid: 3d9fab1d61caf4553b34e1a1ae51c72e, type: 3}
-  effectGameObject: {fileID: 0}
+  selectEffect: {fileID: 2100000, guid: 9b40c764e1a1e46ada6dee3c0207b455, type: 2}
+  normal: {fileID: 2100000, guid: 6a2c6cdb264354be2a1a09df8d3c7c90, type: 2}
 --- !u!114 &1988341110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2474,8 +2474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 028f80f0f79c4f34b8b1ac9afc5e1e04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectPrefab: {fileID: 2875257823895288848, guid: 3d9fab1d61caf4553b34e1a1ae51c72e, type: 3}
-  effectGameObject: {fileID: 0}
+  selectEffect: {fileID: 2100000, guid: 9b40c764e1a1e46ada6dee3c0207b455, type: 2}
+  normal: {fileID: 2100000, guid: 6a2c6cdb264354be2a1a09df8d3c7c90, type: 2}
 --- !u!1001 &1996204069
 PrefabInstance:
   m_ObjectHideFlags: 0
