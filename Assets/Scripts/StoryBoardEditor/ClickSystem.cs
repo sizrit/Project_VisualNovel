@@ -7,9 +7,11 @@ using UnityEngine;
 
 namespace StoryBoardEditor
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public enum ClickMode
     {
         UI,
+        UI_EditMode,
         NodeInfo,
         NodeInput,
         NodeOutput,
@@ -71,6 +73,7 @@ namespace StoryBoardEditor
             List<(string, ClickMode)> priorityList = new List<(string, ClickMode)>
             {
                 ("StoryBoardEditor_UI", ClickMode.UI),
+                ("StoryBoardEditor_EditModeButton", ClickMode.UI_EditMode),
                 ("StoryBoardEditor_NodeInfo", ClickMode.NodeInfo),
                 ("StoryBoardEditor_NodeInput", ClickMode.NodeInput),
                 ("StoryBoardEditor_NodeOutput", ClickMode.NodeOutput),
@@ -143,7 +146,12 @@ namespace StoryBoardEditor
                     UI_ButtonManager.GetInstance().UI_Click(hits2D);
                     NodeManipulator.GetInstance().ClearSelectedNode();
                     LineManipulator.GetInstance().ClearSelectedLine();
-                    //UI_EditButton.GetInstance().Click();
+                    break;
+                
+                case  ClickMode.UI_EditMode:
+                    UI_EditModeButton.GetInstance().Click();
+                    NodeManipulator.GetInstance().ClearSelectedNode();
+                    LineManipulator.GetInstance().ClearSelectedLine();
                     break;
 
                 case ClickMode.NodeInfo:

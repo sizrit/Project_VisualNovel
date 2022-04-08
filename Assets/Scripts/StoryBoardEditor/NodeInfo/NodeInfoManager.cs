@@ -33,9 +33,12 @@ namespace StoryBoardEditor.NodeInfo
         [SerializeField] private GameObject getItemNodeInfoPrefab;
         [SerializeField] private GameObject eventNodeInfoPrefab;
         [SerializeField] private GameObject nodeInfoGameObject;
-
+        [SerializeField] private bool isEnable = true;
+        
         public void ShowNodeInfo(Node node)
         {
+            if(!isEnable) return;
+
             switch (node.type)
             {
                 case NodeType.Dialogue:
@@ -75,6 +78,16 @@ namespace StoryBoardEditor.NodeInfo
         public void Click(RaycastHit2D[] hits)
         {
             nodeInfoGameObject.GetComponent<INodeInfo>().Click(hits);
+        }
+
+        public void DisableNodeInfo()
+        {
+            isEnable = false;
+        }
+
+        public void EnableNodeInfo()
+        {
+            isEnable = true;
         }
     }
 }

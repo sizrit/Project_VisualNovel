@@ -927,6 +927,7 @@ MonoBehaviour:
   getItemNodeInfoPrefab: {fileID: 8785120387324055655, guid: ad798843b20f14cd3b65d6d7bae3427e, type: 3}
   eventNodeInfoPrefab: {fileID: 8785120387324055655, guid: b4fdcb18547e643f084c3e8e04b8faac, type: 3}
   nodeInfoGameObject: {fileID: 0}
+  isEnable: 1
 --- !u!222 &647379408
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -993,7 +994,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 56c939389c5e54ec6bc6ffecf0775331, type: 3}
+    m_Font: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
     m_FontSize: 32
     m_FontStyle: 0
     m_BestFit: 0
@@ -1025,7 +1026,7 @@ GameObject:
   - component: {fileID: 855997768}
   - component: {fileID: 855997769}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: UI Pannel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1119,12 +1120,12 @@ GameObject:
   - component: {fileID: 1066984954}
   - component: {fileID: 1066984955}
   m_Layer: 5
-  m_Name: EditModeButton
-  m_TagString: StoryBoardEditor_UI
+  m_Name: UI_EditModeButton
+  m_TagString: StoryBoardEditor_EditModeButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1066984953
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1143,7 +1144,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 897, y: 260}
+  m_AnchoredPosition: {x: 907, y: -487}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1066984954

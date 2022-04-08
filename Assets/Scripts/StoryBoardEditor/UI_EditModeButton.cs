@@ -1,22 +1,23 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using StoryBoardEditor.NodeInfo;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace StoryBoardEditor
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public class UI_EditButton : MonoBehaviour
+    public class UI_EditModeButton : MonoBehaviour
     {
         #region Singleton
 
-        private static UI_EditButton _instance;
+        private static UI_EditModeButton _instance;
 
-        public static UI_EditButton GetInstance()
+        public static UI_EditModeButton GetInstance()
         {
             if (_instance == null)
             {
-                var obj = FindObjectOfType<UI_EditButton>();
+                var obj = FindObjectOfType<UI_EditModeButton>();
                 if (obj == null)
                 {
                     Debug.LogError("StoryBoardEditorUIEditButton is not ready");
@@ -44,20 +45,24 @@ namespace StoryBoardEditor
         {
             _isEditModeOn = !_isEditModeOn;
             UpdateImage();
-            if (!_isEditModeOn)
-            {
-                //NodeInfoManager.GetInstance().DisableNodeInfo();
-            }
-        }
-
-        public bool GetIsEditModeOn()
-        {
-            return _isEditModeOn;
+            UpdateNodeInfoManager();
         }
 
         private void UpdateImage()
         {
             checkImageObject.GetComponent<Image>().sprite = _isEditModeOn ? checkImage : nullImage;
         }
+
+        private void UpdateNodeInfoManager()
+        {
+            if (_isEditModeOn)
+            {
+                NodeInfoManager.GetInstance().EnableNodeInfo();
+            }
+            else
+            {
+                NodeInfoManager.GetInstance().DisableNodeInfo();
+            }
+        } 
     }
 }
