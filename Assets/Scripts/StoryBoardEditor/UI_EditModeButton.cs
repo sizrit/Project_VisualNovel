@@ -39,6 +39,7 @@ namespace StoryBoardEditor
         private void OnEnable()
         {
             UpdateImage();
+            UpdateNodeInfoManager();
         }
 
         public void Click()
