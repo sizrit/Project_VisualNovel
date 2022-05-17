@@ -2,6 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using DialogueSystem;
+using ResearchSystem;
+using StoryBoardSystem;
+using UI_GameMenu;
 using UnityEngine;
 
 public class GameSystem : MonoBehaviour
@@ -70,7 +74,7 @@ public class GameSystem : MonoBehaviour
 
     private void Initialize()
     {
-        ClickSystem.GetInstance().Initialize();
+        ClickSystem.ClickSystem.GetInstance().Initialize();
     }
 
     private void GameSetting()
@@ -80,7 +84,7 @@ public class GameSystem : MonoBehaviour
 
     void Update()
     {
-        ClickSystem.GetInstance().Update();
+        ClickSystem.ClickSystem.GetInstance().Update();
     }
     
 }

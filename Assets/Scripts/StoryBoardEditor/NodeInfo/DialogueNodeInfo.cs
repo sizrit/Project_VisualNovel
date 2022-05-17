@@ -1,3 +1,5 @@
+using DialogueSystem;
+using StoryBoardSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

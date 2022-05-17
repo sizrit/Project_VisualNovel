@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ClickSystem;
+using UI_GameMenu;
 using UnityEngine;
 
 public class UI_Button_MenuButton : MonoBehaviour
@@ -16,7 +18,7 @@ public class UI_Button_MenuButton : MonoBehaviour
         {
             UI_GameMenuManager.GetInstance().Show_UI_GameMenu();
             UI_GameMenuManager.GetInstance().SetMenuMode(UiMenuMode.Inventory);
-            ClickSystem.GetInstance().SetClickMode(ClickMode.Menu);
+            ClickSystem.ClickSystem.GetInstance().SetClickMode(ClickMode.Menu);
         }
     }
 }

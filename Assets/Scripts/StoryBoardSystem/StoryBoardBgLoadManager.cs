@@ -5,81 +5,84 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum BgId
+namespace StoryBoardSystem
 {
-    Null,
-    Chapter01Room,
-    
-    
-    a,
-    aa,
-    aaa,
-    aaaa,
-    aaaaa
-}
-
-public class StoryBoardBgLoadManager : MonoBehaviour
-{
-    #region Singleton
-
-    private static StoryBoardBgLoadManager _instance;
-
-    public static StoryBoardBgLoadManager GetInstance()
+    public enum BgId
     {
-        if (_instance == null)
-        {
-            var obj = FindObjectOfType<StoryBoardBgLoadManager>();
-            if (obj == null)
-            {
-                Debug.LogError("Error! StoryBoardBgLoadManager is disable now");
-                return null;
-            }
-            _instance = obj;
-        }
-
-        return _instance;
+        Null,
+        Chapter01Room,
+    
+    
+        a,
+        aa,
+        aaa,
+        aaaa,
+        aaaaa
     }
 
-    #endregion
-    
-    private readonly Dictionary<BgId,Sprite> _bgList = new Dictionary<BgId, Sprite>();
-    [SerializeField] private GameObject bg;
-    
-    public void LoadBg()
+    public class StoryBoardBgLoadManager : MonoBehaviour
     {
-        List<BgId> bgNameList = Enum.GetValues(typeof(BgId)).Cast<BgId>().ToList();
-        string loadPath = "Bg";
-        Sprite[] spriteList = Resources.LoadAll<Sprite>(loadPath);
+        #region Singleton
 
-        foreach (var sprite in spriteList)
+        private static StoryBoardBgLoadManager _instance;
+
+        public static StoryBoardBgLoadManager GetInstance()
         {
-            foreach (var bgName in bgNameList)
+            if (_instance == null)
             {
-                if (bgName.ToString() == sprite.name)
+                var obj = FindObjectOfType<StoryBoardBgLoadManager>();
+                if (obj == null)
                 {
-                    _bgList.Add(bgName,sprite);
+                    Debug.LogError("Error! StoryBoardBgLoadManager is disable now");
+                    return null;
+                }
+                _instance = obj;
+            }
+
+            return _instance;
+        }
+
+        #endregion
+    
+        private readonly Dictionary<BgId,Sprite> _bgList = new Dictionary<BgId, Sprite>();
+        [SerializeField] private GameObject bg;
+    
+        public void LoadBg()
+        {
+            List<BgId> bgNameList = Enum.GetValues(typeof(BgId)).Cast<BgId>().ToList();
+            string loadPath = "Bg";
+            Sprite[] spriteList = Resources.LoadAll<Sprite>(loadPath);
+
+            foreach (var sprite in spriteList)
+            {
+                foreach (var bgName in bgNameList)
+                {
+                    if (bgName.ToString() == sprite.name)
+                    {
+                        _bgList.Add(bgName,sprite);
+                    }
                 }
             }
         }
-    }
 
-    public void SetBg(BgId bgId)
-    {
-        bg.GetComponent<Image>().sprite = _bgList[bgId];
-    }
-    
-    public static BgId ConvertToBgId(string stringValue)
-    {
-        List<BgId> bgIdList = Enum.GetValues(typeof(BgId)).Cast<BgId>().ToList();
-
-        foreach (var bgId in bgIdList)
+        public void SetBg(BgId bgId)
         {
-            if (stringValue == bgId.ToString())
-            {
-                return bgId;
-            }
+            bg.GetComponent<Image>().sprite = _bgList[bgId];
         }
+    
+        public static BgId ConvertToBgId(string stringValue)
+        {
+            List<BgId> bgIdList = Enum.GetValues(typeof(BgId)).Cast<BgId>().ToList();
 
-        return BgId.Null;
+            foreach (var bgId in bgIdList)
+            {
+                if (stringValue == bgId.ToString())
+                {
+                    return bgId;
+                }
+            }
+
+            return BgId.Null;
+        }
     }
 }

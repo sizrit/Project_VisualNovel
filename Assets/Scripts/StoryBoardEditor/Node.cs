@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using DialogueSystem;
+using StoryBoardSystem;
 using UnityEngine;
 
 namespace StoryBoardEditor

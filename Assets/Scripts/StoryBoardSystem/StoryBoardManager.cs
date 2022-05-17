@@ -1,4 +1,6 @@
-namespace StoryBoardMode
+using DialogueSystem;
+
+namespace StoryBoardSystem
 {
     public class StoryBoardManager
     {

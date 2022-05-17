@@ -3,31 +3,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum StoryBoardMode
+namespace StoryBoardSystem
 {
-    Dialogue,
-    Selection,
-    GainClue,
-    GetItem,
-    SwitchToResearch,
-    ReturnToReserch,
-}
-
-[Serializable]
-public struct StoryBoard
-{
-    public string storyBoardId;
-    public StoryBoardMode mode;
-    public BgId bgId;
-    public string imageId;
-    public string nextStoryBoardId;
-
-    public StoryBoard(string storyBoardId,StoryBoardMode mode, BgId bgId, string imageId, string nextStoryBoardId)
+    public enum StoryBoardMode
     {
-        this.storyBoardId = storyBoardId;
-        this.mode = mode;
-        this.bgId = bgId;
-        this.imageId = imageId;
-        this.nextStoryBoardId = nextStoryBoardId;
+        Dialogue,
+        Selection,
+        GainClue,
+        GetItem,
+        SwitchToResearch,
+        ReturnToReserch,
+    }
+
+    [Serializable]
+    public struct StoryBoard
+    {
+        public string storyBoardId;
+        public StoryBoardMode mode;
+        public BgId bgId;
+        public string imageId;
+        public string nextStoryBoardId;
+
+        public StoryBoard(string storyBoardId,StoryBoardMode mode, BgId bgId, string imageId, string nextStoryBoardId)
+        {
+            this.storyBoardId = storyBoardId;
+            this.mode = mode;
+            this.bgId = bgId;
+            this.imageId = imageId;
+            this.nextStoryBoardId = nextStoryBoardId;
+        }
     }
 }

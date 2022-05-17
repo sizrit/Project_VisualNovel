@@ -9,7 +9,7 @@ namespace StoryBoardEditor
 
         private static NodeVisualizeSettingManager _instance;
 
-        public new static NodeVisualizeSettingManager GetInstance()
+        public static NodeVisualizeSettingManager GetInstance()
         {
             if (_instance == null)
             {

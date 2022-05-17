@@ -1,41 +1,42 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StoryBoardDataLoadManager
+namespace StoryBoardSystem
 {
-    #region Singleton
-
-    private static StoryBoardDataLoadManager _instance;
-
-    public static StoryBoardDataLoadManager GetInstance()
+    public class StoryBoardDataLoadManager
     {
-        if (_instance == null)
+        #region Singleton
+
+        private static StoryBoardDataLoadManager _instance;
+
+        public static StoryBoardDataLoadManager GetInstance()
         {
-            _instance= new StoryBoardDataLoadManager();
+            if (_instance == null)
+            {
+                _instance= new StoryBoardDataLoadManager();
+            }
+
+            return _instance;
         }
 
-        return _instance;
-    }
-
-    #endregion
+        #endregion
     
-    private readonly Dictionary<string,StoryBoard> _storyBoardList = new Dictionary<string, StoryBoard>();
+        private readonly Dictionary<string,StoryBoard> _storyBoardList = new Dictionary<string, StoryBoard>();
 
-    public void LoadData()
-    {
+        public void LoadData()
+        {
 
-    }
+        }
 
-    public StoryBoard GetStoryBoard(string storyBoardId)
-    {
-        return _storyBoardList[storyBoardId];
-    }
+        public StoryBoard GetStoryBoard(string storyBoardId)
+        {
+            return _storyBoardList[storyBoardId];
+        }
 
-    private T LoadJsonFiles<T>(string loadPath)
-    {
-        TextAsset jsonData = Resources.Load<TextAsset>(loadPath);
-        return JsonUtility.FromJson<T>(jsonData.ToString());
+        private T LoadJsonFiles<T>(string loadPath)
+        {
+            TextAsset jsonData = Resources.Load<TextAsset>(loadPath);
+            return JsonUtility.FromJson<T>(jsonData.ToString());
+        }
     }
 }

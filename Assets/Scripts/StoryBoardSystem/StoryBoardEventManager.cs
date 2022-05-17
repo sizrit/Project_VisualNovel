@@ -1,64 +1,64 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
-public class StoryBoardEventManager 
+namespace StoryBoardSystem
 {
-    #region SingleTon
-
-    private static StoryBoardEventManager _instance;
-
-    public static StoryBoardEventManager GetInstance()
+    public class StoryBoardEventManager 
     {
-        if (_instance == null)
+        #region SingleTon
+
+        private static StoryBoardEventManager _instance;
+
+        public static StoryBoardEventManager GetInstance()
         {
-            _instance= new StoryBoardEventManager();
+            if (_instance == null)
+            {
+                _instance= new StoryBoardEventManager();
+            }
+
+            return _instance;
         }
 
-        return _instance;
-    }
+        #endregion
 
-    #endregion
-
-    private string _currentStoryBoardId = "";
+        private string _currentStoryBoardId = "";
     
-    private readonly Dictionary<string, Action> _eventList = new Dictionary<string, Action>();
+        private readonly Dictionary<string, Action> _eventList = new Dictionary<string, Action>();
 
-    public void MakeEventList()
-    {
-        List<string> selectionIdList = StoryBoardSelectionEventDataLoadManager.GetInstance().GetSelectionEventId();
-        foreach (var selectionId in selectionIdList)
+        public void MakeEventList()
         {
-            _eventList.Add(selectionId,SelectionEvent);
-        }
+            List<string> selectionIdList = StoryBoardSelectionEventDataLoadManager.GetInstance().GetSelectionEventId();
+            foreach (var selectionId in selectionIdList)
+            {
+                _eventList.Add(selectionId,SelectionEvent);
+            }
         
-        IEnumerable<string> gainClueIdList = ClueManager.GetInstance().GetGainClueEventStoryBoardIdList();
-        foreach (var gainClueId in gainClueIdList)
-        {
-            _eventList.Add(gainClueId,GainClueEvent);
+            IEnumerable<string> gainClueIdList = ClueManager.GetInstance().GetGainClueEventStoryBoardIdList();
+            foreach (var gainClueId in gainClueIdList)
+            {
+                _eventList.Add(gainClueId,GainClueEvent);
+            }
         }
-    }
 
-    public bool IsStoryBoardEvent(string storyBoardIdValue)
-    {
-        return _eventList.ContainsKey(storyBoardIdValue);
-    }
+        public bool IsStoryBoardEvent(string storyBoardIdValue)
+        {
+            return _eventList.ContainsKey(storyBoardIdValue);
+        }
 
-    public void StoryBoardEventOn(string storyBoardIdValue)
-    {
-        _currentStoryBoardId = storyBoardIdValue;
-        _eventList[storyBoardIdValue]();
-    }
+        public void StoryBoardEventOn(string storyBoardIdValue)
+        {
+            _currentStoryBoardId = storyBoardIdValue;
+            _eventList[storyBoardIdValue]();
+        }
 
-    private void SelectionEvent()
-    {
-        StoryBoardSelectionEventManager.GetInstance().SetSelectionEvent(_currentStoryBoardId);
-    }
+        private void SelectionEvent()
+        {
+            StoryBoardSelectionEventManager.GetInstance().SetSelectionEvent(_currentStoryBoardId);
+        }
 
-    private void GainClueEvent()
-    {
-        StoryBoardGainClueEventManager.GetInstance().SetGainClueEvent(_currentStoryBoardId);
+        private void GainClueEvent()
+        {
+            StoryBoardGainClueEventManager.GetInstance().SetGainClueEvent(_currentStoryBoardId);
+        }
     }
 }

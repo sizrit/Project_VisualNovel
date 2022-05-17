@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ClickSystem;
+using ResearchSystem;
+using StoryBoardSystem;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
@@ -48,7 +51,7 @@ public class GameModeManager : MonoBehaviour
 
     public void ChangeGameMode(GameMode beforeMode, GameMode afterMode, string id)
     {
-        ClickSystem.GetInstance().DisableClick();
+        ClickSystem.ClickSystem.GetInstance().DisableClick();
         nextId = id;
 
         switch (beforeMode,afterMode)
@@ -80,7 +83,7 @@ public class GameModeManager : MonoBehaviour
         researchMode.SetActive(false);
         
         storyBoardMode.SetActive(true);
-        ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
+        ClickSystem.ClickSystem.GetInstance().SetClickMode(ClickMode.StoryBoard);
         StoryBoardManager.GetInstance().SetNextStoryBoard(nextId);
         StoryBoardManager.GetInstance().SetStoryBoard();
         StoryBoardSwitchEffectManager.GetInstance().SwitchOnEffect(ChapterStart_StoryBoardCallBack);
@@ -89,7 +92,7 @@ public class GameModeManager : MonoBehaviour
     private void ChapterStart_StoryBoardCallBack()
     {
         Debug.Log("StoryBoardSwitchOnCallBack");
-        ClickSystem.GetInstance().EnableClick();
+        ClickSystem.ClickSystem.GetInstance().EnableClick();
         ResetNextData();
     }
 
@@ -101,9 +104,9 @@ public class GameModeManager : MonoBehaviour
         
         Debug.Log("ChangeGameModeToResearch");
         researchMode.SetActive(true);
-        ClickSystem.GetInstance().SetClickMode(ClickMode.Research);
+        ClickSystem.ClickSystem.GetInstance().SetClickMode(ClickMode.Research);
         ResearchManager.GetInstance().SetResearch("R001");
-        ClickSystem.GetInstance().EnableClick();
+        ClickSystem.ClickSystem.GetInstance().EnableClick();
     }
     
     
@@ -129,11 +132,11 @@ public class GameModeManager : MonoBehaviour
     {
         Debug.Log("ChangeGameModeToResearch");
         researchMode.SetActive(true);
-        ClickSystem.GetInstance().SetClickMode(ClickMode.Research);
+        ClickSystem.ClickSystem.GetInstance().SetClickMode(ClickMode.Research);
         ResearchManager.GetInstance().SetResearch("R001");
         
         
-        ClickSystem.GetInstance().EnableClick();
+        ClickSystem.ClickSystem.GetInstance().EnableClick();
     }
     
 

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using ClickSystem;
+using DialogueSystem;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -4,151 +4,153 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
-public enum AudioList
+namespace Audio
 {
-    UI00_Sample01,
-    St01_Sample01,
-}
-
-public enum AudioPlayMode
-{
-    Play,
-    Duplicated,
-    Loop
-}
-
-public class AudioSystem : MonoBehaviour
-{
-    #region Singleton
-
-    private static AudioSystem _instance;
-
-    public static AudioSystem GetInstance()
+    public enum AudioList
     {
-        if (_instance == null)
+        UI00_Sample01,
+        St01_Sample01,
+    }
+
+    public enum AudioPlayMode
+    {
+        Play,
+        Duplicated,
+        Loop
+    }
+
+    public class AudioSystem : MonoBehaviour
+    {
+        #region Singleton
+
+        private static AudioSystem _instance;
+
+        public static AudioSystem GetInstance()
         {
-            var obj = GameObject.FindObjectOfType<AudioSystem>();
-            if (obj == null)
+            if (_instance == null)
             {
-                GameObject gameObject = new GameObject("AudioSystem");
-                _instance = gameObject.AddComponent<AudioSystem>();
+                var obj = GameObject.FindObjectOfType<AudioSystem>();
+                if (obj == null)
+                {
+                    GameObject gameObject = new GameObject("AudioSystem");
+                    _instance = gameObject.AddComponent<AudioSystem>();
+                }
+                else
+                {
+                    _instance = obj;
+                }
+            }
+            return _instance;
+        }
+    
+        #endregion
+
+        private GameObject _audioPrefabs;
+        private readonly Dictionary<AudioList, AudioClip> _audioClipList = new Dictionary<AudioList, AudioClip>();
+        private readonly Dictionary<AudioList, GameObject> _currentPlayingAudioList = new Dictionary<AudioList, GameObject>();
+        private readonly List<GameObject> _currentDuplicatedAudioList = new List<GameObject>();
+
+        public void LoadAudio()
+        {
+            _audioPrefabs = Resources.Load<GameObject>("Audio/AudioPrefab");
+        
+            List<AudioList> newAudioLists = Enum.GetValues(typeof(AudioList)).Cast<AudioList>().ToList();
+            foreach (var audioName in newAudioLists)
+            {
+                string path = "Audio/"+audioName;
+                _audioClipList.Add(audioName,Resources.Load<AudioClip>(path));
+            }
+        }
+
+        public void PlayAudio(AudioList audioNameValue, AudioPlayMode mode)
+        {
+            if (mode != AudioPlayMode.Duplicated)
+            {
+                bool isDuplicated = _currentPlayingAudioList.ContainsKey(audioNameValue);
+                if (isDuplicated)
+                {
+                    return;
+                }
+            }
+        
+            if (mode == AudioPlayMode.Loop)
+            {
+                _audioPrefabs.GetComponent<AudioSource>().loop = true;
             }
             else
             {
-                _instance = obj;
+                _audioPrefabs.GetComponent<AudioSource>().loop = false;  
+            }
+        
+            _audioPrefabs.GetComponent<AudioSource>().clip = _audioClipList[audioNameValue];
+            _audioPrefabs.GetComponent<AudioSource>().playOnAwake = true;
+            GameObject audioGameObject = Instantiate(_audioPrefabs, this.transform);
+            audioGameObject.name = audioNameValue.ToString();
+            if (mode != AudioPlayMode.Duplicated)
+            {
+                _currentPlayingAudioList.Add(audioNameValue, audioGameObject);
+            }
+            else
+            {
+                _currentDuplicatedAudioList.Add(audioGameObject);
             }
         }
-        return _instance;
-    }
     
-    #endregion
-
-    private GameObject _audioPrefabs;
-    private readonly Dictionary<AudioList, AudioClip> _audioClipList = new Dictionary<AudioList, AudioClip>();
-    private readonly Dictionary<AudioList, GameObject> _currentPlayingAudioList = new Dictionary<AudioList, GameObject>();
-    private readonly List<GameObject> _currentDuplicatedAudioList = new List<GameObject>();
-
-    public void LoadAudio()
-    {
-        _audioPrefabs = Resources.Load<GameObject>("Audio/AudioPrefab");
-        
-        List<AudioList> newAudioLists = Enum.GetValues(typeof(AudioList)).Cast<AudioList>().ToList();
-        foreach (var audioName in newAudioLists)
+        public void StopAllAudio()
         {
-            string path = "Audio/"+audioName;
-            _audioClipList.Add(audioName,Resources.Load<AudioClip>(path));
-        }
-    }
-
-    public void PlayAudio(AudioList audioNameValue, AudioPlayMode mode)
-    {
-        if (mode != AudioPlayMode.Duplicated)
-        {
-            bool isDuplicated = _currentPlayingAudioList.ContainsKey(audioNameValue);
-            if (isDuplicated)
+            int childCount = transform.childCount;
+            for (int i = 0; i < childCount; i++)
             {
-                return;
+                Destroy(transform.GetChild(i).gameObject);
             }
+            _currentPlayingAudioList.Clear();
         }
-        
-        if (mode == AudioPlayMode.Loop)
-        {
-            _audioPrefabs.GetComponent<AudioSource>().loop = true;
-        }
-        else
-        {
-            _audioPrefabs.GetComponent<AudioSource>().loop = false;  
-        }
-        
-        _audioPrefabs.GetComponent<AudioSource>().clip = _audioClipList[audioNameValue];
-        _audioPrefabs.GetComponent<AudioSource>().playOnAwake = true;
-        GameObject audioGameObject = Instantiate(_audioPrefabs, this.transform);
-        audioGameObject.name = audioNameValue.ToString();
-        if (mode != AudioPlayMode.Duplicated)
-        {
-            _currentPlayingAudioList.Add(audioNameValue, audioGameObject);
-        }
-        else
-        {
-            _currentDuplicatedAudioList.Add(audioGameObject);
-        }
-    }
-    
-    public void StopAllAudio()
-    {
-        int childCount = transform.childCount;
-        for (int i = 0; i < childCount; i++)
-        {
-            Destroy(transform.GetChild(i).gameObject);
-        }
-        _currentPlayingAudioList.Clear();
-    }
 
-    public void StopAudio(AudioList audioNameValue)
-    {
-        bool isPlaying = _currentPlayingAudioList.ContainsKey(audioNameValue);
-        if (isPlaying)
+        public void StopAudio(AudioList audioNameValue)
         {
-            Destroy(_currentPlayingAudioList[audioNameValue]);
-            _currentPlayingAudioList.Remove(audioNameValue);
-        }
-    }
-
-    private void CheckAudioEnd()
-    {
-        List<AudioList> keyList = _currentPlayingAudioList.Keys.ToList();
-        foreach (var key in keyList)
-        {
-            GameObject audioGameObject = _currentPlayingAudioList[key];
-            if (!audioGameObject.GetComponent<AudioSource>().isPlaying)
+            bool isPlaying = _currentPlayingAudioList.ContainsKey(audioNameValue);
+            if (isPlaying)
             {
-                _currentPlayingAudioList.Remove(key);
-                Destroy(audioGameObject);
+                Destroy(_currentPlayingAudioList[audioNameValue]);
+                _currentPlayingAudioList.Remove(audioNameValue);
             }
         }
 
-        foreach (var audioGameObject in _currentDuplicatedAudioList)
+        private void CheckAudioEnd()
         {
-            if (!audioGameObject.GetComponent<AudioSource>().isPlaying)
+            List<AudioList> keyList = _currentPlayingAudioList.Keys.ToList();
+            foreach (var key in keyList)
             {
-                _currentDuplicatedAudioList.Remove(audioGameObject);
-                Destroy(audioGameObject);
+                GameObject audioGameObject = _currentPlayingAudioList[key];
+                if (!audioGameObject.GetComponent<AudioSource>().isPlaying)
+                {
+                    _currentPlayingAudioList.Remove(key);
+                    Destroy(audioGameObject);
+                }
+            }
+
+            foreach (var audioGameObject in _currentDuplicatedAudioList)
+            {
+                if (!audioGameObject.GetComponent<AudioSource>().isPlaying)
+                {
+                    _currentDuplicatedAudioList.Remove(audioGameObject);
+                    Destroy(audioGameObject);
+                }
             }
         }
-    }
 
-    private void OnEnable()
-    {
-        LoadAudio();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
+        private void OnEnable()
         {
-            PlayAudio(AudioList.UI00_Sample01,AudioPlayMode.Duplicated);
+            LoadAudio();
         }
-        CheckAudioEnd();
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                PlayAudio(AudioList.UI00_Sample01,AudioPlayMode.Duplicated);
+            }
+            CheckAudioEnd();
+        }
     }
 }
