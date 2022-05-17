@@ -26,12 +26,12 @@ namespace StoryBoardEditor
         public GameObject gameObject;
         public GameObject input;
         public GameObject output;
-        
-        public StoryBoard storyBoard;
 
         public readonly List<Line> outputLineList = new List<Line>();
         public readonly List<Line> inputLineList =new List<Line>();
 
+        public BgId bgId;
+        public string imageId;
         public string dialogueText;
         public string speaker;
 

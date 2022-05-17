@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace StoryBoardEditor.NodeInfo
 {
-    public class SelectionTextInfo : MonoBehaviour, INodeInfo
+    public class SelectionTextNodeInfo : MonoBehaviour, INodeInfo
     {
         [SerializeField] private GameObject selectionTextInputField;
 
@@ -35,7 +35,8 @@ namespace StoryBoardEditor.NodeInfo
             
             Node node = NodeManipulator.GetInstance().GetSelectedNode();
             node.selectionText = selectionTextInputField.GetComponent<InputField>().text;
-            node.gameObject.transform.Find("Member01").Find("InputText").GetComponent<TMP_Text>().text = node.selectionText;
+
+            NodeVisualizeSettingManager.GetInstance().SetNode(node);
         }
     }
 }

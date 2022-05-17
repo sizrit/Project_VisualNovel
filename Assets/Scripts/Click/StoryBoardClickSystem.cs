@@ -112,7 +112,7 @@ public class StoryBoardClickSystem : I_ClickSystem
         {
             if (hit.transform == dialogueClickZone.transform)
             {
-                StoryBoardManager.GetInstance().SetStoryBoard();
+                Story.GetInstance().SetStoryBoard();
             }
         }
     }

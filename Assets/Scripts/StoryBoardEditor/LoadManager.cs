@@ -26,44 +26,40 @@ namespace StoryBoardEditor
         {
             NodeManager.GetInstance().ClearAllNode();
             LineManager.GetInstance().ClearAllLine();
-            List<NodeData> nodeDataList = LoadNode();
-            List<LineData> lineDataLis = LoadLine();
-            SetNode(nodeDataList);
-            SetLine(lineDataLis);
-            LoadEtc();
+
+            string path = Application.dataPath + "/StoryBoardEditorSave/SaveData.json";
+            string jsonData = File.ReadAllText(path);
+            SaveData saveData = JsonConvert.DeserializeObject<SaveData>(jsonData);
+            
+            LoadNode(saveData.nodeData);
+            LoadLine(saveData.lineData);
+            LoadEtc(saveData.etcData);
+            
+            SetNode(saveData.nodeData);
+            SetLine(saveData.lineData);
         }
 
-        private List<NodeData> LoadNode()
+        private void LoadNode(List<NodeData> nodeDataList)
         {
-            string path = Application.dataPath + "/StoryBoardEditorSave/NodeData.json";
-            string jsonData = File.ReadAllText(path);
-            List<NodeData> nodeDataList = JsonConvert.DeserializeObject<List<NodeData>>(jsonData);
             foreach (var nodeData in nodeDataList)
             {
-                NodeManager.GetInstance().MakeNodeFromLoadData(nodeData);
+                LoadNodeManager.GetInstance(). MakeNodeFromLoadData(nodeData);
             }
-
-            return nodeDataList;
         }
 
-        private List<LineData> LoadLine()
+        private void LoadLine(List<LineData> lineDataList)
         {
-            string path = Application.dataPath + "/StoryBoardEditorSave/LineData.json";
-            string jsonData = File.ReadAllText(path);
-            List<LineData> lineDataList = JsonConvert.DeserializeObject<List<LineData>>(jsonData);
             foreach (var lineData in lineDataList)
             {
                 LineManager.GetInstance().MakeLineFromLoadData(lineData);
             }
-
-            return lineDataList;
         }
 
         private void SetNode(List<NodeData> nodeDataList)
         {
             foreach (var nodeData in nodeDataList)
             {
-                NodeManager.GetInstance().SetNodeFromLoadData(nodeData);
+                LoadNodeManager.GetInstance().SetNodeConnectedLineFromLoadData(nodeData);
             }
         }
 
@@ -75,11 +71,8 @@ namespace StoryBoardEditor
             }
         }
 
-        private void LoadEtc()
+        private void LoadEtc(EtcData etcData)
         {
-            string path = Application.dataPath + "/StoryBoardEditorSave/EtcData.json";
-            string jsonData = File.ReadAllText(path);
-            EtcData etcData = JsonConvert.DeserializeObject<EtcData>(jsonData);
             NodeManager.GetInstance().nodeIdCount = etcData.nodeCount + 1;
             LineManager.GetInstance().lineCount = etcData.lineCount + 1;
         }

@@ -1,0 +1,61 @@
+{
+  "nodeData": [
+    {
+      "nodeId": "N0000",
+      "x": -1.5111109,
+      "y": 1.29629612,
+      "type": "Dialogue",
+      "isUseStaticStoryBoardId": true,
+      "staticStoryBoardId": "111",
+      "inputLineIdList": [],
+      "outputLineIdList": [
+        "L0000"
+      ],
+      "bgId": "Null",
+      "imageId": "1",
+      "dialogueText": "1",
+      "speaker": "1",
+      "isUseTextEffect": true,
+      "dialogueTextEffectId": null,
+      "selectionId": null,
+      "selectionText": null,
+      "clueId": "Null",
+      "itemId": "Null",
+      "eventId": null
+    },
+    {
+      "nodeId": "N0001",
+      "x": 2.49629641,
+      "y": 0.6962962,
+      "type": "Dialogue",
+      "isUseStaticStoryBoardId": false,
+      "staticStoryBoardId": null,
+      "inputLineIdList": [
+        "L0000"
+      ],
+      "outputLineIdList": [],
+      "bgId": "Null",
+      "imageId": null,
+      "dialogueText": null,
+      "speaker": null,
+      "isUseTextEffect": false,
+      "dialogueTextEffectId": null,
+      "selectionId": null,
+      "selectionText": null,
+      "clueId": "Null",
+      "itemId": "Null",
+      "eventId": null
+    }
+  ],
+  "lineData": [
+    {
+      "lineId": "L0000",
+      "node01Id": "N0000",
+      "node02Id": "N0001"
+    }
+  ],
+  "etcData": {
+    "nodeCount": 2,
+    "lineCount": 1
+  }
+}

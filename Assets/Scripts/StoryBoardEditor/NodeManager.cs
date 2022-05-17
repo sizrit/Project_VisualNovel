@@ -30,8 +30,8 @@ namespace StoryBoardEditor
         
         #endregion
         
-        private Dictionary<string,Node> _nodeList = new Dictionary<string, Node>();
-        private Dictionary<GameObject,Node> _nodeGameObjectList = new Dictionary<GameObject, Node>();
+        private readonly Dictionary<string,Node> _nodeList = new Dictionary<string, Node>();
+        private readonly Dictionary<GameObject,Node> _nodeGameObjectList = new Dictionary<GameObject, Node>();
         [SerializeField] private GameObject dialogueNodePrefab;
         [SerializeField] private GameObject selectionNodePrefab;
         [SerializeField] private GameObject selectionTextNodePrefab;
@@ -93,34 +93,12 @@ namespace StoryBoardEditor
             _nodeGameObjectList.Add(nodeGameObject,node);
         }
 
-        public void MakeNodeFromLoadData(NodeData nodeData)
+        public void AddToList(Node node)
         {
-            Vector3 position = new Vector3(nodeData.x, nodeData.y, 0);
-            GameObject nodeGameObject = Instantiate(dialogueNodePrefab,position,quaternion.identity ,this.transform);
-            nodeGameObject.name = nodeData.nodeId;
-
-            Node newNode = new Node {id = nodeData.nodeId, gameObject = nodeGameObject};
-            newNode.input = newNode.gameObject.transform.Find("Input").gameObject;
-            newNode.output = newNode.gameObject.transform.Find("Output").gameObject;
-            
-            _nodeList.Add(newNode.id,newNode);
-            _nodeGameObjectList.Add(nodeGameObject, newNode);
+            _nodeList.Add(node.id, node);
+            _nodeGameObjectList.Add(node.gameObject,node);
         }
-
-        public void SetNodeFromLoadData(NodeData nodeData)
-        {
-            Node node = _nodeList[nodeData.nodeId];
-            foreach (var inputLine in nodeData.inputLineIdList)
-            {
-                node.inputLineList.Add(LineManager.GetInstance().GetLine(inputLine));
-            }
-
-            foreach (var outputLine in nodeData.outputLineIdList)
-            {
-                node.inputLineList.Add(LineManager.GetInstance().GetLine(outputLine));
-            }
-        }
-
+        
         public void ClearAllNode()
         {
             foreach (var node in _nodeList)

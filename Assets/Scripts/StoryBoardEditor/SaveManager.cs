@@ -6,16 +6,47 @@ using UnityEngine;
 
 namespace StoryBoardEditor
 {
-
+    [Serializable]
+    public class SaveData
+    {
+        public List<NodeData> nodeData = new List<NodeData>();
+        public List<LineData> lineData = new List<LineData>();
+        public EtcData etcData = new EtcData();
+    }
+    
     [Serializable]
     public class NodeData
     {
         public string nodeId;
-        public List<string> inputLineIdList;
-        public List<string> outputLineIdList;
-        public string storyBoardId;
+        
         public float x;
         public float y;
+        
+        public string type;
+        
+        public bool isUseStaticStoryBoardId;
+        public string staticStoryBoardId;
+
+        public List<string> inputLineIdList =new List<string>() ;
+        public List<string> outputLineIdList =new List<string>();
+
+        public string bgId;
+        public string imageId;
+        public string dialogueText;
+        public string speaker;
+
+        public bool isUseTextEffect;
+        public string dialogueTextEffectId;
+
+        public string selectionId;
+
+        public string selectionText;
+        
+        public string clueId;
+
+        public string itemId;
+
+        public string eventId;
     }
 
     [Serializable]
@@ -52,12 +83,14 @@ namespace StoryBoardEditor
 
         public void Save()
         {
-            SaveNode();
-            SaveLine();
-            SaveEtc();
+            SaveData saveData = new SaveData {nodeData = SaveNode(), lineData = SaveLine(), etcData = SaveEtc()};
+
+            string jsonData = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+            string path = Application.dataPath + "/StoryBoardEditorSave/SaveData.json";
+            File.WriteAllText(path, jsonData);
         }
 
-        private void SaveNode()
+        private List<NodeData> SaveNode()
         {
             List<NodeData> nodeDataList = new List<NodeData>();
             foreach (var node in NodeManager.GetInstance().GetAllNode())
@@ -66,25 +99,48 @@ namespace StoryBoardEditor
                 NodeData newNodeData = new NodeData
                 {
                     nodeId = node.id,
-                    storyBoardId = "",
+
+                    isUseStaticStoryBoardId = node.isUseStaticStoryBoardId,
+
+                    staticStoryBoardId = node.staticStoryBoardId,
+
                     x = position.x,
-                    y = position.y
+                    y = position.y,
+
+                    type = node.type.ToString(),
+                    
+                    bgId = node.bgId.ToString(),
+                    imageId = node.imageId,
+                    dialogueText = node.dialogueText,
+                    speaker = node.speaker,
+                    isUseTextEffect = node.isUseTextEffect,
+                    
+                    selectionId = node.selectionId,
+                    
+                    selectionText = node.selectionText,
+                    
+                    clueId = node.clueId.ToString(),
+                    itemId = node.itemId.ToString(),
+                    eventId = node.eventId
                 };
                 
                 foreach (var inputLine in node.inputLineList)
                 {
                     newNodeData.inputLineIdList.Add(inputLine.id);
                 }
+
+                foreach (var outputLine in node.outputLineList)
+                {
+                    newNodeData.outputLineIdList.Add(outputLine.id);
+                }
                     
                 nodeDataList.Add(newNodeData);
             }
 
-            string jsonData = JsonConvert.SerializeObject(nodeDataList, Formatting.Indented);
-            string path = Application.dataPath+"/StoryBoardEditorSave/NodeData.json";
-            File.WriteAllText(path,jsonData);
+            return nodeDataList;
         }
 
-        private void SaveLine()
+        private List<LineData> SaveLine()
         {
             List<LineData> linDataList = new List<LineData>();
             foreach (var line in LineManager.GetInstance().GetAllLine())
@@ -95,22 +151,18 @@ namespace StoryBoardEditor
                 };
                 linDataList.Add(newLineData);
             }
-            
-            string jsonData = JsonConvert.SerializeObject(linDataList, Formatting.Indented);
-            string path = Application.dataPath+"/StoryBoardEditorSave/LineData.json";
-            File.WriteAllText(path,jsonData);
+
+            return linDataList;
         }
 
-        private void SaveEtc()
+        private EtcData SaveEtc()
         {
             EtcData newEtcData = new EtcData
             {
                 nodeCount = NodeManager.GetInstance().nodeIdCount, lineCount = LineManager.GetInstance().lineCount
             };
 
-            string jsonData = JsonConvert.SerializeObject(newEtcData, Formatting.Indented);
-            string path = Application.dataPath+"/StoryBoardEditorSave/EtcData.json";
-            File.WriteAllText(path,jsonData);
+            return newEtcData;
         }
     }
 }
