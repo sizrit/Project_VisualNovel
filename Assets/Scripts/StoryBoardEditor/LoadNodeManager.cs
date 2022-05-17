@@ -144,7 +144,7 @@ namespace StoryBoardEditor
 
             foreach (var outputLine in nodeData.outputLineIdList)
             {
-                node.inputLineList.Add(LineManager.GetInstance().GetLine(outputLine));
+                node.outputLineList.Add(LineManager.GetInstance().GetLine(outputLine));
             }
         }
         
