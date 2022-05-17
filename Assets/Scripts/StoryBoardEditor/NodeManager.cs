@@ -91,6 +91,8 @@ namespace StoryBoardEditor
             
             _nodeList.Add(nodeGameObject.name, node);
             _nodeGameObjectList.Add(nodeGameObject,node);
+            
+            NodeVisualizeSettingManager.GetInstance().SetNode(node);
         }
 
         public void AddToList(Node node)
