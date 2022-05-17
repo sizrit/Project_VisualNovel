@@ -109,7 +109,7 @@ namespace StoryBoardEditor
             newNode.staticStoryBoardId = nodeData.staticStoryBoardId;
 
             newNode.bgId = StringToEnum<BgId>(nodeData.bgId);
-            newNode.imageId = nodeData.imageId;
+            newNode.imageId = StringToEnum<ImageId>(nodeData.imageId);
             newNode.speaker = nodeData.speaker;
             newNode.dialogueText = nodeData.dialogueText;
 

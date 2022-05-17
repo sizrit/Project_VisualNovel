@@ -51,7 +51,7 @@ namespace StoryBoardEditor.NodeInfo
                 bgIdInputField.GetComponent<InputField>().text = node.bgId.ToString();
             }
             
-            imageIdInputField.GetComponent<InputField>().text = node.imageId;
+            imageIdInputField.GetComponent<InputField>().text = node.imageId.ToString();
             speakerInputField.GetComponent<InputField>().text = node.speaker;
 
             if (node.dialogueTextEffectId != DialogueTextEffectId.Null)
@@ -144,7 +144,7 @@ namespace StoryBoardEditor.NodeInfo
 
             node.bgId = StoryBoardBgLoadManager.ConvertToBgId(bgIdInputField.GetComponent<InputField>().text);
 
-            node.imageId = imageIdInputField.GetComponent<InputField>().text;
+            node.imageId = StoryBoardImageLoadManager.ConvertStringToImageId(imageIdInputField.GetComponent<InputField>().text);
 
             node.speaker = speakerInputField.GetComponent<InputField>().text;
 

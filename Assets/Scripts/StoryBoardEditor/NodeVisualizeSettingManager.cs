@@ -64,7 +64,7 @@ namespace StoryBoardEditor
                         node.bgId.ToString();
 
                     node.gameObject.transform.Find("Member03").Find("InputText").GetComponent<TMP_Text>().text =
-                        node.imageId;
+                        node.imageId.ToString();
 
                     node.gameObject.transform.Find("Member04").Find("InputText").GetComponent<TMP_Text>().text =
                         node.speaker;

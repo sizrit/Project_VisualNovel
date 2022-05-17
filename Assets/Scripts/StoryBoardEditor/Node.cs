@@ -33,7 +33,7 @@ namespace StoryBoardEditor
         public readonly List<Line> inputLineList =new List<Line>();
 
         public BgId bgId;
-        public string imageId;
+        public ImageId imageId;
         public string dialogueText;
         public string speaker;
 

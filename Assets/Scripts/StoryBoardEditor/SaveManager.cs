@@ -110,7 +110,7 @@ namespace StoryBoardEditor
                     type = node.type.ToString(),
                     
                     bgId = node.bgId.ToString(),
-                    imageId = node.imageId,
+                    imageId = node.imageId.ToString(),
                     dialogueText = node.dialogueText,
                     speaker = node.speaker,
                     isUseTextEffect = node.isUseTextEffect,
