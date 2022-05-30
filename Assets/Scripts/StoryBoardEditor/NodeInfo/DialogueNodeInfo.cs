@@ -53,10 +53,11 @@ namespace StoryBoardEditor.NodeInfo
             
             imageIdInputField.GetComponent<InputField>().text = node.imageId.ToString();
             speakerInputField.GetComponent<InputField>().text = node.speaker;
-
+            dialogueTextInputField.GetComponent<InputField>().text = node.dialogueText;
+            
             if (node.dialogueTextEffectId != DialogueTextEffectId.Null)
             {
-                dialogueTextInputField.GetComponent<InputField>().text = node.dialogueText;
+                dialogueTextEffectIdField.GetComponent<InputField>().text = node.dialogueTextEffectId.ToString();
             }
         }
 
