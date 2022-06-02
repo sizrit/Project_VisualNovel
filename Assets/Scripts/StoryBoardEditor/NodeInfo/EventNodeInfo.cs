@@ -31,7 +31,8 @@ namespace StoryBoardEditor.NodeInfo
                 DisableStoryBoardIdZone();
             }
 
-            eventInputField.GetComponent<InputField>().text = node.eventId.ToString();
+            eventInputField.GetComponent<InputField>().text =
+                node.eventId != EventId.Null ? node.eventId.ToString() : "";
         }
 
         private void EnableStoryBoardIdZone()

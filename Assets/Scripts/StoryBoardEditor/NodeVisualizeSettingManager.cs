@@ -1,3 +1,4 @@
+using StoryBoardSystem;
 using TMPro;
 using UnityEngine;
 
@@ -61,10 +62,10 @@ namespace StoryBoardEditor
             {
                 case  NodeType.Dialogue:
                     node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text =
-                        node.bgId.ToString();
+                        node.bgId != BgId.Null ? node.bgId.ToString() : "";
 
                     node.gameObject.transform.Find("Member03").Find("InputText").GetComponent<TMP_Text>().text =
-                        node.imageId.ToString();
+                        node.imageId != ImageId.Null ? node.imageId.ToString() : "";
 
                     node.gameObject.transform.Find("Member04").Find("InputText").GetComponent<TMP_Text>().text =
                         node.speaker;
@@ -100,15 +101,18 @@ namespace StoryBoardEditor
                     break;
                 
                 case NodeType.GetClue:
-                    node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text = node.clueId.ToString();
+                    node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text =
+                        node.clueId != Clue.Null ? node.clueId.ToString() : "";
                     break;
                 
                 case NodeType.GetItem:
-                    node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text = node.itemId.ToString();
+                    node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text =
+                        node.itemId != Item.Null ? node.itemId.ToString() : "";
                     break;
                 
                 case NodeType.Event:
-                    node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text = node.eventId.ToString();
+                    node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text =
+                        node.eventId != EventId.Null ? node.eventId.ToString() : "";
                     break;
             }
         }

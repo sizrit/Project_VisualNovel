@@ -30,7 +30,8 @@ namespace StoryBoardEditor.NodeInfo
                 DisableStoryBoardIdZone();
             }
 
-            clueIdInputField.GetComponent<InputField>().text = node.clueId.ToString() ;
+            clueIdInputField.GetComponent<InputField>().text =
+                node.clueId != Clue.Null ? node.clueId.ToString() : "";
         }
 
         private void EnableStoryBoardIdZone()
