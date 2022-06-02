@@ -139,7 +139,7 @@ namespace StoryBoardEditor
         {
             ClickMode mode = ClickPriority(hits2D, hits);
             
-            UI_ButtonManager.GetInstance().DisableUI_Button(UI_Button.Delete);
+            UI_ButtonManager.GetInstance().RequestDisableDeleteUIButton();
             switch (mode)
             {
                 case ClickMode.UI:
@@ -182,7 +182,6 @@ namespace StoryBoardEditor
                     LineManipulator.GetInstance().ClearSelectedLine();
                     LineManipulator.GetInstance().SetSelectedLine(GetLineFromClick(hits));
                     NodeManipulator.GetInstance().ClearSelectedNode();
-                    Debug.Log(LineManipulator.GetInstance().GetSelectedLine().id);
                     break;
 
                 case ClickMode.Null:

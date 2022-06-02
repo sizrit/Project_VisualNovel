@@ -107,7 +107,7 @@ namespace StoryBoardEditor
             selectedNode = node;
             selectedNode.gameObject.GetComponent<SortingGroup>().enabled = true;
             NodeSelectEffectManager.GetInstance().ShowEffect(selectedNode);
-            UI_ButtonManager.GetInstance().EnableUI_Button(UI_Button.Delete);
+            UI_ButtonManager.GetInstance().RequestEnableDeleteUIButton();
         }
         
         public void ClearSelectedNode()
@@ -118,7 +118,7 @@ namespace StoryBoardEditor
             }
             selectedNode = null;
             NodeSelectEffectManager.GetInstance().RemoveEffect();
-            UI_ButtonManager.GetInstance().DisableUI_Button(UI_Button.Delete);
+            UI_ButtonManager.GetInstance().RequestDisableDeleteUIButton();
         }
 
         private void Update()

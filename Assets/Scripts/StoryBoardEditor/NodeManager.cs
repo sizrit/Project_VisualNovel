@@ -128,6 +128,8 @@ namespace StoryBoardEditor
 
         public void RemoveNode(Node node)
         {
+            NodeManipulator.GetInstance().ClearSelectedNode();
+            
             List<Line> connectedLineList = new List<Line>();
             connectedLineList.AddRange(node.inputLineList);
             connectedLineList.AddRange(node.outputLineList);

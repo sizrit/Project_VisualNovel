@@ -33,6 +33,7 @@ namespace StoryBoardEditor
         {
             selectedLine = LineManager.GetInstance().GetLine(lineGameObject);
             LineSelectEffectManager.GetInstance().ShowEffect(selectedLine);
+            UI_ButtonManager.GetInstance().RequestEnableDeleteUIButton();
         }
         
         public void ClearSelectedLine()
@@ -42,6 +43,7 @@ namespace StoryBoardEditor
                 LineSelectEffectManager.GetInstance().RemoveEffect(selectedLine);
             }
             selectedLine = null;
+            UI_ButtonManager.GetInstance().RequestDisableDeleteUIButton();
         }
 
         public Line GetSelectedLine()

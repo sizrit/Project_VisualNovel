@@ -208,6 +208,7 @@ namespace StoryBoardEditor
 
         public void RemoveLine(Line line)
         {
+            LineManipulator.GetInstance().ClearSelectedLine();
             Node node01 = line.node01;
             Node node02 = line.node02;
             node01.outputLineList.Remove(line);

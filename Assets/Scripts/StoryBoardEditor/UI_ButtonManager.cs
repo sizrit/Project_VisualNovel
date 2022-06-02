@@ -60,7 +60,19 @@ namespace StoryBoardEditor
 
                 if (hit.transform.gameObject == delete)
                 {
-                    NodeManager.GetInstance().RemoveNode(NodeManipulator.GetInstance().GetSelectedNode());
+                    Node currentNode = NodeManipulator.GetInstance().GetSelectedNode();
+                    Line currentLine = LineManipulator.GetInstance().GetSelectedLine();
+
+                    if (currentNode != null)
+                    {
+                        NodeManager.GetInstance().RemoveNode(currentNode);
+                    }
+
+                    if (currentLine != null)
+                    {
+                        LineManager.GetInstance().RemoveLine(currentLine);
+                    }
+                    
                 }
 
                 if (hit.transform.gameObject == save)
@@ -96,6 +108,34 @@ namespace StoryBoardEditor
             color.a = 0.2f;
             uiList[ui].GetComponent<Text>().color = color;
             uiList[ui].GetComponent<BoxCollider2D>().enabled = false;
+        }
+
+        public void RequestDisableDeleteUIButton()
+        {
+            Node currentNode = NodeManipulator.GetInstance().GetSelectedNode();
+            Line currentLine = LineManipulator.GetInstance().GetSelectedLine();
+
+            if (currentLine == null && currentNode == null)
+            {
+                Color color = uiList[UI_Button.Delete].GetComponent<Text>().color;
+                color.a = 0.2f;
+                uiList[UI_Button.Delete].GetComponent<Text>().color = color;
+                uiList[UI_Button.Delete].GetComponent<BoxCollider2D>().enabled = false;
+            }
+        }
+        
+        public void RequestEnableDeleteUIButton()
+        {
+            Node currentNode = NodeManipulator.GetInstance().GetSelectedNode();
+            Line currentLine = LineManipulator.GetInstance().GetSelectedLine();
+
+            if (currentLine != null || currentNode != null)
+            {
+                Color color = uiList[UI_Button.Delete].GetComponent<Text>().color;
+                color.a = 1f;
+                uiList[UI_Button.Delete].GetComponent<Text>().color = color;
+                uiList[UI_Button.Delete].GetComponent<BoxCollider2D>().enabled = true;
+            }
         }
 
         public void EnableAllUI_Button()
