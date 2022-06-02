@@ -121,7 +121,7 @@ namespace StoryBoardEditor
                     
                     clueId = node.clueId.ToString(),
                     itemId = node.itemId.ToString(),
-                    eventId = node.eventId
+                    eventId = node.eventId.ToString()
                 };
                 
                 foreach (var inputLine in node.inputLineList)

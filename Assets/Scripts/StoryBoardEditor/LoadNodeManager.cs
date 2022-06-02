@@ -122,7 +122,7 @@ namespace StoryBoardEditor
 
             newNode.itemId = StringToEnum<Item>(nodeData.itemId);
 
-            newNode.eventId = nodeData.eventId;
+            newNode.eventId = StringToEnum<EventId>(nodeData.eventId);
 
             newNode.isUseTextEffect = nodeData.isUseTextEffect;
 

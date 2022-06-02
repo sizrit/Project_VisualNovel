@@ -108,7 +108,7 @@ namespace StoryBoardEditor
                     break;
                 
                 case NodeType.Event:
-                    node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text = node.eventId;
+                    node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text = node.eventId.ToString();
                     break;
             }
         }

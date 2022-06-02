@@ -1,8 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StoryBoardSystem
 {
+    public enum EventId
+    {
+        Null,
+        E01,
+        E02
+    }
+    
     public class StoryBoardEventManager 
     {
         #region SingleTon
@@ -59,6 +67,20 @@ namespace StoryBoardSystem
         private void GainClueEvent()
         {
             StoryBoardGainClueEventManager.GetInstance().SetGainClueEvent(_currentStoryBoardId);
+        }
+
+        public static EventId ConvertToEventId(string stringValue)
+        {
+            List<EventId> clueList = Enum.GetValues(typeof(EventId)).Cast<EventId>().ToList();
+            foreach (var clue in clueList)
+            {
+                if (stringValue == clue.ToString())
+                {
+                    return clue;
+                }
+            }
+
+            return EventId.Null;
         }
     }
 }

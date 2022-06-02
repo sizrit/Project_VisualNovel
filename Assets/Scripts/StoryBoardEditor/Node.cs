@@ -48,6 +48,6 @@ namespace StoryBoardEditor
 
         public Item itemId;
 
-        public string eventId;
+        public EventId eventId;
     }
 }

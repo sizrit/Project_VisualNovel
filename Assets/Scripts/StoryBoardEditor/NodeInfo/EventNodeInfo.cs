@@ -1,3 +1,4 @@
+using StoryBoardSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +31,7 @@ namespace StoryBoardEditor.NodeInfo
                 DisableStoryBoardIdZone();
             }
 
-            eventInputField.GetComponent<InputField>().text = node.eventId;
+            eventInputField.GetComponent<InputField>().text = node.eventId.ToString();
         }
 
         private void EnableStoryBoardIdZone()
@@ -87,8 +88,8 @@ namespace StoryBoardEditor.NodeInfo
             {
                 node.staticStoryBoardId = "";
             }
-            
-            node.eventId = eventInputField.GetComponent<InputField>().text;
+
+            node.eventId = StoryBoardEventManager.ConvertToEventId(eventInputField.GetComponent<InputField>().text);
             
             NodeVisualizeSettingManager.GetInstance().SetNode(node);
         }
