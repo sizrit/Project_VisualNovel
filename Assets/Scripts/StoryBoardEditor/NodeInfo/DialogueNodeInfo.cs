@@ -46,19 +46,18 @@ namespace StoryBoardEditor.NodeInfo
                 DisableDialogueTextEffectZone();
             }
 
-            if (node.bgId != BgId.Null)
-            {
-                bgIdInputField.GetComponent<InputField>().text = node.bgId.ToString();
-            }
+            bgIdInputField.GetComponent<InputField>().text =
+                node.bgId != BgId.Null ? node.bgId.ToString() : "";
+
+            imageIdInputField.GetComponent<InputField>().text =
+                node.imageId != ImageId.Null ? node.imageId.ToString() : "";
             
-            imageIdInputField.GetComponent<InputField>().text = node.imageId.ToString();
             speakerInputField.GetComponent<InputField>().text = node.speaker;
-            dialogueTextInputField.GetComponent<InputField>().text = node.dialogueText;
             
-            if (node.dialogueTextEffectId != DialogueTextEffectId.Null)
-            {
-                dialogueTextEffectIdField.GetComponent<InputField>().text = node.dialogueTextEffectId.ToString();
-            }
+            dialogueTextInputField.GetComponent<InputField>().text = node.dialogueText;
+
+            dialogueTextEffectIdField.GetComponent<InputField>().text =
+                node.dialogueTextEffectId != DialogueTextEffectId.Null ? node.dialogueTextEffectId.ToString() : "";
         }
 
         private void EnableStoryBoardIdZone()

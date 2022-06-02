@@ -10,8 +10,8 @@ namespace DialogueSystem
 {
     public enum DialogueTextEffectId
     {
+        Null,
         A,
-        Null
     }
 
     public class DialogueTextEffectManager : MonoBehaviour

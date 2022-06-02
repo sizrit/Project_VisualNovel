@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace StoryBoardEditor
@@ -33,10 +34,24 @@ namespace StoryBoardEditor
         {
             List<Node> nodeList = NodeManager.GetInstance().GetAllNode();
             List<Line> lineList = LineManager.GetInstance().GetAllLine();
-            string log = "-------------------------\nNode List\n";
+            string log = "Node List\n-------------------------\n";
             foreach (var node in nodeList)
             {
-                log = log + "Node Id : " + node.id + "\nInputLineList\n";
+                FieldInfo[] infoList =
+                    typeof(Node).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                foreach (var info in infoList)
+                {
+                    log += info.Name;
+                    log += " : ";
+                    if (info.GetValue(node) != null)
+                    {
+                        log += info.GetValue(node).ToString();
+                    }
+                    
+                    log += "\n";
+                }
+                
+                //"\nInputLineList\n";
                 foreach (var inputLine in node.inputLineList)
                 {
                     log = log + "Line Id : " + inputLine.id +"\n"; 
