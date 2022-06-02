@@ -70,38 +70,43 @@ namespace StoryBoardEditor
 
         private void SelectNodeType(RaycastHit2D[] hits ,RaycastHit[] none)
         {
+            bool isSelect = false;
             foreach (var hit in hits)
             {
                 if (hit.transform.gameObject == dialogueNodeButton)
                 {
                     _type = NodeType.Dialogue;
+                    isSelect = true;
                 }
-
-                if (hit.transform.gameObject == selectionNodeButton)
+                else if (hit.transform.gameObject == selectionNodeButton)
                 {
                     _type = NodeType.Selection;
+                    isSelect = true;
                 }
-
-                if (hit.transform.gameObject == selectionTextNodeButton)
+                else if (hit.transform.gameObject == selectionTextNodeButton)
                 {
                     _type = NodeType.SelectionText;
+                    isSelect = true;
                 }
-                
-                if (hit.transform.gameObject == getClueNodeButton)
+                else if (hit.transform.gameObject == getClueNodeButton)
                 {
                     _type = NodeType.GetClue;
+                    isSelect = true;
                 }
-
-                if (hit.transform.gameObject == getItemNodeButton)
+                else if (hit.transform.gameObject == getItemNodeButton)
                 {
                     _type = NodeType.GetItem;
+                    isSelect = true;
                 }
-                
-                if (hit.transform.gameObject == eventNodeButton)
+                else if (hit.transform.gameObject == eventNodeButton)
                 {
                     _type = NodeType.Event;
+                    isSelect = true;
                 }
-                
+            }
+
+            if (isSelect)
+            {
                 ClickSystem.GetInstance().UnsubscribeCustomClick(SelectNodeType);
                 ClickSystem.GetInstance().SubscribeCustomClick(AddNode);
 
@@ -110,12 +115,14 @@ namespace StoryBoardEditor
                 shadowNode.SetActive(true);
                 _updateFunc += ShadowNodeEffect;
             }
-
-            ClickSystem.GetInstance().UnsubscribeCustomClick(SelectNodeType);
-            ClickSystem.GetInstance().EnableClick();
+            else
+            {
+                ClickSystem.GetInstance().UnsubscribeCustomClick(SelectNodeType);
+                ClickSystem.GetInstance().EnableClick();
             
-            UI_ButtonManager.GetInstance().EnableAllUI_Button();
-            DisableNodeTypePanel();
+                UI_ButtonManager.GetInstance().EnableAllUI_Button();
+                DisableNodeTypePanel();
+            }
         }
 
         private void AddNode(RaycastHit2D[] hits, RaycastHit[] none)
