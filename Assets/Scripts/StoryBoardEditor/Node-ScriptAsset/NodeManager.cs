@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using StoryBoardEditor.Line;
+using StoryBoardEditor.Line_ScriptAsset;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace StoryBoardEditor.Node
+namespace StoryBoardEditor.Node_ScriptAsset
 {
     public class NodeManager : MonoBehaviour
     {
@@ -30,8 +30,8 @@ namespace StoryBoardEditor.Node
         
         #endregion
         
-        private readonly Dictionary<string,StoryBoardEditor.Node.Node> _nodeList = new Dictionary<string, StoryBoardEditor.Node.Node>();
-        private readonly Dictionary<GameObject,StoryBoardEditor.Node.Node> _nodeGameObjectList = new Dictionary<GameObject, StoryBoardEditor.Node.Node>();
+        private readonly Dictionary<string,Node> _nodeList = new Dictionary<string, Node>();
+        private readonly Dictionary<GameObject,Node> _nodeGameObjectList = new Dictionary<GameObject, Node>();
         [SerializeField] private GameObject dialogueNodePrefab;
         [SerializeField] private GameObject selectionNodePrefab;
         [SerializeField] private GameObject selectionTextNodePrefab;
@@ -45,7 +45,7 @@ namespace StoryBoardEditor.Node
             return _nodeGameObjectList.Keys.ToList();
         }
 
-        public List<StoryBoardEditor.Node.Node> GetAllNode()
+        public List<Node> GetAllNode()
         {
             return _nodeList.Values.ToList();
         }
@@ -85,7 +85,7 @@ namespace StoryBoardEditor.Node
             }
             
             nodeGameObject.name = SetNodeId();
-            StoryBoardEditor.Node.Node node = new StoryBoardEditor.Node.Node {type = type, id = nodeGameObject.name, gameObject = nodeGameObject};
+            Node node = new Node {type = type, id = nodeGameObject.name, gameObject = nodeGameObject};
             node.input = node.gameObject.transform.Find("Input").gameObject;
             node.output = node.gameObject.transform.Find("Output").gameObject;
             
@@ -95,7 +95,7 @@ namespace StoryBoardEditor.Node
             NodeVisualizeSettingManager.GetInstance().SetNode(node);
         }
 
-        public void AddToList(StoryBoardEditor.Node.Node node)
+        public void AddToList(Node node)
         {
             _nodeList.Add(node.id, node);
             _nodeGameObjectList.Add(node.gameObject,node);
@@ -116,21 +116,21 @@ namespace StoryBoardEditor.Node
             return "N"+nodeIdCount++.ToString("D4");;
         }
 
-        public StoryBoardEditor.Node.Node GetNodeByGameObject(GameObject nodeGameObject)
+        public Node GetNodeByGameObject(GameObject nodeGameObject)
         {
             return _nodeGameObjectList[nodeGameObject];
         }
 
-        public StoryBoardEditor.Node.Node GetNodeByName(string nameValue)
+        public Node GetNodeByName(string nameValue)
         {
             return _nodeList[nameValue];
         }
 
-        public void RemoveNode(StoryBoardEditor.Node.Node node)
+        public void RemoveNode(Node node)
         {
             NodeManipulator.GetInstance().ClearSelectedNode();
             
-            List<Line.Line> connectedLineList = new List<Line.Line>();
+            List<Line> connectedLineList = new List<Line>();
             connectedLineList.AddRange(node.inputLineList);
             connectedLineList.AddRange(node.outputLineList);
 

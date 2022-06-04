@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
-using StoryBoardEditor.Line;
-using StoryBoardEditor.Node;
+using StoryBoardEditor.Line_ScriptAsset;
+using StoryBoardEditor.Node_ScriptAsset;
 using UnityEngine;
 
 namespace StoryBoardEditor
@@ -19,6 +19,7 @@ namespace StoryBoardEditor
             {
                 _instance = new LoadManager();
             }
+
             return _instance;
         }
 
@@ -32,11 +33,11 @@ namespace StoryBoardEditor
             string path = Application.dataPath + "/StoryBoardEditorSave/SaveData.json";
             string jsonData = File.ReadAllText(path);
             SaveData saveData = JsonConvert.DeserializeObject<SaveData>(jsonData);
-            
+
             LoadNode(saveData.nodeData);
             LoadLine(saveData.lineData);
             LoadEtc(saveData.etcData);
-            
+
             SetNode(saveData.nodeData);
             SetLine(saveData.lineData);
         }
@@ -45,7 +46,7 @@ namespace StoryBoardEditor
         {
             foreach (var nodeData in nodeDataList)
             {
-                LoadNodeManager.GetInstance(). MakeNodeFromLoadData(nodeData);
+                LoadNodeManager.GetInstance().MakeNodeFromLoadData(nodeData);
             }
         }
 

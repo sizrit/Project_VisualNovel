@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using StoryBoardEditor.Node;
+using StoryBoardEditor.Node_ScriptAsset;
 using UnityEngine;
 
-namespace StoryBoardEditor.Line
+namespace StoryBoardEditor.Line_ScriptAsset
 {
     public class Line
     {
         public string id;
-        public Node.Node node01;
-        public Node.Node node02;
+        public Node node01;
+        public Node node02;
         public GameObject gameObject;
         public LineRenderer lineRenderer;
     }
@@ -22,7 +22,6 @@ namespace StoryBoardEditor.Line
 
     [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
     [SuppressMessage("ReSharper", "Unity.PreferNonAllocApi")]
-    
     public class LineManager : MonoBehaviour
     {
         #region Singleton
@@ -47,36 +46,37 @@ namespace StoryBoardEditor.Line
         }
 
         #endregion
-        
+
         [SerializeField] private GameObject linePrefab;
         [SerializeField] private GameObject lineLayer;
 
         private readonly List<Line> _lineList = new List<Line>();
 
         [SerializeField] public int lineCount = 0;
-        
+
         private string SetLineId()
         {
-            return "L"+lineCount++.ToString("D4");;
+            return "L" + lineCount++.ToString("D4");
+            ;
         }
-        
+
         public void RequestAddLine()
         {
             TempLine tempLine = TempLineManager.GetInstance().GetTempLine();
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D[] hits = Physics2D.GetRayIntersectionAll(ray);
-            
+
             GameObject targetNodeGameObject = ClickSystem.GetInstance().GetNodeFromClick(hits);
-            
+
             if (targetNodeGameObject == null)
             {
                 LineManipulator.GetInstance().ClearSelectedLine();
                 return;
             }
-            
-            Node.Node targetNode = NodeManager.GetInstance().GetNodeByGameObject(targetNodeGameObject);
 
-            
+            Node targetNode = NodeManager.GetInstance().GetNodeByGameObject(targetNodeGameObject);
+
+
             if (tempLine.startEdge == NodeEdge.Output)
             {
                 if (tempLine.node.type == NodeType.Selection)
@@ -120,13 +120,11 @@ namespace StoryBoardEditor.Line
                     }
                 }
             }
-            
-            
-            
-            
-            Node.Node node = NodeManager.GetInstance().GetNodeByName(targetNodeGameObject.name);
+
+
+            Node node = NodeManager.GetInstance().GetNodeByName(targetNodeGameObject.name);
             NodeEdge startEdge = tempLine.startEdge;
-            
+
             // Check Duplicated
             switch (startEdge)
             {
@@ -139,8 +137,9 @@ namespace StoryBoardEditor.Line
                             return;
                         }
                     }
+
                     break;
-                
+
                 case NodeEdge.Input:
                     foreach (var line in node.inputLineList)
                     {
@@ -150,6 +149,7 @@ namespace StoryBoardEditor.Line
                             return;
                         }
                     }
+
                     break;
             }
 
@@ -163,16 +163,16 @@ namespace StoryBoardEditor.Line
             switch (startEdge)
             {
                 case NodeEdge.Output:
-                    AddLine(tempLine.node,node);
+                    AddLine(tempLine.node, node);
                     break;
-                
+
                 case NodeEdge.Input:
-                    AddLine(node,tempLine.node);
+                    AddLine(node, tempLine.node);
                     break;
             }
         }
 
-        private void AddLine(Node.Node node01, Node.Node node02)
+        private void AddLine(Node node01, Node node02)
         {
             GameObject lineObject = Instantiate(linePrefab, lineLayer.transform);
             Line newLine = new Line {id = SetLineId(), node01 = node01, node02 = node02, gameObject = lineObject};
@@ -181,7 +181,7 @@ namespace StoryBoardEditor.Line
             newLine.lineRenderer.SetPosition(1, node02.input.transform.position);
 
             LineManipulator.GetInstance().UpdateMeshCollider(newLine);
-            
+
             lineObject.name = newLine.id;
             _lineList.Add(newLine);
 
@@ -189,17 +189,17 @@ namespace StoryBoardEditor.Line
             node02.inputLineList.Add(newLine);
         }
 
-        public void UpdateLine(Node.Node node)
+        public void UpdateLine(Node node)
         {
             foreach (var outputLine in node.outputLineList)
             {
-                outputLine.lineRenderer.SetPosition(0,node.output.transform.position);
+                outputLine.lineRenderer.SetPosition(0, node.output.transform.position);
                 LineManipulator.GetInstance().UpdateMeshCollider(outputLine);
             }
-            
+
             foreach (var inputLine in node.inputLineList)
             {
-                inputLine.lineRenderer.SetPosition(1,node.input.transform.position);
+                inputLine.lineRenderer.SetPosition(1, node.input.transform.position);
                 LineManipulator.GetInstance().UpdateMeshCollider(inputLine);
             }
         }
@@ -207,8 +207,8 @@ namespace StoryBoardEditor.Line
         public void RemoveLine(Line line)
         {
             LineManipulator.GetInstance().ClearSelectedLine();
-            Node.Node node01 = line.node01;
-            Node.Node node02 = line.node02;
+            Node node01 = line.node01;
+            Node node02 = line.node02;
             node01.outputLineList.Remove(line);
             node02.inputLineList.Remove(line);
             _lineList.Remove(line);
@@ -219,7 +219,7 @@ namespace StoryBoardEditor.Line
         {
             Line newLine = new Line();
             newLine.id = lineData.lineId;
-            newLine.gameObject = Instantiate(linePrefab,lineLayer.transform);
+            newLine.gameObject = Instantiate(linePrefab, lineLayer.transform);
             newLine.lineRenderer = newLine.gameObject.GetComponent<LineRenderer>();
             _lineList.Add(newLine);
         }
@@ -237,9 +237,9 @@ namespace StoryBoardEditor.Line
 
             targetLine.node01 = NodeManager.GetInstance().GetNodeByName(lineData.node01Id);
             targetLine.node02 = NodeManager.GetInstance().GetNodeByName(lineData.node02Id);
-            
-            targetLine.lineRenderer.SetPosition(0,targetLine.node01.output.transform.position);
-            targetLine.lineRenderer.SetPosition(1,targetLine.node02.input.transform.position);
+
+            targetLine.lineRenderer.SetPosition(0, targetLine.node01.output.transform.position);
+            targetLine.lineRenderer.SetPosition(1, targetLine.node02.input.transform.position);
         }
 
         public void ClearAllLine()
@@ -248,6 +248,7 @@ namespace StoryBoardEditor.Line
             {
                 Destroy(line.gameObject);
             }
+
             _lineList.Clear();
         }
 
@@ -263,7 +264,7 @@ namespace StoryBoardEditor.Line
 
             return null;
         }
-        
+
         public Line GetLine(GameObject lineGameObject)
         {
             foreach (var line in _lineList)

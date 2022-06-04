@@ -4,7 +4,7 @@ using DialogueSystem;
 using StoryBoardSystem;
 using UnityEngine;
 
-namespace StoryBoardEditor.Node
+namespace StoryBoardEditor.Node_ScriptAsset
 {
     public enum NodeType
     {
@@ -29,8 +29,8 @@ namespace StoryBoardEditor.Node
         public GameObject input;
         public GameObject output;
 
-        public readonly List<Line.Line> outputLineList = new List<Line.Line>();
-        public readonly List<Line.Line> inputLineList =new List<Line.Line>();
+        public readonly List<Line_ScriptAsset.Line> outputLineList = new List<Line_ScriptAsset.Line>();
+        public readonly List<Line_ScriptAsset.Line> inputLineList =new List<Line_ScriptAsset.Line>();
 
         public BgId bgId;
         public ImageId imageId;

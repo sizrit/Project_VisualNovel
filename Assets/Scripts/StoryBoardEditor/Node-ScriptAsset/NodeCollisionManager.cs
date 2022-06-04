@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace StoryBoardEditor.Node
+namespace StoryBoardEditor.Node_ScriptAsset
 {
     public class NodeCollisionManager
     {

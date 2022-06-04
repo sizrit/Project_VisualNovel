@@ -1,4 +1,4 @@
-using StoryBoardEditor.Node;
+using StoryBoardEditor.Node_ScriptAsset;
 using UnityEngine;
 
 namespace StoryBoardEditor.NodeInfo
@@ -22,9 +22,10 @@ namespace StoryBoardEditor.NodeInfo
 
                 _instance = obj;
             }
+
             return _instance;
         }
-        
+
         #endregion
 
         [SerializeField] private GameObject dialogueNodeInfoPrefab;
@@ -35,38 +36,38 @@ namespace StoryBoardEditor.NodeInfo
         [SerializeField] private GameObject eventNodeInfoPrefab;
         [SerializeField] private GameObject nodeInfoGameObject;
         [SerializeField] private bool isEnable = true;
-        
-        public void ShowNodeInfo(Node.Node node)
+
+        public void ShowNodeInfo(Node node)
         {
-            if(!isEnable) return;
+            if (!isEnable) return;
 
             switch (node.type)
             {
                 case NodeType.Dialogue:
                     nodeInfoGameObject = Instantiate(dialogueNodeInfoPrefab, this.transform);
                     break;
-                
+
                 case NodeType.Selection:
                     nodeInfoGameObject = Instantiate(selectionInfoPrefab, this.transform);
                     break;
-                
+
                 case NodeType.SelectionText:
                     nodeInfoGameObject = Instantiate(selectionTextInfoPrefab, this.transform);
                     break;
-                
+
                 case NodeType.GetClue:
                     nodeInfoGameObject = Instantiate(getClueNodeInfoPrefab, this.transform);
                     break;
-                
+
                 case NodeType.GetItem:
                     nodeInfoGameObject = Instantiate(getItemNodeInfoPrefab, this.transform);
                     break;
-                
+
                 case NodeType.Event:
                     nodeInfoGameObject = Instantiate(eventNodeInfoPrefab, this.transform);
                     break;
             }
-            
+
             nodeInfoGameObject.GetComponent<INodeInfo>().SetNodeInfo(node);
         }
 
@@ -92,4 +93,3 @@ namespace StoryBoardEditor.NodeInfo
         }
     }
 }
-

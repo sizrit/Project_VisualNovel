@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using StoryBoardEditor.Line;
-using StoryBoardEditor.Node;
+using StoryBoardEditor.Line_ScriptAsset;
+using StoryBoardEditor.Node_ScriptAsset;
 using StoryBoardEditor.NodeInfo;
 using StoryBoardEditor.UI;
 using UnityEngine;
@@ -52,11 +51,12 @@ namespace StoryBoardEditor
 
         private readonly List<Action<RaycastHit2D[], RaycastHit[]>> _customClickList =
             new List<Action<RaycastHit2D[], RaycastHit[]>>();
+
         private bool _isClickEnable = true;
 
-        private Action<RaycastHit2D[],RaycastHit[]> MakeClick()
+        private Action<RaycastHit2D[], RaycastHit[]> MakeClick()
         {
-            Action<RaycastHit2D[],RaycastHit[]> click = delegate { };
+            Action<RaycastHit2D[], RaycastHit[]> click = delegate { };
 
             if (_isClickEnable)
             {
@@ -81,7 +81,7 @@ namespace StoryBoardEditor
                 ("StoryBoardEditor_NodeInput", ClickMode.NodeInput),
                 ("StoryBoardEditor_NodeOutput", ClickMode.NodeOutput),
                 ("StoryBoardEditor_Node", ClickMode.Node),
-                ("StoryBoardEditor_Line",ClickMode.Line)
+                ("StoryBoardEditor_Line", ClickMode.Line)
             };
 
             foreach (var priority in priorityList)
@@ -141,7 +141,7 @@ namespace StoryBoardEditor
         private void Click(RaycastHit2D[] hits2D, RaycastHit[] hits)
         {
             ClickMode mode = ClickPriority(hits2D, hits);
-            
+
             UI_ButtonManager.GetInstance().RequestDisableDeleteUIButton();
             switch (mode)
             {
@@ -150,8 +150,8 @@ namespace StoryBoardEditor
                     NodeManipulator.GetInstance().ClearSelectedNode();
                     LineManipulator.GetInstance().ClearSelectedLine();
                     break;
-                
-                case  ClickMode.UI_EditMode:
+
+                case ClickMode.UI_EditMode:
                     UI_EditModeButton.GetInstance().Click();
                     NodeManipulator.GetInstance().ClearSelectedNode();
                     LineManipulator.GetInstance().ClearSelectedLine();
@@ -180,7 +180,7 @@ namespace StoryBoardEditor
                     NodeInfoManager.GetInstance().ShowNodeInfo(NodeManipulator.GetInstance().GetSelectedNode());
                     LineManipulator.GetInstance().ClearSelectedLine();
                     break;
-                
+
                 case ClickMode.Line:
                     LineManipulator.GetInstance().ClearSelectedLine();
                     LineManipulator.GetInstance().SetSelectedLine(GetLineFromClick(hits));
@@ -212,8 +212,8 @@ namespace StoryBoardEditor
         {
             CheckClick();
         }
-        
-        public void SubscribeCustomClick(Action<RaycastHit2D[],RaycastHit[]> click)
+
+        public void SubscribeCustomClick(Action<RaycastHit2D[], RaycastHit[]> click)
         {
             if (!_customClickList.Contains(click))
             {
@@ -221,7 +221,7 @@ namespace StoryBoardEditor
             }
         }
 
-        public void UnsubscribeCustomClick(Action<RaycastHit2D[],RaycastHit[]> click)
+        public void UnsubscribeCustomClick(Action<RaycastHit2D[], RaycastHit[]> click)
         {
             if (_customClickList.Contains(click))
             {
@@ -238,7 +238,5 @@ namespace StoryBoardEditor
         {
             _isClickEnable = false;
         }
-
     }
 }
-

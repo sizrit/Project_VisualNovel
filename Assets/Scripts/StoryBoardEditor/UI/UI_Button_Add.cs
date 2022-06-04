@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using StoryBoardEditor.Node;
+using StoryBoardEditor.Node_ScriptAsset;
 using UnityEngine;
 
 namespace StoryBoardEditor.UI
@@ -26,11 +26,12 @@ namespace StoryBoardEditor.UI
 
                 _instance = obj;
             }
+
             return _instance;
         }
-        
+
         #endregion
-        
+
         [SerializeField] private GameObject shadowNode;
         [SerializeField] private GameObject dialogueNodeButton;
         [SerializeField] private GameObject selectionNodeButton;
@@ -40,14 +41,14 @@ namespace StoryBoardEditor.UI
         [SerializeField] private GameObject eventNodeButton;
         [SerializeField] private GameObject nodeTypePanel;
         private NodeType _type = NodeType.Dialogue;
-        
-        Action _updateFunc =delegate { };
-    
+
+        Action _updateFunc = delegate { };
+
         public void Click()
         {
             ClickSystem.GetInstance().DisableClick();
             ClickSystem.GetInstance().SubscribeCustomClick(SelectNodeType);
-            
+
             UI_ButtonManager.GetInstance().DisableAllUI_Button();
             EnableNodeTypePanel();
         }
@@ -69,7 +70,7 @@ namespace StoryBoardEditor.UI
             nodeTypePanel.SetActive(false);
         }
 
-        private void SelectNodeType(RaycastHit2D[] hits ,RaycastHit[] none)
+        private void SelectNodeType(RaycastHit2D[] hits, RaycastHit[] none)
         {
             bool isSelect = false;
             foreach (var hit in hits)
@@ -120,7 +121,7 @@ namespace StoryBoardEditor.UI
             {
                 ClickSystem.GetInstance().UnsubscribeCustomClick(SelectNodeType);
                 ClickSystem.GetInstance().EnableClick();
-            
+
                 UI_ButtonManager.GetInstance().EnableAllUI_Button();
                 DisableNodeTypePanel();
             }
@@ -132,18 +133,18 @@ namespace StoryBoardEditor.UI
             position.z = 0;
             NodeManager.GetInstance().AddNode(position, _type);
             shadowNode.SetActive(false);
-            
+
             ClickSystem.GetInstance().UnsubscribeCustomClick(AddNode);
             ClickSystem.GetInstance().EnableClick();
-            
+
             UI_ButtonManager.GetInstance().EnableAllUI_Button();
         }
-    
+
         void Start()
         {
             DisableNodeTypePanel();
         }
-        
+
         void Update()
         {
             _updateFunc();

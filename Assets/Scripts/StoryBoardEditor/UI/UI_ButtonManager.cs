@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using StoryBoardEditor.Line;
-using StoryBoardEditor.Node;
+using StoryBoardEditor.Line_ScriptAsset;
+using StoryBoardEditor.Node_ScriptAsset;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +16,7 @@ namespace StoryBoardEditor.UI
         Load,
         Clear
     }
-    
+
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class UI_ButtonManager : MonoBehaviour
     {
@@ -37,9 +37,10 @@ namespace StoryBoardEditor.UI
 
                 _instance = obj;
             }
+
             return _instance;
         }
-        
+
         #endregion
 
         [SerializeField] private GameObject add;
@@ -61,8 +62,8 @@ namespace StoryBoardEditor.UI
 
                 if (hit.transform.gameObject == delete)
                 {
-                    Node.Node currentNode = NodeManipulator.GetInstance().GetSelectedNode();
-                    Line.Line currentLine = LineManipulator.GetInstance().GetSelectedLine();
+                    Node currentNode = NodeManipulator.GetInstance().GetSelectedNode();
+                    Line currentLine = LineManipulator.GetInstance().GetSelectedLine();
 
                     if (currentNode != null)
                     {
@@ -73,7 +74,6 @@ namespace StoryBoardEditor.UI
                     {
                         LineManager.GetInstance().RemoveLine(currentLine);
                     }
-                    
                 }
 
                 if (hit.transform.gameObject == save)
@@ -92,7 +92,6 @@ namespace StoryBoardEditor.UI
                     LineManager.GetInstance().ClearAllLine();
                 }
             }
-
         }
 
         public void DisableAllUI_Button()
@@ -102,7 +101,7 @@ namespace StoryBoardEditor.UI
                 DisableUI_Button(ui.Key);
             }
         }
-        
+
         public void DisableUI_Button(UI_Button ui)
         {
             Color color = uiList[ui].GetComponent<Text>().color;
@@ -113,8 +112,8 @@ namespace StoryBoardEditor.UI
 
         public void RequestDisableDeleteUIButton()
         {
-            Node.Node currentNode = NodeManipulator.GetInstance().GetSelectedNode();
-            Line.Line currentLine = LineManipulator.GetInstance().GetSelectedLine();
+            Node currentNode = NodeManipulator.GetInstance().GetSelectedNode();
+            Line currentLine = LineManipulator.GetInstance().GetSelectedLine();
 
             if (currentLine == null && currentNode == null)
             {
@@ -124,11 +123,11 @@ namespace StoryBoardEditor.UI
                 uiList[UI_Button.Delete].GetComponent<BoxCollider2D>().enabled = false;
             }
         }
-        
+
         public void RequestEnableDeleteUIButton()
         {
-            Node.Node currentNode = NodeManipulator.GetInstance().GetSelectedNode();
-            Line.Line currentLine = LineManipulator.GetInstance().GetSelectedLine();
+            Node currentNode = NodeManipulator.GetInstance().GetSelectedNode();
+            Line currentLine = LineManipulator.GetInstance().GetSelectedLine();
 
             if (currentLine != null || currentNode != null)
             {
@@ -158,17 +157,16 @@ namespace StoryBoardEditor.UI
         private void Start()
         {
             uiList.Add(UI_Button.Add, add);
-            uiList.Add(UI_Button.Delete,delete);
-            uiList.Add(UI_Button.Save,save);
-            uiList.Add(UI_Button.Load,load);
-            uiList.Add(UI_Button.Clear,clear);
+            uiList.Add(UI_Button.Delete, delete);
+            uiList.Add(UI_Button.Save, save);
+            uiList.Add(UI_Button.Load, load);
+            uiList.Add(UI_Button.Clear, clear);
         }
 
 
         // Update is called once per frame
         void Update()
         {
-        
         }
     }
 }

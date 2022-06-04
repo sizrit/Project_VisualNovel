@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace StoryBoardEditor.Node
+namespace StoryBoardEditor.Node_ScriptAsset
 {
     public class NodeSelectEffectManager : MonoBehaviour
     {
@@ -26,11 +26,11 @@ namespace StoryBoardEditor.Node
         }
 
         #endregion
-        
+
         [SerializeField] private GameObject effectPrefab;
         [SerializeField] private GameObject effectGameObject;
 
-        public void ShowEffect(StoryBoardEditor.Node.Node node)
+        public void ShowEffect(Node node)
         {
             RemoveEffect();
             effectGameObject = Instantiate(effectPrefab, this.transform);
@@ -50,6 +50,5 @@ namespace StoryBoardEditor.Node
             Destroy(effectGameObject);
             effectGameObject = null;
         }
-    
     }
 }

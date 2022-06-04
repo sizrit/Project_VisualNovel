@@ -1,7 +1,7 @@
 using StoryBoardEditor.UI;
 using UnityEngine;
 
-namespace StoryBoardEditor.Line
+namespace StoryBoardEditor.Line_ScriptAsset
 {
     public class LineManipulator : MonoBehaviour
     {
@@ -28,7 +28,7 @@ namespace StoryBoardEditor.Line
 
         #endregion
 
-        private StoryBoardEditor.Line.Line selectedLine;
+        private Line selectedLine;
 
         public void SetSelectedLine(GameObject lineGameObject)
         {
@@ -36,23 +36,24 @@ namespace StoryBoardEditor.Line
             LineSelectEffectManager.GetInstance().ShowEffect(selectedLine);
             UI_ButtonManager.GetInstance().RequestEnableDeleteUIButton();
         }
-        
+
         public void ClearSelectedLine()
         {
             if (selectedLine != null)
             {
                 LineSelectEffectManager.GetInstance().RemoveEffect(selectedLine);
             }
+
             selectedLine = null;
             UI_ButtonManager.GetInstance().RequestDisableDeleteUIButton();
         }
 
-        public StoryBoardEditor.Line.Line GetSelectedLine()
+        public Line GetSelectedLine()
         {
             return selectedLine;
         }
 
-        public void UpdateMeshCollider(StoryBoardEditor.Line.Line line)
+        public void UpdateMeshCollider(Line line)
         {
             Mesh newMesh = new Mesh();
             line.lineRenderer.BakeMesh(newMesh);

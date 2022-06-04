@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
-using StoryBoardEditor.Line;
-using StoryBoardEditor.Node;
+using StoryBoardEditor.Line_ScriptAsset;
+using StoryBoardEditor.Node_ScriptAsset;
 using UnityEngine;
 
 namespace StoryBoardEditor
@@ -15,22 +15,22 @@ namespace StoryBoardEditor
         public List<LineData> lineData = new List<LineData>();
         public EtcData etcData = new EtcData();
     }
-    
+
     [Serializable]
     public class NodeData
     {
         public string nodeId;
-        
+
         public float x;
         public float y;
-        
+
         public string type;
-        
+
         public bool isUseStaticStoryBoardId;
         public string staticStoryBoardId;
 
-        public List<string> inputLineIdList =new List<string>() ;
-        public List<string> outputLineIdList =new List<string>();
+        public List<string> inputLineIdList = new List<string>();
+        public List<string> outputLineIdList = new List<string>();
 
         public string bgId;
         public string imageId;
@@ -43,7 +43,7 @@ namespace StoryBoardEditor
         public string selectionId;
 
         public string selectionText;
-        
+
         public string clueId;
 
         public string itemId;
@@ -65,7 +65,7 @@ namespace StoryBoardEditor
         public int nodeCount;
         public int lineCount;
     }
-    
+
     public class SaveManager
     {
         #region Singleton
@@ -78,6 +78,7 @@ namespace StoryBoardEditor
             {
                 _instance = new SaveManager();
             }
+
             return _instance;
         }
 
@@ -110,22 +111,22 @@ namespace StoryBoardEditor
                     y = position.y,
 
                     type = node.type.ToString(),
-                    
+
                     bgId = node.bgId.ToString(),
                     imageId = node.imageId.ToString(),
                     dialogueText = node.dialogueText,
                     speaker = node.speaker,
                     isUseTextEffect = node.isUseTextEffect,
-                    
+
                     selectionId = node.selectionId,
-                    
+
                     selectionText = node.selectionText,
-                    
+
                     clueId = node.clueId.ToString(),
                     itemId = node.itemId.ToString(),
                     eventId = node.eventId.ToString()
                 };
-                
+
                 foreach (var inputLine in node.inputLineList)
                 {
                     newNodeData.inputLineIdList.Add(inputLine.id);
@@ -135,7 +136,7 @@ namespace StoryBoardEditor
                 {
                     newNodeData.outputLineIdList.Add(outputLine.id);
                 }
-                    
+
                 nodeDataList.Add(newNodeData);
             }
 

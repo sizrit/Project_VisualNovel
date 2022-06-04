@@ -2,40 +2,15 @@
   "nodeData": [
     {
       "nodeId": "N0000",
-      "x": -1.5111109,
-      "y": 1.29629612,
-      "type": "Dialogue",
-      "isUseStaticStoryBoardId": true,
-      "staticStoryBoardId": "111",
-      "inputLineIdList": [],
-      "outputLineIdList": [
-        "L0000"
-      ],
-      "bgId": "Null",
-      "imageId": "1",
-      "dialogueText": "1",
-      "speaker": "1",
-      "isUseTextEffect": true,
-      "dialogueTextEffectId": null,
-      "selectionId": null,
-      "selectionText": null,
-      "clueId": "Null",
-      "itemId": "Null",
-      "eventId": null
-    },
-    {
-      "nodeId": "N0001",
-      "x": 2.49629641,
-      "y": 0.6962962,
+      "x": 0.008311802,
+      "y": 1.2901082,
       "type": "Dialogue",
       "isUseStaticStoryBoardId": false,
-      "staticStoryBoardId": null,
-      "inputLineIdList": [
-        "L0000"
-      ],
+      "staticStoryBoardId": "",
+      "inputLineIdList": [],
       "outputLineIdList": [],
       "bgId": "Null",
-      "imageId": null,
+      "imageId": "Null",
       "dialogueText": null,
       "speaker": null,
       "isUseTextEffect": false,
@@ -44,18 +19,75 @@
       "selectionText": null,
       "clueId": "Null",
       "itemId": "Null",
-      "eventId": null
-    }
-  ],
-  "lineData": [
+      "eventId": "Null"
+    },
     {
-      "lineId": "L0000",
-      "node01Id": "N0000",
-      "node02Id": "N0001"
+      "nodeId": "N0001",
+      "x": 2.20282483,
+      "y": 0.974231243,
+      "type": "Dialogue",
+      "isUseStaticStoryBoardId": false,
+      "staticStoryBoardId": "",
+      "inputLineIdList": [],
+      "outputLineIdList": [],
+      "bgId": "Null",
+      "imageId": "Null",
+      "dialogueText": null,
+      "speaker": null,
+      "isUseTextEffect": false,
+      "dialogueTextEffectId": null,
+      "selectionId": null,
+      "selectionText": null,
+      "clueId": "Null",
+      "itemId": "Null",
+      "eventId": "Null"
+    },
+    {
+      "nodeId": "N0003",
+      "x": 4.6799655,
+      "y": 1.58936024,
+      "type": "Selection",
+      "isUseStaticStoryBoardId": false,
+      "staticStoryBoardId": "",
+      "inputLineIdList": [],
+      "outputLineIdList": [],
+      "bgId": "Null",
+      "imageId": "Null",
+      "dialogueText": null,
+      "speaker": null,
+      "isUseTextEffect": false,
+      "dialogueTextEffectId": null,
+      "selectionId": null,
+      "selectionText": null,
+      "clueId": "Null",
+      "itemId": "Null",
+      "eventId": "Null"
+    },
+    {
+      "nodeId": "N0005",
+      "x": 3.93183565,
+      "y": -2.134663,
+      "type": "Selection",
+      "isUseStaticStoryBoardId": false,
+      "staticStoryBoardId": "",
+      "inputLineIdList": [],
+      "outputLineIdList": [],
+      "bgId": "Null",
+      "imageId": "Null",
+      "dialogueText": null,
+      "speaker": null,
+      "isUseTextEffect": false,
+      "dialogueTextEffectId": null,
+      "selectionId": null,
+      "selectionText": null,
+      "clueId": "Null",
+      "itemId": "Null",
+      "eventId": "Null"
     }
   ],
+  "lineData": [],
   "etcData": {
-    "nodeCount": 2,
-    "lineCount": 1
+    "nodeCount": 6,
+    "lineCount": 2
   }
 }

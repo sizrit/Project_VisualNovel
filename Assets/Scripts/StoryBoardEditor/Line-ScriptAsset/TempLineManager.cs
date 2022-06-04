@@ -1,17 +1,17 @@
 using System.Diagnostics.CodeAnalysis;
-using StoryBoardEditor.Node;
+using StoryBoardEditor.Node_ScriptAsset;
 using UnityEngine;
 
-namespace StoryBoardEditor.Line
+namespace StoryBoardEditor.Line_ScriptAsset
 {
     public class TempLine
     {
-        public Node.Node node;
+        public Node node;
         public GameObject lineObject;
         public LineRenderer lineRenderer;
         public NodeEdge startEdge;
     }
-    
+
     [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
     public class TempLineManager : MonoBehaviour
     {
@@ -37,24 +37,24 @@ namespace StoryBoardEditor.Line
         }
 
         #endregion
-        
+
         private TempLine _tempLine;
-        
+
         [SerializeField] private GameObject linePrefab;
         [SerializeField] private GameObject lineLayer;
-        
-        public bool RequestDrawTempLine(Node.Node node, NodeEdge edge)
+
+        public bool RequestDrawTempLine(Node node, NodeEdge edge)
         {
             // NodeType 이 selection 이 아닌데 OutPut 을 여러개 만들려고 하는경우
             if (node.type != NodeType.Selection && node.outputLineList.Count != 0 && edge == NodeEdge.Output)
             {
-                Debug.Log(" NodeType : "+node.type+" can't make more than 1 OutputLines");
+                Debug.Log(" NodeType : " + node.type + " can't make more than 1 OutputLines");
                 _tempLine = null;
                 LineManipulator.GetInstance().ClearSelectedLine();
                 return false;
             }
-            
-            StoryBoardEditor.Line.Line selectedLine = LineManipulator.GetInstance().GetSelectedLine();
+
+            Line selectedLine = LineManipulator.GetInstance().GetSelectedLine();
 
             if (selectedLine != null)
             {
@@ -66,6 +66,7 @@ namespace StoryBoardEditor.Line
                             LineManager.GetInstance().RemoveLine(selectedLine);
                             DrawTempLine(selectedLine.node01, NodeEdge.Output);
                         }
+
                         break;
 
                     case NodeEdge.Output:
@@ -74,6 +75,7 @@ namespace StoryBoardEditor.Line
                             LineManager.GetInstance().RemoveLine(selectedLine);
                             DrawTempLine(selectedLine.node02, NodeEdge.Input);
                         }
+
                         break;
                 }
             }
@@ -81,11 +83,11 @@ namespace StoryBoardEditor.Line
             {
                 DrawTempLine(node, edge);
             }
-            
+
             return true;
         }
 
-        private void DrawTempLine(Node.Node node, NodeEdge edge)
+        private void DrawTempLine(Node node, NodeEdge edge)
         {
             GameObject lineObject = Instantiate(linePrefab, lineLayer.transform);
             LineRenderer lineRenderer = lineObject.GetComponent<LineRenderer>();
@@ -96,10 +98,11 @@ namespace StoryBoardEditor.Line
                 case NodeEdge.Output:
                     pos1 = node.output.transform.position;
                     break;
-                case  NodeEdge.Input:
+                case NodeEdge.Input:
                     pos1 = node.input.transform.position;
                     break;
             }
+
             pos1.z = 0;
             Vector3 pos2 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             pos2.z = 0;
@@ -115,7 +118,7 @@ namespace StoryBoardEditor.Line
                 lineRenderer = lineObject.GetComponent<LineRenderer>()
             };
             _tempLine = newTempLine;
-            
+
             TempLineSelectEffectManager.GetInstance().ShowEffect(_tempLine);
         }
 
@@ -126,7 +129,8 @@ namespace StoryBoardEditor.Line
                 Debug.LogError("TempLine is not Exist");
                 return;
             }
-            _tempLine.lineRenderer.SetPosition(1,pos2);
+
+            _tempLine.lineRenderer.SetPosition(1, pos2);
         }
 
         public void DeleteTempLine()
@@ -136,8 +140,8 @@ namespace StoryBoardEditor.Line
                 TempLineSelectEffectManager.GetInstance().RemoveEffect(_tempLine);
                 Destroy(_tempLine.lineObject);
             }
+
             _tempLine = null;
-            
         }
 
         public TempLine GetTempLine()

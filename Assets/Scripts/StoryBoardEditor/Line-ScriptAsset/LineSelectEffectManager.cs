@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace StoryBoardEditor.Line
+namespace StoryBoardEditor.Line_ScriptAsset
 {
     public class LineSelectEffectManager : MonoBehaviour
     {
@@ -26,16 +26,16 @@ namespace StoryBoardEditor.Line
         }
 
         #endregion
-        
+
         [SerializeField] private Material selectEffect;
         [SerializeField] private Material normal;
-        
-        public void ShowEffect(StoryBoardEditor.Line.Line line)
+
+        public void ShowEffect(Line line)
         {
             line.lineRenderer.material = selectEffect;
         }
 
-        public void RemoveEffect(StoryBoardEditor.Line.Line line)
+        public void RemoveEffect(Line line)
         {
             line.lineRenderer.material = normal;
         }

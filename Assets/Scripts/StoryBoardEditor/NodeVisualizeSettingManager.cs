@@ -1,4 +1,4 @@
-using StoryBoardEditor.Node;
+using StoryBoardEditor.Node_ScriptAsset;
 using StoryBoardSystem;
 using TMPro;
 using UnityEngine;
@@ -29,14 +29,14 @@ namespace StoryBoardEditor
         }
 
         #endregion
-        
+
         [SerializeField] private Sprite checkOnImage;
         [SerializeField] private Sprite checkOffImage;
-        
-        public void SetNode(Node.Node node)
+
+        public void SetNode(Node node)
         {
             NodeType type = node.type;
-            
+
             if (type != NodeType.SelectionText)
             {
                 if (node.isUseStaticStoryBoardId)
@@ -58,10 +58,10 @@ namespace StoryBoardEditor
                         checkOffImage;
                 }
             }
-            
+
             switch (type)
             {
-                case  NodeType.Dialogue:
+                case NodeType.Dialogue:
                     node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text =
                         node.bgId != BgId.Null ? node.bgId.ToString() : "";
 
@@ -80,7 +80,8 @@ namespace StoryBoardEditor
                             node.dialogueTextEffectId.ToString();
                         node.gameObject.transform.Find("Member06").Find("InputText").Find("TextBox")
                             .GetComponent<SpriteRenderer>().color = Color.white;
-                        node.gameObject.transform.Find("Member06").Find("CheckBox").GetComponent<SpriteRenderer>().sprite =
+                        node.gameObject.transform.Find("Member06").Find("CheckBox").GetComponent<SpriteRenderer>()
+                                .sprite =
                             checkOnImage;
                     }
                     else
@@ -88,29 +89,33 @@ namespace StoryBoardEditor
                         node.gameObject.transform.Find("Member06").Find("InputText").GetComponent<TMP_Text>().text = "";
                         node.gameObject.transform.Find("Member06").Find("InputText").Find("TextBox")
                             .GetComponent<SpriteRenderer>().color = Color.gray;
-                        node.gameObject.transform.Find("Member06").Find("CheckBox").GetComponent<SpriteRenderer>().sprite =
+                        node.gameObject.transform.Find("Member06").Find("CheckBox").GetComponent<SpriteRenderer>()
+                                .sprite =
                             checkOffImage;
                     }
+
                     break;
-                
+
                 case NodeType.Selection:
-                    node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text = node.selectionId;
+                    node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text =
+                        node.selectionId;
                     break;
-                
+
                 case NodeType.SelectionText:
-                    node.gameObject.transform.Find("Member01").Find("InputText").GetComponent<TMP_Text>().text = node.selectionText;
+                    node.gameObject.transform.Find("Member01").Find("InputText").GetComponent<TMP_Text>().text =
+                        node.selectionText;
                     break;
-                
+
                 case NodeType.GetClue:
                     node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text =
                         node.clueId != Clue.Null ? node.clueId.ToString() : "";
                     break;
-                
+
                 case NodeType.GetItem:
                     node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text =
                         node.itemId != Item.Null ? node.itemId.ToString() : "";
                     break;
-                
+
                 case NodeType.Event:
                     node.gameObject.transform.Find("Member02").Find("InputText").GetComponent<TMP_Text>().text =
                         node.eventId != EventId.Null ? node.eventId.ToString() : "";

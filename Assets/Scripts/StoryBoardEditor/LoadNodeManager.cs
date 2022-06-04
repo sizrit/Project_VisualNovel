@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DialogueSystem;
-using StoryBoardEditor.Line;
-using StoryBoardEditor.Node;
+using StoryBoardEditor.Line_ScriptAsset;
+using StoryBoardEditor.Node_ScriptAsset;
 using StoryBoardSystem;
-using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -42,8 +41,8 @@ namespace StoryBoardEditor
         [SerializeField] private GameObject getClueNodePrefab;
         [SerializeField] private GameObject getItemNodePrefab;
         [SerializeField] private GameObject eventNodePrefab;
-        
-        
+
+
         public T StringToEnum<T>(string stringData)
         {
             List<T> enumValueList = Enum.GetValues(typeof(T)).Cast<T>().ToList();
@@ -62,7 +61,7 @@ namespace StoryBoardEditor
 
         public void MakeNodeFromLoadData(NodeData nodeData)
         {
-            Node.Node newNode = new Node.Node();
+            Node newNode = new Node();
 
             newNode.id = nodeData.nodeId;
 
@@ -138,7 +137,7 @@ namespace StoryBoardEditor
 
         public void SetNodeConnectedLineFromLoadData(NodeData nodeData)
         {
-            Node.Node node = NodeManager.GetInstance().GetNodeByName(nodeData.nodeId);
+            Node node = NodeManager.GetInstance().GetNodeByName(nodeData.nodeId);
             foreach (var inputLine in nodeData.inputLineIdList)
             {
                 node.inputLineList.Add(LineManager.GetInstance().GetLine(inputLine));
@@ -149,6 +148,5 @@ namespace StoryBoardEditor
                 node.outputLineList.Add(LineManager.GetInstance().GetLine(outputLine));
             }
         }
-        
     }
 }
