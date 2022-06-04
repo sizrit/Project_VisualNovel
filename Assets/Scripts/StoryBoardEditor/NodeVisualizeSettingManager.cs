@@ -1,3 +1,4 @@
+using StoryBoardEditor.Node;
 using StoryBoardSystem;
 using TMPro;
 using UnityEngine;
@@ -32,7 +33,7 @@ namespace StoryBoardEditor
         [SerializeField] private Sprite checkOnImage;
         [SerializeField] private Sprite checkOffImage;
         
-        public void SetNode(Node node)
+        public void SetNode(Node.Node node)
         {
             NodeType type = node.type;
             

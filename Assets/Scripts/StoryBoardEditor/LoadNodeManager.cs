@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DialogueSystem;
+using StoryBoardEditor.Line;
+using StoryBoardEditor.Node;
 using StoryBoardSystem;
 using TMPro;
 using Unity.Mathematics;
@@ -60,7 +62,7 @@ namespace StoryBoardEditor
 
         public void MakeNodeFromLoadData(NodeData nodeData)
         {
-            Node newNode = new Node();
+            Node.Node newNode = new Node.Node();
 
             newNode.id = nodeData.nodeId;
 
@@ -136,7 +138,7 @@ namespace StoryBoardEditor
 
         public void SetNodeConnectedLineFromLoadData(NodeData nodeData)
         {
-            Node node = NodeManager.GetInstance().GetNodeByName(nodeData.nodeId);
+            Node.Node node = NodeManager.GetInstance().GetNodeByName(nodeData.nodeId);
             foreach (var inputLine in nodeData.inputLineIdList)
             {
                 node.inputLineList.Add(LineManager.GetInstance().GetLine(inputLine));

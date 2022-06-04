@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StoryBoardEditor.Line;
+using StoryBoardEditor.Node;
 using UnityEngine;
 
 namespace StoryBoardEditor
@@ -32,13 +34,13 @@ namespace StoryBoardEditor
 
         public void Log()
         {
-            List<Node> nodeList = NodeManager.GetInstance().GetAllNode();
-            List<Line> lineList = LineManager.GetInstance().GetAllLine();
+            List<Node.Node> nodeList = NodeManager.GetInstance().GetAllNode();
+            List<Line.Line> lineList = LineManager.GetInstance().GetAllLine();
             string log = "Node List\n-------------------------\n";
             foreach (var node in nodeList)
             {
                 FieldInfo[] infoList =
-                    typeof(Node).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    typeof(Node.Node).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                 foreach (var info in infoList)
                 {
                     log += info.Name;

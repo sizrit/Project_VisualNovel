@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using StoryBoardEditor.Line;
+using StoryBoardEditor.Node;
 using UnityEngine;
 
 namespace StoryBoardEditor

@@ -1,3 +1,4 @@
+using StoryBoardEditor.Node;
 using UnityEngine;
 
 namespace StoryBoardEditor.NodeInfo
@@ -35,7 +36,7 @@ namespace StoryBoardEditor.NodeInfo
         [SerializeField] private GameObject nodeInfoGameObject;
         [SerializeField] private bool isEnable = true;
         
-        public void ShowNodeInfo(Node node)
+        public void ShowNodeInfo(Node.Node node)
         {
             if(!isEnable) return;
 

@@ -1,3 +1,4 @@
+using StoryBoardEditor.Node;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +18,7 @@ namespace StoryBoardEditor.NodeInfo
         [SerializeField] private GameObject apply;
     
     
-        public void SetNodeInfo(Node node)
+        public void SetNodeInfo(Node.Node node)
         {
             if (node.isUseStaticStoryBoardId)
             {
@@ -49,7 +50,7 @@ namespace StoryBoardEditor.NodeInfo
 
         public void Click(RaycastHit2D[] hits)
         {
-            Node node = NodeManipulator.GetInstance().GetSelectedNode();
+            Node.Node node = NodeManipulator.GetInstance().GetSelectedNode();
             
             foreach (var hit in hits)
             {
@@ -77,7 +78,7 @@ namespace StoryBoardEditor.NodeInfo
         {
             Debug.Log("apply");
             
-            Node node = NodeManipulator.GetInstance().GetSelectedNode();
+            Node.Node node = NodeManipulator.GetInstance().GetSelectedNode();
 
             if (node.isUseStaticStoryBoardId)
             {
