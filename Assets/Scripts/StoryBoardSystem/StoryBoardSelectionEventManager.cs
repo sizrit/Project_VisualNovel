@@ -5,6 +5,12 @@ using UnityEngine.UI;
 
 namespace StoryBoardSystem
 {
+    public class SelectionEventInfo
+    {
+        public string id;
+        public List<(StoryBoard, string)> selectionList = new List<(StoryBoard, string)>();
+    }
+    
     public class StoryBoardSelectionEventManager : MonoBehaviour
     {
         #region Singleton
@@ -53,6 +59,11 @@ namespace StoryBoardSystem
             {
                 Destroy(this.transform.GetChild(i).gameObject);
             }
+        }
+
+        public void MakeSelectionEvent(SelectionEventInfo eventInfo)
+        {
+            
         }
 
         public void SetSelectionEvent(string storyBoardIdValue)

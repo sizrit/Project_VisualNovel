@@ -11,9 +11,6 @@ namespace StoryBoardEditor
 {
     public class StoryBoardEditorDataConvertor : MonoBehaviour
     {
-        [SerializeField] private TextAsset saveDataFile;
-        
-
         public void Convert()
         {
             string path = Application.dataPath + "/StoryBoardEditorSave/SaveData.json";
@@ -72,21 +69,57 @@ namespace StoryBoardEditor
                 storyBoardList.Add(node.id, newStoryBoard);
             }
 
-            foreach (var node in nodeList)
+            //for debug
+            List<SelectionEventInfo> selectionEventInfoList = new List<SelectionEventInfo>();
+            
+            foreach (var nodePair in nodeList)
             {
-                if (node.Value.type != NodeType.Selection && node.Value.type != NodeType.SelectionText)
+                Node node = nodePair.Value;
+                if (node.type != NodeType.Selection && node.type != NodeType.SelectionText)
                 {
-                    foreach (var outputLine in node.Value.outputLineList)
+                    foreach (var outputLine in node.outputLineList)
                     {
                         Node nextNode = outputLine.node02;
-                        storyBoardList[node.Value.id].nextStoryBoard = storyBoardList[nextNode.id];
+                        storyBoardList[node.id].nextStoryBoard = storyBoardList[nextNode.id];
                     }
+                }
+                
+                if (node.type == NodeType.Selection)
+                {
+                    SelectionEventInfo newSelectionEventInfo = new SelectionEventInfo();
+                    newSelectionEventInfo.id = node.selectionId;
+                    
+                    List<(StoryBoard, string)> selectionList = new List<(StoryBoard, string)>();
+                    foreach (var outputLine in node.outputLineList)
+                    {
+                        Node selectionTextNode = outputLine.node02;
+                        StoryBoard nextStoryBoard = storyBoardList[selectionTextNode.outputLineList[0].node02.id];
+                        selectionList.Add((nextStoryBoard, selectionTextNode.selectionText));
+                    }
+
+                    newSelectionEventInfo.selectionList = selectionList;
+                    
+                    StoryBoardSelectionEventManager.GetInstance().MakeSelectionEvent(newSelectionEventInfo);
+                    
+                    //for debug
+                    selectionEventInfoList.Add(newSelectionEventInfo);
                 }
             }
 
+            // for debug
             foreach (var storyBoard in storyBoardList)
             {
-                Debug.Log(storyBoard.Key+ " : " + storyBoard.Value.storyBoardId);
+                Debug.Log(storyBoard.Key+ " : " + storyBoard.Value.storyBoardId + " / " + storyBoard.Value.mode);
+            }
+
+            // for debug
+            foreach (var selectionEventInfo in selectionEventInfoList)
+            {
+                Debug.Log(selectionEventInfo.id);
+                foreach (var selection in selectionEventInfo.selectionList)
+                {
+                    Debug.Log(selection.Item1.storyBoardId + " : " + selection.Item2);
+                }
             }
         }
 
