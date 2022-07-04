@@ -58,14 +58,42 @@ namespace StoryBoardEditor
             return enumValueList[0];
         }
 
-
-        public void MakeNodeFromLoadData(NodeData nodeData)
+        public Node ConvertNodeDataToNode(NodeData nodeData)
         {
             Node newNode = new Node();
 
             newNode.id = nodeData.nodeId;
 
             newNode.type = StringToEnum<NodeType>(nodeData.type);
+
+            newNode.isUseStaticStoryBoardId = nodeData.isUseStaticStoryBoardId;
+            newNode.staticStoryBoardId = nodeData.staticStoryBoardId;
+
+            newNode.bgId = StringToEnum<BgId>(nodeData.bgId);
+            newNode.imageId = StringToEnum<ImageId>(nodeData.imageId);
+            newNode.speaker = nodeData.speaker;
+            newNode.dialogueText = nodeData.dialogueText;
+
+            newNode.dialogueTextEffectId = StringToEnum<DialogueTextEffectId>(nodeData.dialogueTextEffectId);
+
+            newNode.selectionId = nodeData.selectionId;
+            newNode.selectionText = nodeData.selectionText;
+
+            newNode.clueId = StringToEnum<Clue>(nodeData.clueId);
+
+            newNode.itemId = StringToEnum<Item>(nodeData.itemId);
+
+            newNode.eventId = StringToEnum<EventId>(nodeData.eventId);
+
+            newNode.isUseTextEffect = nodeData.isUseTextEffect;
+
+            return newNode;
+        }
+        
+
+        public void MakeNodeFromLoadData(NodeData nodeData)
+        {
+            Node newNode = ConvertNodeDataToNode(nodeData); 
 
             GameObject nodeGameObject;
 
@@ -105,27 +133,6 @@ namespace StoryBoardEditor
 
             nodeGameObject.name = nodeData.nodeId;
             newNode.gameObject = nodeGameObject;
-
-            newNode.isUseStaticStoryBoardId = nodeData.isUseStaticStoryBoardId;
-            newNode.staticStoryBoardId = nodeData.staticStoryBoardId;
-
-            newNode.bgId = StringToEnum<BgId>(nodeData.bgId);
-            newNode.imageId = StringToEnum<ImageId>(nodeData.imageId);
-            newNode.speaker = nodeData.speaker;
-            newNode.dialogueText = nodeData.dialogueText;
-
-            newNode.dialogueTextEffectId = StringToEnum<DialogueTextEffectId>(nodeData.dialogueTextEffectId);
-
-            newNode.selectionId = nodeData.selectionId;
-            newNode.selectionText = nodeData.selectionText;
-
-            newNode.clueId = StringToEnum<Clue>(nodeData.clueId);
-
-            newNode.itemId = StringToEnum<Item>(nodeData.itemId);
-
-            newNode.eventId = StringToEnum<EventId>(nodeData.eventId);
-
-            newNode.isUseTextEffect = nodeData.isUseTextEffect;
 
             newNode.input = newNode.gameObject.transform.Find("Input").gameObject;
             newNode.output = newNode.gameObject.transform.Find("Output").gameObject;
