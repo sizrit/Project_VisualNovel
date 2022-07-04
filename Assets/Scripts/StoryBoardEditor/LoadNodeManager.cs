@@ -43,7 +43,7 @@ namespace StoryBoardEditor
         [SerializeField] private GameObject eventNodePrefab;
 
 
-        public T StringToEnum<T>(string stringData)
+        public static T StringToEnum<T>(string stringData)
         {
             List<T> enumValueList = Enum.GetValues(typeof(T)).Cast<T>().ToList();
 
@@ -58,7 +58,7 @@ namespace StoryBoardEditor
             return enumValueList[0];
         }
 
-        public Node ConvertNodeDataToNode(NodeData nodeData)
+        public static Node ConvertNodeDataToNode(NodeData nodeData)
         {
             Node newNode = new Node();
 

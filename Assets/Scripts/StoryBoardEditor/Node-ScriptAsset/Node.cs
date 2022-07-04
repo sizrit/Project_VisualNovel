@@ -22,7 +22,7 @@ namespace StoryBoardEditor.Node_ScriptAsset
         public NodeType type;
         
         public bool isUseStaticStoryBoardId = false;
-        public string staticStoryBoardId;
+        public string staticStoryBoardId =null;
         
         public string id;
         public GameObject gameObject;
