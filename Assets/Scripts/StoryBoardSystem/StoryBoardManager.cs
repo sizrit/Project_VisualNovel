@@ -28,7 +28,7 @@ namespace StoryBoardSystem
 
         private void SetNextStoryBoard()
         {
-            string nextStoryBoardId = _currentStoryBoard.nextStoryBoardId;
+            string nextStoryBoardId = "";//_currentStoryBoard.nextStoryBoardId;
             _currentStoryBoard = StoryBoardDataLoadManager.GetInstance().GetStoryBoard(nextStoryBoardId);
         }
     
