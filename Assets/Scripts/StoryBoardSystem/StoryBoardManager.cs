@@ -55,7 +55,7 @@ namespace StoryBoardSystem
                         StoryBoardSelectionEventManager.GetInstance().SetSelectionEvent(_currentStoryBoard.storyBoardId);
                         break;
                     
-                    case StoryBoardMode.GainClue:
+                    case StoryBoardMode.GetClue:
                         StoryBoardGainClueEventManager.GetInstance().SetGainClueEvent(_currentStoryBoard.storyBoardId);
                         break;
                     
@@ -67,7 +67,7 @@ namespace StoryBoardSystem
                         StoryBoardSwitchManager.GetInstance().Switch(_currentStoryBoard.storyBoardId);
                         break;
                 
-                    case StoryBoardMode.ReturnToReserch:
+                    case StoryBoardMode.ReturnToResearch:
                     
                         break;
                 }

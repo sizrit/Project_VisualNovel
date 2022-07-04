@@ -9,20 +9,26 @@ namespace StoryBoardSystem
     {
         Dialogue,
         Selection,
-        GainClue,
+        GetClue,
         GetItem,
         SwitchToResearch,
-        ReturnToReserch,
+        ReturnToResearch,
+        Event,
+        Null
     }
 
     [Serializable]
-    public struct StoryBoard
+    public class StoryBoard
     {
         public string storyBoardId;
         public StoryBoardMode mode;
         public BgId bgId;
         public ImageId imageId;
         public string nextStoryBoardId;
+
+        public StoryBoard()
+        {
+        }
 
         public StoryBoard(string storyBoardId,StoryBoardMode mode, BgId bgId, ImageId imageId, string nextStoryBoardId)
         {
