@@ -73,8 +73,12 @@ namespace DialogueSystem
     
         public void SetDialogue(string storyBoardIdValue)
         {
-            _currentDialogue = DialogueDataLoadManager.GetInstance().GetDialogue(storyBoardIdValue);
-        
+            //_currentDialogue = DialogueDataLoadManager.GetInstance().GetDialogue(storyBoardIdValue);
+            Dialogue _currentDialogue = new Dialogue();
+            
+            _currentDialogue.dialogueText = "Hi, My name is <color=#0067a3>sizrit</color>. Nice to Meet you :)";
+            _currentDialogue.storyBoardId = "";
+
             speaker.GetComponent<Text>().text = _currentDialogue.speaker;
         
             DialogueTextAnimationManager.GetInstance().ResetDialogueTextAnimationManager();
@@ -85,6 +89,11 @@ namespace DialogueSystem
             DialogueTextColorManager.GetInstance().SetDialogueTextColor(_currentDialogue.color);
         
             UI_GameMenu_DialogueLogManager.GetInstance().AddDialogueLog(_currentDialogue);
+        }
+
+        private void OnEnable()
+        {
+            SetDialogue("");
         }
     }
 }

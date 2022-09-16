@@ -67,9 +67,9 @@ public class GameSystem : MonoBehaviour
         
         ClueManager.GetInstance().MakeClueList();
         
-        ResearchObjectSetLoadManger.GetInstance().LoadAllObjectSet();
-        ResearchEdgeController.GetInstance().LoadEdgeControlData();
-        ResearchEdgeArrowManager.GetInstance().LoadImage();
+        // ResearchObjectSetLoadManger.GetInstance().LoadAllObjectSet();
+        // ResearchEdgeController.GetInstance().LoadEdgeControlData();
+        // ResearchEdgeArrowManager.GetInstance().LoadImage();
     }
 
     private void Initialize()

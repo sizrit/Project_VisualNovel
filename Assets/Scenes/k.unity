@@ -1274,7 +1274,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &586193053
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2461,7 +2461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentDialogueText: {fileID: 520602606}
   pastDialogueText: {fileID: 586425315}
-  fadeSpeed: 0.08
+  fadeSpeed: 0.5
 --- !u!114 &1485516682
 MonoBehaviour:
   m_ObjectHideFlags: 0

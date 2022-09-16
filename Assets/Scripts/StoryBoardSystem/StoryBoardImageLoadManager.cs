@@ -8,7 +8,8 @@ namespace StoryBoardSystem
     public enum ImageId
     {
         Null,
-        Image01,
+        ImageSet001,
+        ImageSet002
     }
     
     public class StoryBoardImageLoadManager : MonoBehaviour

@@ -33,14 +33,15 @@ namespace ClickSystem
         readonly Dictionary<ClickMode,I_ClickSystem> _clickSystemList = new Dictionary<ClickMode, I_ClickSystem>();
         private ClickMode _currentClickMode = ClickMode.StoryBoard;
 
-        private bool _isClickEnable = true;
+        private bool _isClickEnable = false;
     
         public void Initialize()
         {
             _clickSystemList.Add(ClickMode.StoryBoard,StoryBoardClickSystem.GetInstance());
             _clickSystemList.Add(ClickMode.Menu,UI_GameMenuClickSystem.GetInstance());
-            _clickSystemList.Add(ClickMode.Research,ResearchClickSystem.GetInstance());
+            //_clickSystemList.Add(ClickMode.Research,ResearchClickSystem.GetInstance());
             //_clickSystemList.Add(ClickMode.Disable,);
+            _isClickEnable = true;
         }
 
         public void DisableClick()

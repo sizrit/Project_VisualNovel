@@ -11,13 +11,7 @@ namespace StoryBoardSystem
     {
         Null,
         Chapter01Room,
-    
-    
-        a,
-        aa,
-        aaa,
-        aaaa,
-        aaaaa
+        Room,
     }
 
     public class StoryBoardBgLoadManager : MonoBehaviour

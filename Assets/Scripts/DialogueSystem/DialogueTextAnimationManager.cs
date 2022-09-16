@@ -30,7 +30,7 @@ namespace DialogueSystem
 
 
         #endregion
-    
+
         [SerializeField] private GameObject currentDialogueText;
         [SerializeField] private GameObject pastDialogueText;
 
@@ -41,12 +41,10 @@ namespace DialogueSystem
         private string _currentString = "";
         private string _pastString = "";
         private int _index = 0;
-    
+
         [SerializeField] private float fadeSpeed = 0.08f;
-    
-        private bool _isAnimationEnd=true;
-    
-        private void func0(){}
+
+        private bool _isAnimationEnd = true;
 
         public void ChangeFadeSpeed(float speedValue)
         {
@@ -60,7 +58,7 @@ namespace DialogueSystem
 
         public void EndAnimationForced()
         {
-            _dialogueTextManagerAction = new Action(func0);
+            _dialogueTextManagerAction = delegate { };
             currentDialogueText.GetComponent<Text>().text = _dialogueTextData;
             pastDialogueText.GetComponent<Text>().text = _dialogueTextData;
             Color color = currentDialogueText.GetComponent<Text>().color;
@@ -89,10 +87,10 @@ namespace DialogueSystem
             Color color = currentDialogueText.GetComponent<Text>().color;
             color.a = 0;
             currentDialogueText.GetComponent<Text>().color = color;
-            _dialogueTextManagerAction = new Action(func0);
+            _dialogueTextManagerAction = delegate { };
             _dialogueTextManagerAction += DialogueTextAnimation_Add;
         }
-    
+
         private void DialogueTextAnimation_FadeIn()
         {
             Color color = currentDialogueText.GetComponent<Text>().color;
@@ -100,12 +98,13 @@ namespace DialogueSystem
             if (color.a > 0.99)
             {
                 color.a = 1;
-                _dialogueTextManagerAction = new Action(func0);
+                _dialogueTextManagerAction = delegate { };
                 _dialogueTextManagerAction += DialogueTextAnimation_Add;
             }
+
             currentDialogueText.GetComponent<Text>().color = color;
         }
-    
+
         private void DialogueRichTextAnimation_FadeIn()
         {
             Color color = currentDialogueText.GetComponent<Text>().color;
@@ -113,21 +112,22 @@ namespace DialogueSystem
             if (color.a > 0.99)
             {
                 color.a = 1;
-                _dialogueTextManagerAction = new Action(func0);
+                _dialogueTextManagerAction = delegate { };
                 _dialogueTextManagerAction += RichTextOn;
             }
+
             currentDialogueText.GetComponent<Text>().color = color;
         }
-    
-    
+
+
         private void EndTagOn()
         {
-            _pastString+=_dialogueTextDataChar[_index - 1];
+            _pastString += _dialogueTextDataChar[_index - 1];
             _currentString += _dialogueTextDataChar[_index];
             _index++;
-            if (_dialogueTextDataChar[_index-1] == '>')
+            if (_dialogueTextDataChar[_index - 1] == '>')
             {
-                _dialogueTextManagerAction = new Action(func0);
+                _dialogueTextManagerAction = delegate { };
                 _dialogueTextManagerAction += DialogueTextAnimation_Add;
             }
         }
@@ -136,36 +136,37 @@ namespace DialogueSystem
         {
             if (_dialogueTextDataChar[_index] == '<')
             {
-                _dialogueTextManagerAction=new Action(func0);
+                _dialogueTextManagerAction = delegate { };
                 _dialogueTextManagerAction += EndTagOn;
                 return;
             }
-        
+
             Color color = currentDialogueText.GetComponent<Text>().color;
             color.a = 0;
             currentDialogueText.GetComponent<Text>().color = color;
-        
-            _pastString+=_dialogueTextDataChar[_index - 1];
+
+            _pastString += _dialogueTextDataChar[_index - 1];
             _currentString += _dialogueTextDataChar[_index];
             _index++;
-            currentDialogueText.GetComponent<Text>().text = _currentString+"</color>";
-            pastDialogueText.GetComponent<Text>().text = _pastString+"</color>";
-        
-            _dialogueTextManagerAction = new Action(func0);
+            currentDialogueText.GetComponent<Text>().text = _currentString + "</color>";
+            pastDialogueText.GetComponent<Text>().text = _pastString + "</color>";
+
+            _dialogueTextManagerAction = delegate { };
             _dialogueTextManagerAction += DialogueRichTextAnimation_FadeIn;
         }
-    
+
         private void StartTagOn()
         {
             if (_index != 0)
             {
-                _pastString+=_dialogueTextDataChar[_index - 1];
+                _pastString += _dialogueTextDataChar[_index - 1];
             }
+
             _currentString += _dialogueTextDataChar[_index];
             _index++;
-            if (_dialogueTextDataChar[_index-1] == '>')
+            if (_dialogueTextDataChar[_index - 1] == '>')
             {
-                _dialogueTextManagerAction = new Action(func0);
+                _dialogueTextManagerAction = delegate { };
                 _dialogueTextManagerAction += RichTextOn;
             }
         }
@@ -174,17 +175,17 @@ namespace DialogueSystem
         {
             if (_index == _dialogueTextDataChar.Length)
             {
-                _dialogueTextManagerAction = new Action(func0);
+                _dialogueTextManagerAction = delegate { };
                 _isAnimationEnd = true;
                 DialogueManager.GetInstance().AnimationEnd();
                 return;
             }
-        
+
             if (_dialogueTextDataChar.Length != 0)
             {
                 if (_dialogueTextDataChar[_index] == '<')
                 {
-                    _dialogueTextManagerAction = new Action(func0);
+                    _dialogueTextManagerAction = delegate { };
                     _dialogueTextManagerAction += StartTagOn;
                     return;
                 }
@@ -206,7 +207,7 @@ namespace DialogueSystem
                 currentDialogueText.GetComponent<Text>().text = _currentString;
             }
 
-            _dialogueTextManagerAction = new Action(func0);
+            _dialogueTextManagerAction = delegate { };
             _dialogueTextManagerAction += DialogueTextAnimation_FadeIn;
 
             _index++;
@@ -214,7 +215,6 @@ namespace DialogueSystem
 
         public void Update()
         {
-        
             _dialogueTextManagerAction();
         }
     }

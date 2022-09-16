@@ -45,8 +45,6 @@ namespace DialogueSystem
 
         [SerializeField] private GameObject currentTextGameObject;
         [SerializeField] private GameObject pastTextGameObject;
-    
-        private void Func0(){}
 
         private void MakeEffectList()
         {
