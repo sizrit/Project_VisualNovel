@@ -4,6 +4,14 @@ using UnityEngine.UI;
 
 namespace DialogueSystem
 {
+    public enum StyleTag
+    {
+        Color,
+        Bold,
+        Italic,
+        Size
+    }
+
     public class DialogueTextAnimationManager : MonoBehaviour
     {
         #region Singleton
@@ -42,6 +50,8 @@ namespace DialogueSystem
         private string _pastString = "";
         private int _index = 0;
 
+        private StyleTag style = StyleTag.Color;
+
         [SerializeField] private float fadeSpeed = 0.08f;
 
         private bool _isAnimationEnd = true;
@@ -54,6 +64,11 @@ namespace DialogueSystem
         public bool GetIsAnimationEnd()
         {
             return _isAnimationEnd;
+        }
+
+        public void Initialize()
+        {
+            GameSystem.GetInstance().SubscribeUpdateFunction("dialogueTextManager",_dialogueTextManagerAction);
         }
 
         public void EndAnimationForced()
@@ -148,8 +163,29 @@ namespace DialogueSystem
             _pastString += _dialogueTextDataChar[_index - 1];
             _currentString += _dialogueTextDataChar[_index];
             _index++;
-            currentDialogueText.GetComponent<Text>().text = _currentString + "</color>";
-            pastDialogueText.GetComponent<Text>().text = _pastString + "</color>";
+
+            string endStyleTag = "";
+            switch (style)
+            {
+                case StyleTag.Color:
+                    endStyleTag = "</color>";
+                    break;
+
+                case StyleTag.Bold:
+                    endStyleTag = "</b>";
+                    break;
+
+                case StyleTag.Italic:
+                    endStyleTag = "</i>";
+                    break;
+
+                case StyleTag.Size:
+                    endStyleTag = "</size>";
+                    break;
+            }
+
+            currentDialogueText.GetComponent<Text>().text = _currentString + endStyleTag;
+            pastDialogueText.GetComponent<Text>().text = _pastString + endStyleTag;
 
             _dialogueTextManagerAction = delegate { };
             _dialogueTextManagerAction += DialogueRichTextAnimation_FadeIn;
@@ -177,7 +213,10 @@ namespace DialogueSystem
             {
                 _dialogueTextManagerAction = delegate { };
                 _isAnimationEnd = true;
-                DialogueManager.GetInstance().AnimationEnd();
+                
+                // Dialogue Animation 의 종료를 알리기위해 호출, Dialogue 에 적용된 Effect 또한 종료시킨다
+                DialogueManager.GetInstance().AnimationEnd();   
+                
                 return;
             }
 
@@ -185,6 +224,25 @@ namespace DialogueSystem
             {
                 if (_dialogueTextDataChar[_index] == '<')
                 {
+                    switch (_dialogueTextDataChar[_index + 1])
+                    {
+                        case 'c':
+                            style = StyleTag.Color;
+                            break;
+
+                        case 'b':
+                            style = StyleTag.Bold;
+                            break;
+
+                        case 'i':
+                            style = StyleTag.Italic;
+                            break;
+
+                        case 's':
+                            style = StyleTag.Size;
+                            break;
+                    }
+
                     _dialogueTextManagerAction = delegate { };
                     _dialogueTextManagerAction += StartTagOn;
                     return;
@@ -211,11 +269,6 @@ namespace DialogueSystem
             _dialogueTextManagerAction += DialogueTextAnimation_FadeIn;
 
             _index++;
-        }
-
-        public void Update()
-        {
-            _dialogueTextManagerAction();
         }
     }
 }
