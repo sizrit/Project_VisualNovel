@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace DialogueSystem
@@ -11,15 +9,15 @@ namespace DialogueSystem
     public enum DialogueTextEffectId
     {
         Null,
-        A,
+        Shake,
     }
-
+    
     public class DialogueTextEffectManager : MonoBehaviour
     {
         #region Singleton
-
+        
         private static DialogueTextEffectManager _instance;
-
+        
         public static DialogueTextEffectManager GetInstance()
         {
             if (_instance == null)
@@ -39,33 +37,39 @@ namespace DialogueSystem
 
         #endregion
     
-        readonly Dictionary<string,Action> _effectList =new Dictionary<string,Action>();
+        private readonly Dictionary<DialogueTextEffectId,Action> effectList =new Dictionary<DialogueTextEffectId,Action>();
 
         private Action _effectDelegate = delegate { };
 
         [SerializeField] private GameObject currentTextGameObject;
         [SerializeField] private GameObject pastTextGameObject;
 
-        private void MakeEffectList()
+        public void Initialize()
         {
+            // GameSystem 에서 관리하는 Update Event Function안에서 동작할 함수 등록
+            GameSystem.GetInstance().SubscribeUpdateFunction("DialogueTextEffectManager", _effectDelegate);
+            
+            effectList.Add(DialogueTextEffectId.Null, delegate { });
+            effectList.Add(DialogueTextEffectId.Shake, Shake);
         }
     
-        public void SetDialogueTextEffect(string storyBoardIdValue)
+        public void SetDialogueTextEffect(string effectIdIdValue) // Effect Id 를 받아서 해당 Effect 실행
         {
-            if (_effectList.ContainsKey(storyBoardIdValue))
+            DialogueTextEffectId id = ConvertStringToDialogueTextEffectId(effectIdIdValue);
+            if (effectList.ContainsKey(id))
             {
-                _effectDelegate+=_effectList[storyBoardIdValue];
+                _effectDelegate += effectList[id];
             }
         }
 
-        public void EndEffect()
+        public void EndEffect() // Effect 종료시 호출
         {
             _effectDelegate = delegate { };
             currentTextGameObject.transform.localPosition = new Vector3(0,0,0);
             pastTextGameObject.transform.localPosition = new Vector3(0,0,0);
         }
 
-        private void Shake()
+        private void Shake() // Custom Effect 함수
         {
             float randY = Random.Range(-10, 10);
             float randX = Random.Range(-3, 3);
@@ -73,17 +77,7 @@ namespace DialogueSystem
             pastTextGameObject.transform.localPosition = new Vector3(randX,randY,0);
         }
 
-        public void Awake()
-        {
-            MakeEffectList();
-        }
-
-        public void Update()
-        {
-            _effectDelegate();
-        }
-
-        public static DialogueTextEffectId ConvertStringToDialogueTextEffectId(string stringValue)
+        public static DialogueTextEffectId ConvertStringToDialogueTextEffectId(string stringValue) // string -> DialogueTextEffectId 로 전환
         {
             List<DialogueTextEffectId> idList = Enum.GetValues(typeof(DialogueTextEffectId)).Cast<DialogueTextEffectId>()
                 .ToList();

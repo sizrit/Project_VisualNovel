@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UI_GameMenu;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace DialogueSystem
 {
@@ -11,23 +7,17 @@ namespace DialogueSystem
     public struct Dialogue
     {
         public string storyBoardId;
-        public string speaker;
         public string dialogueText;
+        public string effect;
         public string color;
     }
 
     public enum Chapter
     {
         Chapter01,
-        /*
-    Chapter02,
-    Chapter03,
-    Chapter04,
-    Chapter05
-    */
     }
 
-    public class DialogueManager : MonoBehaviour
+    public class DialogueManager
     {
         #region Singleton
 
@@ -37,14 +27,7 @@ namespace DialogueSystem
         {
             if (_instance == null)
             {
-                var obj = FindObjectOfType<DialogueManager>();
-                if (obj == null)
-                {
-                    Debug.Log("Error! DialogueManager is disable now");
-                    return null;
-                }
-
-                _instance = obj;
+                _instance = new DialogueManager();
             }
 
             return _instance;
@@ -52,48 +35,38 @@ namespace DialogueSystem
 
         #endregion
 
-        [SerializeField] private GameObject speaker;
-        private Dialogue _currentDialogue;
-
-        public bool CheckIsAnimationEnd()
+        public bool CheckIsAnimationEnd() // Dialogue 출력 Animation 의 종료 여부를 반환
         {
             return DialogueTextAnimationManager.GetInstance().GetIsAnimationEnd();
         }
 
-        public void EndAnimationForced()
+        public void EndAnimationForced() // 강제로 Dialogue 출력 Animation 을 종료시킴
         {
             DialogueTextAnimationManager.GetInstance().EndAnimationForced();
             DialogueTextEffectManager.GetInstance().EndEffect();
         }
 
-        public void AnimationEnd()
+        public void AnimationEnd() // Dialogue 출력 Animation 의 종료시점에 호출
         {
             DialogueTextEffectManager.GetInstance().EndEffect();
         }
     
-        public void SetDialogue(string storyBoardIdValue)
+        public void SetDialogue(string storyBoardIdValue) // Dialogue 출력
         {
-            //_currentDialogue = DialogueDataLoadManager.GetInstance().GetDialogue(storyBoardIdValue);
-            Dialogue _currentDialogue = new Dialogue();
+            // 현재 storyBoardId 를 기준으로 Dialogue 를 불러옴
+            Dialogue currentDialogue = DialogueDataLoadManager.GetInstance().GetDialogue(storyBoardIdValue);
             
-            _currentDialogue.dialogueText = "Hi, My name is <color=#0067a3>sizrit</color>. Nice to Meet you :)";
-            _currentDialogue.storyBoardId = "";
-
-            speaker.GetComponent<Text>().text = _currentDialogue.speaker;
+            // Dialogue 를 Animation 으로 출력
+            DialogueTextAnimationManager.GetInstance().PlayDialogueTextAnimation(currentDialogue.dialogueText);
+            
+            // Dialogue 에 적용된 Effect 적용
+            DialogueTextEffectManager.GetInstance().SetDialogueTextEffect(currentDialogue.effect);
+            
+            // Dialogue 에 적용된 전체적인 Color 적용
+            DialogueTextColorManager.GetInstance().SetDialogueTextColor(currentDialogue.color);
         
-            DialogueTextAnimationManager.GetInstance().ResetDialogueTextAnimationManager();
-            DialogueTextAnimationManager.GetInstance().PlayDialogueTextAnimation(_currentDialogue.dialogueText);
-
-            DialogueTextEffectManager.GetInstance().SetDialogueTextEffect(_currentDialogue.storyBoardId);
-         
-            DialogueTextColorManager.GetInstance().SetDialogueTextColor(_currentDialogue.color);
-        
-            UI_GameMenu_DialogueLogManager.GetInstance().AddDialogueLog(_currentDialogue);
-        }
-
-        private void OnEnable()
-        {
-            SetDialogue("");
+            // 지금까지 있었던 Dialogue 들을 UI 에서 Log 로 살펴볼수있도록 저장
+            UI_GameMenu_DialogueLogManager.GetInstance().AddDialogueLog(currentDialogue);
         }
     }
 }

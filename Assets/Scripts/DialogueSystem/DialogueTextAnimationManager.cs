@@ -56,22 +56,23 @@ namespace DialogueSystem
 
         private bool _isAnimationEnd = true;
 
-        public void ChangeFadeSpeed(float speedValue)
+        public void ChangeFadeSpeed(float speedValue) // Animation 의 재생 속도 조정
         {
             fadeSpeed = speedValue;
         }
 
-        public bool GetIsAnimationEnd()
+        public bool GetIsAnimationEnd() // Animation 의 종료 여부를 반환
         {
             return _isAnimationEnd;
         }
 
-        public void Initialize()
+        public void Initialize() // 초기화
         {
+            // GameSystem 에서 관리하는 Update Event Function안에서 동작할 함수 등록
             GameSystem.GetInstance().SubscribeUpdateFunction("dialogueTextManager",_dialogueTextManagerAction);
         }
 
-        public void EndAnimationForced()
+        public void EndAnimationForced() // 강제로 Animation 종료
         {
             _dialogueTextManagerAction = delegate { };
             currentDialogueText.GetComponent<Text>().text = _dialogueTextData;
@@ -83,7 +84,7 @@ namespace DialogueSystem
             _isAnimationEnd = true;
         }
 
-        public void ResetDialogueTextAnimationManager()
+        private void ResetDialogueTextAnimationManager() // DialogueTextAnimationManager 초기화
         {
             currentDialogueText.GetComponent<Text>().text = "";
             pastDialogueText.GetComponent<Text>().text = "";
@@ -93,8 +94,10 @@ namespace DialogueSystem
             _index = 0;
         }
 
-        public void PlayDialogueTextAnimation(string dialogueTextDataValue)
+        public void PlayDialogueTextAnimation(string dialogueTextDataValue) // Dialogue Animation 시작
         {
+            ResetDialogueTextAnimationManager();
+            
             _isAnimationEnd = false;
             _dialogueTextData = dialogueTextDataValue;
             _dialogueTextDataChar = dialogueTextDataValue.ToCharArray();
@@ -106,7 +109,7 @@ namespace DialogueSystem
             _dialogueTextManagerAction += DialogueTextAnimation_Add;
         }
 
-        private void DialogueTextAnimation_FadeIn()
+        private void DialogueTextAnimation_FadeIn() // Dialogue 의 Animation 과정
         {
             Color color = currentDialogueText.GetComponent<Text>().color;
             color.a += fadeSpeed;
@@ -120,7 +123,7 @@ namespace DialogueSystem
             currentDialogueText.GetComponent<Text>().color = color;
         }
 
-        private void DialogueRichTextAnimation_FadeIn()
+        private void DialogueRichTextAnimation_FadeIn() // Style Tag 를 적용해야하는 RichText 의 Animation 과정
         {
             Color color = currentDialogueText.GetComponent<Text>().color;
             color.a += fadeSpeed;
@@ -133,9 +136,8 @@ namespace DialogueSystem
 
             currentDialogueText.GetComponent<Text>().color = color;
         }
-
-
-        private void EndTagOn()
+        
+        private void EndTagOn() // Style Tag 의 끝 인식
         {
             _pastString += _dialogueTextDataChar[_index - 1];
             _currentString += _dialogueTextDataChar[_index];
@@ -147,7 +149,7 @@ namespace DialogueSystem
             }
         }
 
-        private void RichTextOn()
+        private void RichTextOn() // Style Tag 를 적용해야하는 RichText 의 Animation 재생
         {
             if (_dialogueTextDataChar[_index] == '<')
             {
@@ -191,7 +193,7 @@ namespace DialogueSystem
             _dialogueTextManagerAction += DialogueRichTextAnimation_FadeIn;
         }
 
-        private void StartTagOn()
+        private void StartTagOn() // Style Tag 인식
         {
             if (_index != 0)
             {
@@ -207,7 +209,7 @@ namespace DialogueSystem
             }
         }
 
-        private void DialogueTextAnimation_Add()
+        private void DialogueTextAnimation_Add() // Dialogue 의 Animation 을 위한 Text 추가
         {
             if (_index == _dialogueTextDataChar.Length)
             {

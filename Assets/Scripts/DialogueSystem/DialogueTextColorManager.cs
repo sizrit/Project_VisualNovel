@@ -32,7 +32,7 @@ namespace DialogueSystem
         [SerializeField] private GameObject currentDialogueText;
         [SerializeField] private GameObject pastDialogueText;
 
-        public void SetDialogueTextColor(string colorValue)
+        public void SetDialogueTextColor(string colorValue) // Dialogue 의 Color 설정
         {
             Color color = Color.white;
             switch (colorValue)
