@@ -37,17 +37,21 @@ namespace DialogueSystem
 
         public bool CheckIsAnimationEnd() // Dialogue 출력 Animation 의 종료 여부를 반환
         {
+            // Animation 종료 여부 반환
             return DialogueTextAnimationManager.GetInstance().GetIsAnimationEnd();
         }
 
         public void EndAnimationForced() // 강제로 Dialogue 출력 Animation 을 종료시킴
         {
+            // Dialogue 에 Animation 강제 종료
             DialogueTextAnimationManager.GetInstance().EndAnimationForced();
+            // Dialogue 에 적용된 Effect 종료
             DialogueTextEffectManager.GetInstance().EndEffect();
         }
 
         public void AnimationEnd() // Dialogue 출력 Animation 의 종료시점에 호출
         {
+            // Dialogue 에 적용된 Effect 종료
             DialogueTextEffectManager.GetInstance().EndEffect();
         }
     

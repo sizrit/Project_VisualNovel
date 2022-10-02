@@ -44,7 +44,7 @@ namespace DialogueSystem
         [SerializeField] private GameObject currentTextGameObject;
         [SerializeField] private GameObject pastTextGameObject;
 
-        public void Initialize()
+        public void Initialize() // 초기화
         {
             // GameSystem 에서 관리하는 Update Event Function안에서 동작할 함수 등록
             GameSystem.GetInstance().SubscribeUpdateFunction("DialogueTextEffectManager", _effectDelegate);
