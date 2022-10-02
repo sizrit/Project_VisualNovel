@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using DialogueSystem;
-using ResearchSystem;
 using StoryBoardSystem;
 using UI_GameMenu;
 using UnityEngine;
@@ -44,7 +41,8 @@ public class GameSystem : MonoBehaviour
 
     #endregion
     
-    
+    private readonly Dictionary<string, Action> updateFuncList = new Dictionary<string, Action>();
+
     private void Start()
     {
         QualitySettings.vSyncCount = 0;
@@ -67,14 +65,14 @@ public class GameSystem : MonoBehaviour
         
         ClueManager.GetInstance().MakeClueList();
         
-        // ResearchObjectSetLoadManger.GetInstance().LoadAllObjectSet();
-        // ResearchEdgeController.GetInstance().LoadEdgeControlData();
-        // ResearchEdgeArrowManager.GetInstance().LoadImage();
+        DialogueTextEffectManager.GetInstance().Initialize();
     }
 
     private void Initialize()
     {
         ClickSystem.ClickSystem.GetInstance().Initialize();
+        DialogueTextAnimationManager.GetInstance().Initialize();
+        DialogueTextEffectManager.GetInstance().Initialize();
     }
 
     private void GameSetting()
@@ -82,8 +80,36 @@ public class GameSystem : MonoBehaviour
         UI_GameMenuManager.GetInstance().Hide_UI_GameMenu();
     }
 
+    public void SubscribeUpdateFunction(string id, Action action)
+    {
+        if (!updateFuncList.ContainsKey(id))
+        {
+            updateFuncList.Add(id, action);
+        }
+    }
+    
+    public void UnSubscribeUpdateFunction(string id)
+    {
+        if (updateFuncList.ContainsKey(id))
+        {
+            updateFuncList.Remove(id);
+        }
+    }
+
+    private void MakeUpdateFunction()
+    {
+        Action targetAction = delegate {};
+        foreach (var updateFunc in updateFuncList)
+        {
+            targetAction += updateFunc.Value;
+        }
+
+        targetAction();
+    }
+    
     void Update()
     {
+        MakeUpdateFunction();
         ClickSystem.ClickSystem.GetInstance().Update();
     }
     

@@ -34,7 +34,7 @@ namespace UI_GameMenu
         public void AddDialogueLog(Dialogue dialogue)
         {
             string tempString = "";
-            tempString += dialogue.speaker + " : ";
+            //tempString += dialogue.speaker + " : ";
             tempString += dialogue.dialogueText;
             _dialogueList.Add(tempString);
         }
